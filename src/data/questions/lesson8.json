@@ -1,0 +1,402 @@
+[
+  {
+    "id": "L8_Q01",
+    "lessonId": 8,
+    "title": "Sự khác biệt cốt lõi về phân vùng bộ nhớ giữa Tiến trình (Process) và Luồng (Thread) trong hệ điều hành và JVM là gì?",
+    "code": null,
+    "options": [
+      "Mỗi Process sở hữu không gian địa chỉ bộ nhớ độc lập; Các Thread trong cùng một Process chia sẻ chung vùng nhớ Heap nhưng sở hữu Stack và Con trỏ lệnh (PC Register) riêng biệt",
+      "Các Process chia sẻ chung bộ nhớ Heap; Các Thread có không gian bộ nhớ hoàn toàn độc lập",
+      "Thread không có ngăn xếp Stack riêng mà dùng chung với Process",
+      "Process và Thread có cấu trúc bộ nhớ hoàn toàn giống hệt nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Process là một đơn vị thực thi độc lập có không gian bộ nhớ riêng (không chia sẻ trực tiếp với process khác). Thread là một đơn vị thực thi nhẹ (lightweight) bên trong process. Tất cả các luồng trong cùng một JVM process cùng chia sẻ vùng nhớ Heap và Metaspace, nhưng mỗi luồng có ngăn xếp Stack riêng để lưu biến cục bộ và call frame, cùng bộ đếm chương trình PC riêng.",
+    "difficulty": "medium",
+    "tags": [
+      "Process-vs-Thread",
+      "JVM-Memory",
+      "Stack-Sharing"
+    ]
+  },
+  {
+    "id": "L8_Q02",
+    "lessonId": 8,
+    "title": "So sánh giữa interface java.lang.Runnable và java.util.concurrent.Callable<V>, phát biểu nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Runnable.run() trả về void và không thể ném Checked Exception; Callable.call() trả về một giá trị có kiểu generic V và có thể ném Checked Exception",
+      "Runnable có thể trả về giá trị kiểu int; Callable không thể trả về giá trị",
+      "Runnable dùng cho luồng đơn; Callable chỉ dùng cho luồng nền daemon",
+      "Callable kế thừa trực tiếp từ Runnable"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 14: Runnable định nghĩa phương thức 'void run()' không có giá trị trả về và không khai báo throws Checked Exception. Ngược lại, Callable<V> định nghĩa 'V call() throws Exception' có khả năng trả về kết quả tính toán kiểu V và cho phép ném ra Checked Exception.",
+    "difficulty": "easy",
+    "tags": [
+      "Runnable",
+      "Callable",
+      "Concurrency",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L8_Q03",
+    "lessonId": 8,
+    "title": "Vòng đời của một Thread trong Java (lớp Thread.State) bao gồm các trạng thái chuẩn nào?",
+    "code": null,
+    "options": [
+      "NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED",
+      "START, RUNNING, SLEEPING, DEAD",
+      "INIT, RUNNING, WAITING, STOPPED",
+      "READY, EXECUTING, PAUSED, FINISHED"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo enum java.lang.Thread.State trong JVM chuẩn, vòng đời Thread có đúng 6 trạng thái: 1) NEW (mới tạo, chưa start), 2) RUNNABLE (đang chạy hoặc sẵn sàng chạy), 3) BLOCKED (chờ lấy monitor lock synchronized), 4) WAITING (chờ vô hạn qua wait(), join()), 5) TIMED_WAITING (chờ có thời hạn qua sleep(), wait(timeout)), 6) TERMINATED (đã hoàn thành run() hoặc gặp lỗi).",
+    "difficulty": "medium",
+    "tags": [
+      "Thread-Lifecycle",
+      "Thread-State"
+    ]
+  },
+  {
+    "id": "L8_Q04",
+    "lessonId": 8,
+    "title": "Hiện tượng gì xảy ra khi lập trình viên gọi trực tiếp phương thức thread.run() thay vì thread.start()?",
+    "code": null,
+    "options": [
+      "Phương thức run() sẽ được thực thi tuần tự trên chính luồng hiện tại (calling thread, thường là main), KHÔNG CÓ luồng mới nào được hệ điều hành tạo ra",
+      "JVM ném ngoại lệ IllegalThreadStateException",
+      "Hệ điều hành vẫn tạo một luồng mới chạy ngầm song song",
+      "Chương trình bị treo vô hạn"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức start() yêu cầu JVM đăng ký với hệ điều hành để tạo ra một luồng native mới và luồng đó sẽ gọi run(). Nếu gọi trực tiếp run(), nó chỉ là một lời gọi phương thức thông thường, chạy tuần tự trên luồng gọi nó (ví dụ thread 'main') mà không có bất kỳ tính toán song song nào.",
+    "difficulty": "easy",
+    "tags": [
+      "Thread-Start",
+      "Thread-Run",
+      "Concurrency"
+    ]
+  },
+  {
+    "id": "L8_Q05",
+    "lessonId": 8,
+    "title": "Khóa nội tại (Intrinsic Lock / Monitor Lock) trong phương thức synchronized hoạt động như thế nào giữa instance method và static method?",
+    "code": null,
+    "options": [
+      "Phương thức instance synchronized khóa trên đối tượng thực thể hiện tại (this); Phương thức static synchronized khóa trên đối tượng Class (ClassName.class)",
+      "Cả hai phương thức đều khóa trên đối tượng this",
+      "Cả hai phương thức đều khóa trên toàn bộ máy ảo JVM",
+      "Static synchronized không sử dụng khóa mà dùng cơ chế hàng đợi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mỗi đối tượng Java đều có một Monitor lock. Khi một luồng vào phương thức synchronized non-static, nó chiếm khóa của thể hiện đó (this). Nhưng khi vào static synchronized method, nó chiếm khóa của đối tượng java.lang.Class đại diện cho lớp đó. Do hai khóa này là hai đối tượng khác nhau trên Heap, một luồng chạy instance method và một luồng chạy static method của cùng một lớp có thể chạy đồng thời mà không chặn nhau.",
+    "difficulty": "hard",
+    "tags": [
+      "Synchronized",
+      "Monitor-Lock",
+      "Class-Lock"
+    ]
+  },
+  {
+    "id": "L8_Q06",
+    "lessonId": 8,
+    "title": "Từ khóa volatile trong Java cung cấp những bảo đảm gì và KHÔNG bảo đảm điều gì?",
+    "code": null,
+    "options": [
+      "Bảo đảm tính hiển thị (Visibility) giữa các CPU Cache và ngăn đảo lệnh (Instruction Reordering); KHÔNG bảo đảm tính nguyên tử (Atomicity) cho các thao tác phức hợp như count++",
+      "Bảo đảm tuyệt đối tính nguyên tử cho mọi thao tác toán học",
+      "Tự động khóa đối tượng giống hệt như từ khóa synchronized",
+      "Bảo đảm phương thức chạy nhanh hơn mà không cần bộ nhớ đệm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ khóa volatile buộc các luồng đọc/ghi trực tiếp từ bộ nhớ chính (Main Memory) thay vì CPU Cache riêng, đảm bảo mọi thay đổi của một luồng được các luồng khác thấy ngay lập tức (Visibility) và thiết lập rào cản bộ nhớ. Tuy nhiên nó KHÔNG đảm bảo tính nguyên tử: thao tác count++ thực chất là 3 bước đọc-sửa-ghi, nên vẫn bị Race Condition nếu nhiều luồng cùng thực hiện.",
+    "difficulty": "hard",
+    "tags": [
+      "Volatile",
+      "Visibility",
+      "Atomicity",
+      "Race-Condition"
+    ]
+  },
+  {
+    "id": "L8_Q07",
+    "lessonId": 8,
+    "title": "Bốn điều kiện Coffman cần và đủ để xảy ra Bế tắc (Deadlock) giữa các luồng là gì?",
+    "code": null,
+    "options": [
+      "Loại trừ lẫn nhau (Mutual Exclusion), Giữ và chờ (Hold and Wait), Không chiếm đoạt (No Preemption), Chờ đợi vòng tròn (Circular Wait)",
+      "Đa luồng, Thiếu bộ nhớ, Mạng chậm, Lỗi CPU",
+      "Dùng synchronized, Dùng volatile, Dùng Thread.sleep, Dùng wait()",
+      "Quá nhiều tiến trình, Bộ nhớ Heap quá nhỏ, Bộ nhớ Stack quá lớn, Lỗi JIT"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Deadlock xảy ra khi và chỉ khi cả 4 điều kiện Coffman đồng thời thỏa mãn: 1) Mutual Exclusion (tài nguyên không thể chia sẻ đồng thời), 2) Hold and Wait (luồng đang giữ tài nguyên này lại yêu cầu thêm tài nguyên khác), 3) No Preemption (không thể cướp tài nguyên đang bị giữ), 4) Circular Wait (chu trình chờ đợi vòng tròn T1 chờ T2, T2 chờ T1). Biện pháp phá deadlock phổ biến nhất là phá vỡ Circular Wait bằng cách luôn chiếm khóa theo một thứ tự cố định.",
+    "difficulty": "hard",
+    "tags": [
+      "Deadlock",
+      "Coffman-Conditions"
+    ]
+  },
+  {
+    "id": "L8_Q08",
+    "lessonId": 8,
+    "title": "Quy tắc bắt buộc khi gọi các phương thức wait(), notify(), notifyAll() trong Java là gì?",
+    "code": null,
+    "options": [
+      "Bắt buộc phải được gọi bên trong một khối hoặc phương thức synchronized trên chính đối tượng monitor đó, nếu không sẽ ném IllegalMonitorStateException",
+      "Chỉ có thể gọi từ bên trong phương thức run() của lớp Thread",
+      "Chỉ có thể gọi từ luồng chính (main thread)",
+      "Bắt buộc phải truyền tham số thời gian timeout"
+    ],
+    "correctAnswer": 0,
+    "explanation": "wait(), notify() và notifyAll() là các phương thức giao tiếp liên luồng thuộc lớp Object. Cơ chế hoạt động của chúng yêu cầu luồng hiện tại phải đang nắm giữ Monitor lock của đối tượng đó. Nếu gọi chúng mà không sở hữu khóa (bên ngoài khối synchronized), JVM sẽ ném ngay java.lang.IllegalMonitorStateException tại runtime.",
+    "difficulty": "medium",
+    "tags": [
+      "wait-notify",
+      "IllegalMonitorStateException",
+      "Synchronization"
+    ]
+  },
+  {
+    "id": "L8_Q09",
+    "lessonId": 8,
+    "title": "Việc sử dụng Thread Pool (như ExecutorService) giải quyết những nhược điểm lớn nào của việc tự tạo Thread bằng tay (new Thread())?",
+    "code": null,
+    "options": [
+      "Tái sử dụng các luồng có sẵn để tránh chi phí tạo/hủy luồng đắt đỏ của hệ điều hành, đồng thời kiểm soát giới hạn số lượng luồng tối đa để tránh cạn kiệt tài nguyên hệ thống (OutOfMemoryError)",
+      "Giúp các luồng tự động không bị lỗi NullPointerException",
+      "Tăng tốc độ mạng Internet khi tải dữ liệu",
+      "Tự động giải phóng các biến static không dùng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 20: Tự tạo luồng bằng new Thread() tốn kém tài nguyên lớn của OS (cấp phát ~1MB Stack cho mỗi luồng, chi phí ngữ cảnh Context Switching). Nếu tạo hàng ngàn luồng có thể làm crash hệ thống với lỗi OutOfMemoryError. Thread Pool giúp tái sử dụng lại các worker threads và đặt hàng đợi công việc (BlockingQueue) có kiểm soát giới hạn tài nguyên an toàn.",
+    "difficulty": "medium",
+    "tags": [
+      "ExecutorService",
+      "Thread-Pool",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L8_Q10",
+    "lessonId": 8,
+    "title": "Hành vi của phương thức Future.get() trong Java Concurrency là gì?",
+    "code": null,
+    "options": [
+      "Là phương thức đồng bộ chặn (blocking): nếu tác vụ chưa hoàn thành, luồng gọi nó sẽ bị tạm dừng (chuyển sang WAITING) cho đến khi tác vụ có kết quả hoặc ném ngoại lệ",
+      "Luôn trả về kết quả ngay lập tức; nếu chưa xong trả về null",
+      "Hủy bỏ tác vụ đang chạy nếu mất hơn 1 giây",
+      "Tự động tạo ra một luồng mới để tính toán"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 16: Future.get() là lời gọi chặn (blocking call). Nếu công việc tính toán chưa xong, luồng gọi get() sẽ bị block và chuyển vào trạng thái WAITING cho đến khi worker thread hoàn tất phương thức call() và gán kết quả vào Future.",
+    "difficulty": "easy",
+    "tags": [
+      "Future",
+      "Blocking",
+      "Concurrency",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L8_Q11",
+    "lessonId": 8,
+    "title": "Đoạn mã sau in ra tên luồng thực thi là gì khi gọi phương thức run()?",
+    "code": "public class ThreadNameTest {\n    public static void main(String[] args) {\n        Thread t = new Thread(() -> {\n            System.out.println(Thread.currentThread().getName());\n        });\n        t.setName(\"Worker-1\");\n        t.run(); // Luu y goi run() thay vi start()\n    }\n}",
+    "options": [
+      "main",
+      "Worker-1",
+      "Thread-0",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì gọi t.run() thay vì t.start(), không có luồng mới nào được khởi tạo. Khối lambda bên trong run() được thực thi đồng bộ trên chính luồng hiện tại đang gọi nó, tức là luồng 'main'. Do đó Thread.currentThread().getName() trả về 'main'.",
+    "difficulty": "easy",
+    "tags": [
+      "Thread-Run",
+      "Thread-Name"
+    ]
+  },
+  {
+    "id": "L8_Q12",
+    "lessonId": 8,
+    "title": "Hiện tượng Tranh chấp điều kiện (Race Condition) trong đoạn mã sau dẫn đến kết quả gì?",
+    "code": "class Counter {\n    int count = 0;\n    void increment() { count++; }\n}\npublic class RaceTest {\n    public static void main(String[] args) throws InterruptedException {\n        Counter c = new Counter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
+    "options": [
+      "Giá trị in ra có thể nhỏ hơn hoặc bằng 2000 (thường < 2000) và không thể đoán trước chính xác do mất mát cập nhật (lost update)",
+      "Luôn luôn bằng chính xác 2000 trong mọi lần chạy",
+      "Luôn luôn bằng 1000",
+      "Chương trình bị deadlock và không bao giờ kết thúc"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức increment() không được đồng bộ hóa (synchronized). Thao tác count++ bao gồm 3 bước: đọc count, tăng 1, ghi lại. Khi 2 luồng chạy đồng thời trên các lõi CPU, chúng có thể đọc cùng một giá trị cũ và ghi đè lẫn nhau (Lost Update). Do đó kết quả thực tế thường nhỏ hơn 2000 và thay đổi tùy mỗi lần chạy.",
+    "difficulty": "medium",
+    "tags": [
+      "Race-Condition",
+      "Lost-Update",
+      "Synchronization"
+    ]
+  },
+  {
+    "id": "L8_Q13",
+    "lessonId": 8,
+    "title": "Đoạn mã sau sử dụng từ khóa volatile cho biến đếm count. Kết quả in ra có chắc chắn bằng 2000 hay không?",
+    "code": "class VolatileCounter {\n    volatile int count = 0;\n    void increment() { count++; }\n}\npublic class VolatileTest {\n    public static void main(String[] args) throws InterruptedException {\n        VolatileCounter c = new VolatileCounter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
+    "options": [
+      "Không chắc chắn bằng 2000, giá trị vẫn có thể nhỏ hơn 2000 vì volatile không đảm bảo tính nguyên tử cho phép toán count++",
+      "Chắc chắn bằng 2000 vì volatile đã đồng bộ hóa toàn diện",
+      "Lỗi biên dịch do biến volatile không thể dùng toán tử ++",
+      "Luôn luôn bằng 0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bẫy rất phổ biến về từ khóa volatile: volatile chỉ đảm bảo tính nhìn thấy (visibility) giá trị mới nhất trong bộ nhớ chính, nhưng count++ là một phép toán phức hợp (compound action) không nguyên tử. Hai luồng vẫn có thể đọc cùng một giá trị đồng thời và ghi đè giá trị tăng, gây thất thoát cập nhật. Để đảm bảo đúng 2000, phải dùng synchronized hoặc AtomicInteger.",
+    "difficulty": "hard",
+    "tags": [
+      "Volatile",
+      "Non-Atomic",
+      "Compound-Operation"
+    ]
+  },
+  {
+    "id": "L8_Q14",
+    "lessonId": 8,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi hai luồng cùng chạy?",
+    "code": "public class DeadlockDemo {\n    static final Object lockA = new Object();\n    static final Object lockB = new Object();\n    public static void main(String[] args) {\n        Thread t1 = new Thread(() -> {\n            synchronized (lockA) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockB) { System.out.println(\"T1 finished\"); }\n            }\n        });\n        Thread t2 = new Thread(() -> {\n            synchronized (lockB) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockA) { System.out.println(\"T2 finished\"); }\n            }\n        });\n        t1.start(); t2.start();\n    }\n}",
+    "options": [
+      "Xảy ra Bế tắc (Deadlock): T1 giữ lockA chờ lockB, trong khi T2 giữ lockB chờ lockA; chương trình bị treo vô hạn",
+      "Chương trình in ra 'T1 finished' rồi 'T2 finished' bình thường",
+      "Ném ngoại lệ IllegalMonitorStateException tại runtime",
+      "Lỗi biên dịch do sleep trong khối synchronized"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kịch bản Deadlock kinh điển do khóa chéo (Circular Wait): Luồng T1 chiếm lockA rồi ngủ 50ms; trong lúc đó luồng T2 chiếm lockB rồi ngủ 50ms. Khi thức dậy, T1 cố gắng lấy lockB (đang bị T2 giữ) nên bị chặn; T2 cố gắng lấy lockA (đang bị T1 giữ) nên cũng bị chặn. Cả hai luồng chờ đợi lẫn nhau vô hạn tạo thành chu trình bế tắc.",
+    "difficulty": "medium",
+    "tags": [
+      "Deadlock",
+      "Circular-Wait",
+      "Monitor-Lock"
+    ]
+  },
+  {
+    "id": "L8_Q15",
+    "lessonId": 8,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy phương thức doWait()?",
+    "code": "public class WaitTest {\n    static Object lock = new Object();\n    public static void main(String[] args) throws InterruptedException {\n        lock.wait(); // Goi wait() truc tiep khong co synchronized\n    }\n}",
+    "options": [
+      "Ném ngoại lệ IllegalMonitorStateException tại runtime",
+      "Luồng main bị tạm dừng vô hạn không lỗi",
+      "Lỗi biên dịch do thiếu khối try-catch",
+      "Chương trình kết thúc ngay lập tức"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức wait() của Object yêu cầu luồng hiện tại phải đang sở hữu Monitor lock của đối tượng đó trước khi gọi (tức là phải nằm bên trong khối synchronized (lock) { ... }). Do luồng main chưa chiếm lock của biến lock mà đã gọi lock.wait(), JVM lập tức ném: java.lang.IllegalMonitorStateException: current thread is not owner.",
+    "difficulty": "medium",
+    "tags": [
+      "wait()",
+      "IllegalMonitorStateException",
+      "Monitor-Owner"
+    ]
+  },
+  {
+    "id": "L8_Q16",
+    "lessonId": 8,
+    "title": "Cho đoạn mã trích từ Đề thi mẫu UET Bài 1 (Đoạn code 3). Kết quả in ra là gì?",
+    "code": "import java.util.concurrent.*;\nclass DownloadTask implements Callable<String> {\n    private final String file;\n    DownloadTask(String file) { this.file = file; }\n    public String call() throws Exception {\n        Thread.sleep(100);\n        return \"Done:\" + file;\n    }\n}\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService pool = Executors.newFixedThreadPool(2);\n        Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\n        Future<String> f2 = pool.submit(new DownloadTask(\"B\"));\n        System.out.println(f1.get());\n        System.out.println(f2.get());\n        pool.shutdown();\n    }\n}",
+    "options": [
+      "Done:A\\nDone:B",
+      "Done:B\\nDone:A",
+      "Lỗi biên dịch tại submit(DownloadTask)",
+      "In ra null do Future chưa tính toán xong"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đề thi mẫu UET Bài 1: Hai tác vụ DownloadTask được gửi vào pool gồm 2 worker threads. f1.get() chặn luồng main chờ tác vụ tải file A hoàn thành và in ra 'Done:A'. Tiếp đó f2.get() lấy kết quả tác vụ tải file B và in ra 'Done:B'. Sau đó pool được đóng bằng shutdown().",
+    "difficulty": "easy",
+    "tags": [
+      "ExecutorService",
+      "Callable",
+      "Future",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L8_Q17",
+    "lessonId": 8,
+    "title": "Theo Đề thi mẫu UET Câu 19: Điều gì xảy ra nếu gọi liên tiếp hai lần f1.get() trên cùng một đối tượng Future?",
+    "code": "Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\nSystem.out.println(f1.get());\nSystem.out.println(f1.get());",
+    "options": [
+      "Lần gọi get() thứ hai trả về ngay kết quả đã lưu trong bộ đệm (cached result) mà KHÔNG thực thi lại tác vụ DownloadTask",
+      "Tác vụ DownloadTask sẽ được đưa vào pool để thực thi lại từ đầu lần thứ hai",
+      "Ném ngoại lệ IllegalStateException vì Future chỉ được get() một lần duy nhất",
+      "Lần thứ hai trả về null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 19: Đối tượng Future lưu giữ trạng thái kết quả của tác vụ một khi nó đã hoàn thành. Lần gọi f1.get() thứ hai nhận thấy trạng thái tác vụ đã là DONE, do đó nó trả về ngay kết quả tính toán đã có mà không cần chờ đợi và hoàn toàn không chạy lại tác vụ.",
+    "difficulty": "medium",
+    "tags": [
+      "Future",
+      "Caching",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L8_Q18",
+    "lessonId": 8,
+    "title": "Hai phương thức sau trong cùng một lớp có thể được thực thi đồng thời bởi hai luồng khác nhau hay không? Vì sao?",
+    "code": "class SyncDual {\n    public synchronized void methodA() {\n        // Instance synchronized method\n    }\n    public static synchronized void methodB() {\n        // Static synchronized method\n    }\n}",
+    "options": [
+      "Có thể chạy đồng thời, vì methodA chiếm khóa trên đối tượng thực thể (this), còn methodB chiếm khóa trên đối tượng Class (SyncDual.class)",
+      "Không thể chạy đồng thời, vì từ khóa synchronized khóa toàn bộ các phương thức của lớp",
+      "Chỉ chạy đồng thời nếu hai phương thức có tham số khác nhau",
+      "Lỗi biên dịch: không thể vừa có method synchronized vừa có static synchronized"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cơ chế khóa của JVM: methodA là instance method nên khi chạy luồng chiếm monitor lock của đối tượng thực thể (this). methodB là static method nên luồng chiếm monitor lock của đối tượng Class (SyncDual.class). Vì hai khóa này là hai thực thể hoàn toàn độc lập trong bộ nhớ Heap, hai luồng có thể thực thi methodA và methodB cùng lúc mà không hề bị chặn nhau.",
+    "difficulty": "hard",
+    "tags": [
+      "Monitor-Lock",
+      "Instance-vs-Static-Lock"
+    ]
+  },
+  {
+    "id": "L8_Q19",
+    "lessonId": 8,
+    "title": "Phương thức join() trong đoạn mã sau điều khiển thứ tự thực thi như thế nào?",
+    "code": "public class JoinTest {\n    public static void main(String[] args) throws InterruptedException {\n        Thread t = new Thread(() -> {\n            try { Thread.sleep(100); } catch (Exception e) {}\n            System.out.print(\"ThreadDone \");\n        });\n        t.start();\n        t.join(); // Main thread cho t ket thuc\n        System.out.print(\"MainDone \");\n    }\n}",
+    "options": [
+      "ThreadDone MainDone ",
+      "MainDone ThreadDone ",
+      "In ngẫu nhiên một trong hai thứ tự",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lời gọi t.join() khiến cho luồng hiện tại (luồng main) chuyển sang trạng thái WAITING và tạm dừng thực thi cho tới khi luồng t hoàn thành phương thức run(). Sau khi luồng t in ra 'ThreadDone ' và kết thúc, luồng main mới được đánh thức để in tiếp 'MainDone '. Thứ tự luôn luôn được đảm bảo là: 'ThreadDone MainDone '.",
+    "difficulty": "easy",
+    "tags": [
+      "Thread-Join",
+      "Execution-Order"
+    ]
+  },
+  {
+    "id": "L8_Q20",
+    "lessonId": 8,
+    "title": "Theo Đề thi mẫu UET Câu 17: Điều gì xảy ra nếu chương trình kết thúc hàm main() mà KHÔNG gọi phương thức pool.shutdown() trên ExecutorService?",
+    "code": "public static void main(String[] args) throws Exception {\n    ExecutorService pool = Executors.newFixedThreadPool(2);\n    pool.submit(() -> System.out.println(\"Running...\"));\n    // Khong co pool.shutdown();\n}",
+    "options": [
+      "Tiến trình JVM vẫn tiếp tục chạy ngầm và không thể kết thúc, vì các worker threads trong pool mặc định là Non-Daemon threads",
+      "JVM tự động giải phóng pool và thoát ngay lập tức",
+      "JVM ném ngoại lệ ThreadPoolLeakException khi hàm main return",
+      "Hệ điều hành sẽ tự động gửi tín hiệu kill process sau 5 giây"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 17: JVM chỉ tự động chấm dứt khi tất cả các luồng còn sống đều là Daemon threads. Mặc định, các luồng thợ (worker threads) do Executors.newFixedThreadPool tạo ra là Non-Daemon threads và luôn chờ công việc mới trong hàng đợi. Nếu không gọi pool.shutdown(), các luồng này không bao giờ kết thúc, khiến tiến trình JVM tiếp tục chạy mãi mãi.",
+    "difficulty": "hard",
+    "tags": [
+      "ExecutorService",
+      "Shutdown",
+      "Non-Daemon-Thread",
+      "UET-Exam"
+    ]
+  }
+]

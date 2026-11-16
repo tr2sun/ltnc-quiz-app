@@ -1,0 +1,395 @@
+[
+  {
+    "id": "L6_Q01",
+    "lessonId": 6,
+    "title": "Trong cây phân cấp ngoại lệ của Java, phát biểu nào sau đây phân biệt chính xác giữa Error và Exception?",
+    "code": null,
+    "options": [
+      "Error đại diện cho các sự cố nghiêm trọng của hệ thống/JVM (như OutOfMemoryError, StackOverflowError) mà ứng dụng không nên và thường không thể phục hồi; Exception đại diện cho các điều kiện bất thường mà ứng dụng có thể bắt và xử lý",
+      "Error là ngoại lệ kiểm tra (Checked Exception); Exception là ngoại lệ không kiểm tra (Unchecked Exception)",
+      "Error chỉ xảy ra trong thời gian biên dịch; Exception chỉ xảy ra khi chạy chương trình",
+      "Lớp Exception kế thừa trực tiếp từ Error"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cả Error và Exception đều kế thừa từ Throwable. Error biểu thị các lỗi nghiêm trọng ở cấp độ tài nguyên phần cứng hoặc máy ảo JVM (OutOfMemoryError, StackOverflowError) mà chương trình không có khả năng khắc phục. Exception biểu thị các tình huống lỗi nghiệp vụ hoặc ngoại cảnh mà chương trình có thể bắt (catch) và phục hồi xử lý an toàn.",
+    "difficulty": "easy",
+    "tags": [
+      "Exception-Hierarchy",
+      "Error-vs-Exception"
+    ]
+  },
+  {
+    "id": "L6_Q02",
+    "lessonId": 6,
+    "title": "Ngoại lệ không kiểm tra (Unchecked Exception) trong Java bao gồm những ngoại lệ nào?",
+    "code": null,
+    "options": [
+      "Bao gồm RuntimeException và tất cả các lớp con của nó (như NullPointerException, ArrayIndexOutOfBoundsException), cùng với Error",
+      "Bao gồm tất cả các lớp kế thừa trực tiếp từ Exception trừ RuntimeException",
+      "Chỉ bao gồm IOException và SQLException",
+      "Tất cả các ngoại lệ được khai báo bằng từ khóa throws"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, Unchecked Exception bao gồm lớp java.lang.RuntimeException cùng các lớp con của nó (biểu thị lỗi logic lập trình như chia cho 0, trỏ null, vượt biên mảng) và các lớp Error. Trình biên dịch không bắt buộc lập trình viên phải bắt try-catch hay khai báo throws đối với Unchecked Exceptions.",
+    "difficulty": "medium",
+    "tags": [
+      "Unchecked-Exception",
+      "RuntimeException"
+    ]
+  },
+  {
+    "id": "L6_Q03",
+    "lessonId": 6,
+    "title": "Khối lệnh finally trong cấu trúc try-catch-finally được đảm bảo thực thi trong trường hợp nào?",
+    "code": null,
+    "options": [
+      "Luôn luôn thực thi dù khối try có kết thúc bình thường, ném ngoại lệ, hay có lệnh return; Chỉ bị bỏ qua khi gọi System.exit() hoặc JVM gặp sự cố sập nguồn",
+      "Chỉ thực thi khi có ngoại lệ xảy ra trong khối try",
+      "Chỉ thực thi khi không có bất kỳ lệnh return nào trong khối try hoặc catch",
+      "Không thực thi nếu khối catch đã bắt được ngoại lệ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc JVM: Khối finally luôn được chạy ngay cả khi try/catch chứa lệnh return, break, continue hoặc ném ngoại lệ. Trường hợp duy nhất khối finally không chạy là tiến trình JVM bị chấm dứt đột ngột bằng System.exit(0), bị hệ điều hành kill process, hoặc gặp lỗi phần cứng/mất nguồn.",
+    "difficulty": "medium",
+    "tags": [
+      "Finally-Block",
+      "Execution-Guarantee"
+    ]
+  },
+  {
+    "id": "L6_Q04",
+    "lessonId": 6,
+    "title": "Điều gì xảy ra nếu khối finally chứa một câu lệnh return hoặc ném một ngoại lệ mới?",
+    "code": null,
+    "options": [
+      "Nó sẽ ghi đè và nuốt chửng (swallow/suppress) hoàn toàn bất kỳ giá trị return nào hoặc ngoại lệ nào từng được ném ra trong khối try hoặc catch",
+      "Trình biên dịch báo lỗi cú pháp cấm dùng return trong finally",
+      "Giá trị return trong finally được cộng dồn với giá trị return trong try",
+      "Cả hai ngoại lệ sẽ cùng được ném ra đồng thời tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Một quy tắc rất nguy hiểm trong Java: Nếu khối finally thực thi lệnh return hoặc throw exception, nó sẽ ghi đè và hủy bỏ hoàn toàn trạng thái return hoặc ngoại lệ đang chờ xử lý từ khối try/catch trước đó. Vì lý do này, các quy chuẩn Clean Code (như SonarLint) luôn cấm viết lệnh return trong khối finally.",
+    "difficulty": "hard",
+    "tags": [
+      "Finally-Block",
+      "Return-Override",
+      "Code-Smell"
+    ]
+  },
+  {
+    "id": "L6_Q05",
+    "lessonId": 6,
+    "title": "Cơ chế try-with-resources (giới thiệu từ Java 7) đòi hỏi tài nguyên khai báo phải thỏa mãn điều kiện gì?",
+    "code": null,
+    "options": [
+      "Phải triển khai interface java.lang.AutoCloseable hoặc java.io.Closeable",
+      "Phải là một luồng (Thread) đang chạy",
+      "Bắt buộc phải có từ khóa final ở dòng khai báo",
+      "Phải kế thừa từ lớp trừu tượng java.io.InputStream"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cú pháp try (ResourceType res = new ResourceType()) { ... } yêu cầu đối tượng tài nguyên phải triển khai interface java.lang.AutoCloseable (hoặc Closeable). Khi kết thúc khối try, phương thức close() của tài nguyên sẽ được JVM tự động gọi theo thứ tự ngược lại với thứ tự khai báo.",
+    "difficulty": "easy",
+    "tags": [
+      "Try-with-resources",
+      "AutoCloseable",
+      "Java7"
+    ]
+  },
+  {
+    "id": "L6_Q06",
+    "lessonId": 6,
+    "title": "Quy tắc sắp xếp thứ tự giữa các khối catch liên tiếp trong Java là gì?",
+    "code": null,
+    "options": [
+      "Khối catch ngoại lệ con (cụ thể hơn) bắt buộc phải đứng trước khối catch ngoại lệ cha (tổng quát hơn); Viết ngược lại sẽ bị lỗi biên dịch (unreachable code)",
+      "Khối catch ngoại lệ cha phải đứng trước khối catch ngoại lệ con",
+      "Thứ tự sắp xếp các khối catch là hoàn toàn ngẫu nhiên không ảnh hưởng",
+      "Chỉ được phép có duy nhất một khối catch cho mỗi khối try"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cơ chế bắt ngoại lệ kiểm tra từ trên xuống dưới. Nếu khối catch ngoại lệ tổng quát (như Exception) đứng trước khối catch ngoại lệ con (như IOException), khối catch con sẽ không bao giờ có cơ hội thực thi. Trình biên dịch Java phát hiện điều này và báo lỗi: 'exception IOException has already been caught' (unreachable catch block).",
+    "difficulty": "medium",
+    "tags": [
+      "Catch-Order",
+      "Compile-Error",
+      "Unreachable-Code"
+    ]
+  },
+  {
+    "id": "L6_Q07",
+    "lessonId": 6,
+    "title": "Sự khác biệt căn bản giữa Luồng Byte (Byte Streams) và Luồng Ký tự (Character Streams) trong Java I/O là gì?",
+    "code": null,
+    "options": [
+      "Byte Streams (InputStream/OutputStream) xử lý dữ liệu nhị phân thô theo từng byte 8-bit; Character Streams (Reader/Writer) xử lý văn bản theo từng ký tự Unicode 16-bit và tự động ánh xạ bảng mã (encoding)",
+      "Byte Streams chỉ đọc được file văn bản; Character Streams chỉ đọc được ảnh và video",
+      "Character Streams nhanh hơn Byte Streams gấp 10 lần",
+      "Byte Streams không hỗ trợ cơ chế đệm bộ nhớ (Buffering)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Byte Streams (gốc là InputStream và OutputStream) đọc/ghi dữ liệu nhị phân thô (raw 8-bit bytes), thích hợp cho file ảnh, video, file thực thi. Character Streams (gốc là Reader và Writer) được thiết kế chuyên biệt cho văn bản (Unicode 16-bit characters), tự động chuyển đổi giữa byte và ký tự theo charset mã hóa (như UTF-8).",
+    "difficulty": "easy",
+    "tags": [
+      "Java-IO",
+      "Byte-Stream",
+      "Character-Stream"
+    ]
+  },
+  {
+    "id": "L6_Q08",
+    "lessonId": 6,
+    "title": "Mục đích của việc khai báo hằng số 'private static final long serialVersionUID' trong lớp triển khai java.io.Serializable là gì?",
+    "code": null,
+    "options": [
+      "Kiểm soát phiên bản của lớp trong quá trình tuần tự hóa (Serialization) và giải tuần tự hóa (Deserialization), đảm bảo tính tương thích của đối tượng giữa người gửi và người nhận",
+      "Tăng tốc độ ghi dữ liệu của đối tượng vào đĩa cứng",
+      "Mã hóa bảo mật các trường dữ liệu mật khẩu",
+      "Bắt buộc JVM phải cấp phát dung lượng bộ nhớ cố định cho đối tượng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "serialVersionUID đóng vai trò là mã nhận dạng phiên bản cho lớp Serializable. Khi giải tuần tự hóa, JVM so sánh serialVersionUID trong luồng dữ liệu với serialVersionUID của lớp hiện tại trong máy. Nếu không trùng khớp, JVM ném InvalidClassException. Nếu không khai báo tường minh, JVM tự tính toán hash từ cấu trúc lớp, rất dễ gãy tương thích khi lớp bị sửa đổi nhẹ.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "serialVersionUID",
+      "Versioning"
+    ]
+  },
+  {
+    "id": "L6_Q09",
+    "lessonId": 6,
+    "title": "Từ khóa transient khi áp dụng cho một trường dữ liệu (field) trong Java có ý nghĩa gì?",
+    "code": null,
+    "options": [
+      "Loại trừ trường dữ liệu đó khỏi quá trình tuần tự hóa (Serialization); Khi giải tuần tự hóa, trường này sẽ nhận giá trị mặc định (0, null, false)",
+      "Biến trường đó thành biến chỉ đọc giống như final",
+      "Lưu trường dữ liệu đó vào bộ nhớ vĩnh viễn trên ổ cứng",
+      "Cho phép trường đó được truy cập bởi nhiều luồng mà không cần đồng bộ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ khóa transient thông báo cho cơ chế tuần tự hóa mặc định của Java bỏ qua trường dữ liệu này (thường dùng cho thông tin nhạy cảm như password, hoặc các tài nguyên phụ thuộc môi trường như database connection, thread). Khi deserialize lại, trường transient sẽ nhận giá trị mặc định của kiểu dữ liệu (null cho object, 0 cho số).",
+    "difficulty": "easy",
+    "tags": [
+      "Transient",
+      "Serialization"
+    ]
+  },
+  {
+    "id": "L6_Q10",
+    "lessonId": 6,
+    "title": "Biến tĩnh (static field) có được lưu trữ trong quá trình tuần tự hóa (Serialization) của đối tượng hay không? Vì sao?",
+    "code": null,
+    "options": [
+      "Không được lưu, vì biến static thuộc về phạm vi lớp (Class) chứ không phải là một phần trạng thái của thể hiện đối tượng (Instance State)",
+      "Có được lưu bình thường như các trường instance khác",
+      "Chỉ được lưu nếu biến static đó có từ khóa final",
+      "Làm cho quá trình tuần tự hóa bị ném NotSerializableException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tuần tự hóa đối tượng (Object Serialization) chỉ lưu trữ trạng thái của thể hiện (instance state). Biến static thuộc về lớp (class state) và được chia sẻ giữa mọi đối tượng. Vì vậy cơ chế Serialization mặc định của Java không bao giờ lưu biến static vào luồng ObjectOutputStream.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "Static-Field"
+    ]
+  },
+  {
+    "id": "L6_Q11",
+    "lessonId": 6,
+    "title": "Đoạn mã sau cho kết quả trả về là gì khi thực thi phương thức test()?",
+    "code": "public class FinallyReturn {\n    public static int test() {\n        try {\n            return 10;\n        } finally {\n            return 20;\n        }\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "options": [
+      "20",
+      "10",
+      "30",
+      "Lỗi biên dịch do có hai lệnh return"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi khối try gặp lệnh return 10, JVM lưu tạm giá trị 10 vào vùng nhớ stack nhưng chưa hoàn tất phương thức mà chuyển sang thực thi khối finally. Bên trong finally có lệnh return 20, lệnh này lập tức ghi đè lên giá trị trả về trước đó và kết thúc hàm ngay lập tức. Do đó hàm test() trả về 20.",
+    "difficulty": "medium",
+    "tags": [
+      "Finally-Block",
+      "Return-Value",
+      "JVM-Stack"
+    ]
+  },
+  {
+    "id": "L6_Q12",
+    "lessonId": 6,
+    "title": "Hiện tượng gì xảy ra khi khối finally ném ra một ngoại lệ mới trong đoạn mã sau?",
+    "code": "public class ExceptionMasking {\n    public static void main(String[] args) {\n        try {\n            throw new NullPointerException(\"Loi o Try\");\n        } finally {\n            throw new IllegalArgumentException(\"Loi o Finally\");\n        }\n    }\n}",
+    "options": [
+      "Ném ra IllegalArgumentException (\"Loi o Finally\"), ngoại lệ NullPointerException bị che giấu hoàn toàn",
+      "Ném ra NullPointerException (\"Loi o Try\")",
+      "Cả hai ngoại lệ được in ra màn hình cùng lúc",
+      "Lỗi biên dịch tại khối finally"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi một ngoại lệ được ném ra từ khối try, JVM bắt đầu tìm catch hoặc finally. Khi nhảy vào khối finally, nếu khối finally ném ra một ngoại lệ mới (IllegalArgumentException), ngoại lệ mới này sẽ thay thế và nuốt chửng (mask/suppress) ngoại lệ ban đầu của try. Ngoại lệ NullPointerException bị thất lạc hoàn toàn.",
+    "difficulty": "hard",
+    "tags": [
+      "Exception-Masking",
+      "Finally-Block"
+    ]
+  },
+  {
+    "id": "L6_Q13",
+    "lessonId": 6,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "import java.io.*;\npublic class CatchOrderTest {\n    public static void main(String[] args) {\n        try {\n            FileInputStream fis = new FileInputStream(\"file.txt\");\n        } catch (Exception e) {\n            System.out.println(\"Exception caught\");\n        } catch (FileNotFoundException e) { // Dong nay\n            System.out.println(\"File not found\");\n        }\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: FileNotFoundException đã được bắt bởi khối catch (Exception) ở trước (unreachable catch block)",
+      "Biên dịch thành công và in ra 'File not found'",
+      "Biên dịch thành công và in ra 'Exception caught'",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FileNotFoundException là lớp con của IOException và Exception. Vì khối catch(Exception e) đứng ở phía trên, nó sẽ bắt mọi ngoại lệ con, khiến cho khối catch(FileNotFoundException e) phía dưới không bao giờ có thể tiếp cận được (unreachable code). Trình biên dịch Java phát hiện và báo lỗi biên dịch.",
+    "difficulty": "easy",
+    "tags": [
+      "Catch-Order",
+      "Compile-Error",
+      "Unreachable-Catch"
+    ]
+  },
+  {
+    "id": "L6_Q14",
+    "lessonId": 6,
+    "title": "Thứ tự đóng các tài nguyên khi sử dụng try-with-resources trong đoạn mã sau là gì?",
+    "code": "class Res implements AutoCloseable {\n    String name;\n    Res(String name) { this.name = name; }\n    public void close() { System.out.print(\"Close \" + name + \" \"); }\n}\npublic class TryWithResourcesTest {\n    public static void main(String[] args) {\n        try (Res r1 = new Res(\"R1\"); Res r2 = new Res(\"R2\")) {\n            System.out.print(\"Work \");\n        }\n    }\n}",
+    "options": [
+      "Work Close R2 Close R1 ",
+      "Work Close R1 Close R2 ",
+      "Close R1 Close R2 Work ",
+      "Work Close R1 "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc của try-with-resources: Các tài nguyên AutoCloseable được đóng tự động khi thoát khỏi khối try theo thứ tự NGƯỢC LẠI với thứ tự khai báo (nguyên lý LIFO - Last-In, First-Out, tương tự đóng ngăn xếp). Đầu tiên thân try in 'Work ', sau đó r2 được đóng in 'Close R2 ', rồi r1 được đóng in 'Close R1 '. Kết quả: 'Work Close R2 Close R1 '.",
+    "difficulty": "medium",
+    "tags": [
+      "Try-with-resources",
+      "Closing-Order",
+      "LIFO"
+    ]
+  },
+  {
+    "id": "L6_Q15",
+    "lessonId": 6,
+    "title": "Đoạn mã sau kiểm tra quá trình tuần tự hóa đối tượng chứa trường transient. Kết quả in ra là gì?",
+    "code": "import java.io.*;\nclass User implements Serializable {\n    String username;\n    transient int pin;\n    User(String u, int p) { this.username = u; this.pin = p; }\n}\npublic class SerializeTest {\n    public static void main(String[] args) throws Exception {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        ObjectOutputStream oos = new ObjectOutputStream(baos);\n        oos.writeObject(new User(\"vietanh\", 1234));\n\n        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));\n        User u = (User) ois.readObject();\n        System.out.println(u.username + \" \" + u.pin);\n    }\n}",
+    "options": [
+      "vietanh 0",
+      "vietanh 1234",
+      "null 0",
+      "Ném NotSerializableException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trường 'pin' được đánh dấu là transient nên không được ghi vào luồng ObjectOutputStream trong quá trình tuần tự hóa. Khi giải tuần tự hóa (readObject), đối tượng được tái tạo lại và trường transient nhận giá trị mặc định của kiểu int là 0. Trường username được serialize bình thường nên giữ nguyên 'vietanh'. Kết quả in ra: 'vietanh 0'.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "Transient",
+      "Default-Value"
+    ]
+  },
+  {
+    "id": "L6_Q16",
+    "lessonId": 6,
+    "title": "Đoạn mã sau có khối finally chứa System.out.println. Kết quả in ra màn hình là gì?",
+    "code": "public class ExitTest {\n    public static void main(String[] args) {\n        try {\n            System.out.print(\"A \");\n            System.exit(0);\n        } finally {\n            System.out.print(\"B \");\n        }\n    }\n}",
+    "options": [
+      "A ",
+      "A B ",
+      "B ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lệnh System.exit(0) gửi tín hiệu kết thúc ngay lập tức cho tiến trình máy ảo JVM. Khi JVM bị tắt đột ngột, mọi luồng thực thi bị hủy và khối finally sẽ KHÔNG ĐƯỢC CHẠY. Do đó chương trình chỉ in ra 'A '.",
+    "difficulty": "easy",
+    "tags": [
+      "System-exit",
+      "Finally-Block"
+    ]
+  },
+  {
+    "id": "L6_Q17",
+    "lessonId": 6,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch (tính chất của Multi-catch)?",
+    "code": "import java.io.*;\nimport java.sql.*;\npublic class MultiCatchTest {\n    public static void main(String[] args) {\n        try {\n            if (args.length == 0) throw new IOException();\n            else throw new SQLException();\n        } catch (IOException | SQLException e) {\n            e = new IOException(); // Dong nay\n        }\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Biến ngoại lệ 'e' trong khối multi-catch ngầm định là final, không thể gán lại",
+      "Lỗi biên dịch: Không được phép gộp IOException và SQLException trong cùng một catch",
+      "Biên dịch thành công và gán lại bình thường",
+      "Ném NullPointerException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ Java 7, cú pháp multi-catch (catch (TypeA | TypeB e)) quy định biến tham chiếu ngoại lệ e ngầm định mang thuộc tính final (implicitly final). Do đó, bất kỳ câu lệnh gán lại giá trị cho e bên trong khối catch đều bị trình biên dịch từ chối: 'cannot assign a value to final variable e'.",
+    "difficulty": "hard",
+    "tags": [
+      "Multi-Catch",
+      "Implicitly-Final",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L6_Q18",
+    "lessonId": 6,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class SuperClass {\n    void execute() {}\n}\nclass SubClass extends SuperClass {\n    @Override\n    void execute() throws Exception {} // Dong nay\n}",
+    "options": [
+      "Lỗi biên dịch: Phương thức ghi đè không được khai báo ném ngoại lệ Checked mới nếu phương thức ở lớp cha không khai báo",
+      "Lỗi biên dịch: Lớp SubClass phải là abstract",
+      "Biên dịch thành công vì Exception là ngoại lệ chuẩn của Java",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc ghi đè phương thức: Phương thức ở lớp con không được phép ném ngoại lệ Checked mới (hoặc rộng hơn) so với danh sách ngoại lệ được khai báo ở phương thức lớp cha. Ở đây phương thức execute() của SuperClass không ném ngoại lệ nào, nhưng SubClass lại khai báo throws Exception (Checked Exception), vi phạm quy tắc kế thừa nên báo lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
+      "Overriding",
+      "Throws-Rule",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L6_Q19",
+    "lessonId": 6,
+    "title": "Cơ chế Ngoại lệ bị áp chế (Suppressed Exceptions) trong try-with-resources. Kết quả in ra là gì?",
+    "code": "class FaultyRes implements AutoCloseable {\n    public void close() throws Exception {\n        throw new Exception(\"Close Exception\");\n    }\n}\npublic class SuppressedTest {\n    public static void main(String[] args) {\n        try (FaultyRes r = new FaultyRes()) {\n            throw new Exception(\"Try Exception\");\n        } catch (Exception e) {\n            System.out.println(e.getMessage() + \" | Suppressed: \" + e.getSuppressed().length);\n        }\n    }\n}",
+    "options": [
+      "Try Exception | Suppressed: 1",
+      "Close Exception | Suppressed: 1",
+      "Try Exception | Suppressed: 0",
+      "Close Exception | Suppressed: 0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong try-with-resources, nếu cả thân try và phương thức close() đều ném ngoại lệ, thì ngoại lệ từ thân try ('Try Exception') được ưu tiên ném ra làm ngoại lệ chính. Ngoại lệ phát sinh từ close() ('Close Exception') không bị nuốt chửng như khối finally truyền thống, mà được JVM tự động đính kèm vào danh sách suppressed của ngoại lệ chính. Do đó e.getMessage() là 'Try Exception' và e.getSuppressed().length là 1.",
+    "difficulty": "hard",
+    "tags": [
+      "Try-with-resources",
+      "Suppressed-Exceptions",
+      "Java7"
+    ]
+  },
+  {
+    "id": "L6_Q20",
+    "lessonId": 6,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class CustomCheckedException extends Exception {}\npublic class TestCustom {\n    static void doWork() {\n        throw new CustomCheckedException(); // Dong nay\n    }\n    public static void main(String[] args) {\n        doWork();\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Ngoại lệ Checked CustomCheckedException chưa được bắt bằng try-catch hoặc khai báo trong mệnh đề throws của phương thức doWork()",
+      "Lỗi biên dịch do CustomCheckedException không có constructor nhận String",
+      "Biên dịch thành công và ném lỗi tại runtime",
+      "Lỗi biên dịch tại hàm main do thiếu static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì CustomCheckedException kế thừa trực tiếp từ Exception (mà không phải RuntimeException), nó là một Checked Exception. Bất kỳ phương thức nào ném ra một Checked Exception BẮT BUỘC phải xử lý bằng khối try-catch hoặc khai báo throws ở chữ ký phương thức (ví dụ: static void doWork() throws CustomCheckedException). Do không làm cả hai, trình biên dịch báo lỗi: 'unreported exception CustomCheckedException; must be caught or declared to be thrown'.",
+    "difficulty": "easy",
+    "tags": [
+      "Custom-Exception",
+      "Checked-Exception",
+      "Compile-Error"
+    ]
+  }
+]

@@ -1,0 +1,398 @@
+[
+  {
+    "id": "L9_Q01",
+    "lessonId": 9,
+    "title": "Thứ tự phân cấp từ mức thấp nhất đến mức cao nhất của các cấp độ kiểm thử phần mềm (Testing Levels) là gì?",
+    "code": null,
+    "options": [
+      "Unit Testing (Kiểm thử đơn vị) -> Integration Testing (Tích hợp) -> System Testing (Hệ thống) -> Acceptance Testing (Chấp nhận)",
+      "Acceptance Testing -> System Testing -> Integration Testing -> Unit Testing",
+      "Unit Testing -> System Testing -> Integration Testing -> Regression Testing",
+      "White-box Testing -> Black-box Testing -> Grey-box Testing"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong kỹ thuật công nghệ phần mềm và slide LTNC, 4 cấp độ kiểm thử chuẩn đi từ nhỏ đến lớn: 1) Unit Test: kiểm thử từng hàm/lớp đơn lẻ; 2) Integration Test: kiểm thử sự tương tác giữa các module; 3) System Test: kiểm thử toàn bộ hệ thống hoàn chỉnh; 4) Acceptance Test: kiểm thử sự chấp nhận của người dùng cuối.",
+    "difficulty": "easy",
+    "tags": [
+      "Testing-Levels",
+      "Unit-Testing",
+      "Software-Engineering"
+    ]
+  },
+  {
+    "id": "L9_Q02",
+    "lessonId": 9,
+    "title": "Mục tiêu của kỹ thuật kiểm thử Phân hoạch tương đương (Equivalence Partitioning - EP) là gì?",
+    "code": null,
+    "options": [
+      "Chia miền đầu vào của chương trình thành các lớp tương đương (hợp lệ và không hợp lệ), sao cho chỉ cần chọn 1 ca kiểm thử đại diện từ mỗi lớp là đủ để kiểm tra toàn bộ lớp đó",
+      "Chỉ tập trung kiểm thử các giá trị cực đại và cực tiểu của miền dữ liệu",
+      "Chạy lặp lại ca kiểm thử hàng triệu lần để kiểm tra rò rỉ bộ nhớ",
+      "Tự động sinh mã nguồn thay thế cho lập trình viên"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phân hoạch tương đương (Equivalence Partitioning) là kỹ thuật kiểm thử hộp đen chia miền đầu vào thành các phân hoạch tương đương (valid và invalid partitions). Giả thiết là mọi giá trị trong cùng một lớp phân hoạch đều được hệ thống xử lý tương tự nhau, do đó chỉ cần chọn 1 giá trị đại diện cho mỗi lớp để giảm thiểu số lượng test case mà vẫn đảm bảo độ bao phủ.",
+    "difficulty": "easy",
+    "tags": [
+      "Equivalence-Partitioning",
+      "Black-box-Testing"
+    ]
+  },
+  {
+    "id": "L9_Q03",
+    "lessonId": 9,
+    "title": "Kỹ thuật Phân tích giá trị biên (Boundary Value Analysis - BVA) dựa trên nguyên lý thực nghiệm nào trong kiểm thử phần mềm?",
+    "code": null,
+    "options": [
+      "Lỗi phần mềm thường tập trung xuất hiện với xác suất cao nhất tại các ranh giới/biên của miền dữ liệu đầu vào (như điều kiện so sánh < thay vì <=, lỗi off-by-one)",
+      "Lỗi phần mềm chỉ xuất hiện ở giữa miền dữ liệu",
+      "Giá trị biên luôn làm cho chương trình chạy chậm nhất",
+      "Các giá trị biên luôn gây ra lỗi tràn bộ nhớ StackOverflowError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thực tế kiểm thử phần mềm chỉ ra rằng các lỗi lập trình (đặc biệt là lỗi sai lệch 1 đơn vị - off-by-one, nhầm lẫn giữa < và <=) có xác suất xuất hiện cao nhất tại các ranh giới của các phân hoạch tương đương. Kỹ thuật BVA tập trung chọn các ca kiểm thử: Giá trị cực tiểu (min), ngay trên cực tiểu (min+), giá trị danh định (nom), ngay dưới cực đại (max-), cực đại (max), cùng các giá trị ngoài biên (min-, max+).",
+    "difficulty": "medium",
+    "tags": [
+      "BVA",
+      "Boundary-Value-Analysis",
+      "Testing-Theory"
+    ]
+  },
+  {
+    "id": "L9_Q04",
+    "lessonId": 9,
+    "title": "Trong JUnit 5, phát biểu nào sau đây phân biệt ĐÚNG về hai annotation @BeforeEach và @BeforeAll?",
+    "code": null,
+    "options": [
+      "@BeforeEach thực thi trước MỖI phương thức kiểm thử @Test; @BeforeAll thực thi DUY NHẤT MỘT LẦN trước toàn bộ các test trong class và bắt buộc phải là phương thức static (mặc định)",
+      "@BeforeEach bắt buộc phải là static; @BeforeAll là non-static",
+      "@BeforeAll thực thi sau khi tất cả các test kết thúc",
+      "Cả @BeforeEach và @BeforeAll đều thực thi trước mỗi phương thức test"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong JUnit 5: @BeforeEach chạy trước mỗi phương thức @Test (dùng để khởi tạo lại dữ liệu kiểm thử mới). @BeforeAll chạy một lần duy nhất trước khi bất kỳ phương thức test nào trong class được chạy (thường dùng để mở kết nối database hoặc khởi tạo tài nguyên nặng dùng chung), và mặc định bắt buộc phải khai báo với từ khóa static.",
+    "difficulty": "easy",
+    "tags": [
+      "JUnit5",
+      "Lifecycle-Annotations"
+    ]
+  },
+  {
+    "id": "L9_Q05",
+    "lessonId": 9,
+    "title": "Mùi mã nguồn 'Feature Envy' (Ghen tị tính năng) được định nghĩa như thế nào theo Martin Fowler?",
+    "code": null,
+    "options": [
+      "Một phương thức của lớp A lại quan tâm và truy cập dữ liệu (thông qua getters/fields) của lớp B nhiều hơn chính dữ liệu của lớp A",
+      "Hai lớp có tên gọi và chức năng giống hệt nhau",
+      "Một lớp có quá nhiều tính năng mà không sử dụng hết",
+      "Một phương thức chứa quá nhiều biến cục bộ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Slide bài giảng LTNC về Refactoring định nghĩa Feature Envy: Một phương thức dường như quan tâm đến dữ liệu của một đối tượng khác hơn là đối tượng mà nó đang thuộc về (nó liên tục gọi các getter của lớp khác để tính toán). Cách refactoring chuẩn là dùng Move Method để chuyển phương thức đó sang lớp chứa dữ liệu tương ứng.",
+    "difficulty": "medium",
+    "tags": [
+      "Code-Smells",
+      "Feature-Envy",
+      "Refactoring"
+    ]
+  },
+  {
+    "id": "L9_Q06",
+    "lessonId": 9,
+    "title": "Kỹ thuật tái cấu trúc 'Thay thế điều kiện bằng Đa hình' (Replace Conditional with Polymorphism) nên được áp dụng khi nào?",
+    "code": null,
+    "options": [
+      "Khi có một lệnh switch-case hoặc chuỗi if-else dài thực hiện các hành vi khác nhau dựa trên kiểu của đối tượng hoặc mã loại (type code)",
+      "Khi một phương thức quá ngắn chỉ có một dòng lệnh",
+      "Khi một lớp không có bất kỳ phương thức nào",
+      "Khi cần tăng tốc độ chạy của vòng lặp for"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Slide LTNC chỉ rõ: Khi có các khối lệnh điều kiện phức tạp rẽ nhánh dựa trên kiểu của đối tượng (như switch(employeeType) hoặc if(shape.equals(\"Circle\"))), ta nên tạo các lớp con kế thừa lớp cha chung và chuyển các nhánh điều kiện thành các phương thức ghi đè đa hình. Điều này giúp loại bỏ code smell và tuân thủ OCP.",
+    "difficulty": "medium",
+    "tags": [
+      "Refactoring",
+      "Polymorphism",
+      "Code-Smell"
+    ]
+  },
+  {
+    "id": "L9_Q07",
+    "lessonId": 9,
+    "title": "Thứ tự các pha chuẩn trong Vòng đời Xây dựng (Build Lifecycle) mặc định của Apache Maven là gì?",
+    "code": null,
+    "options": [
+      "validate -> compile -> test -> package -> verify -> install -> deploy",
+      "compile -> test -> validate -> install -> package -> deploy",
+      "test -> compile -> package -> verify -> deploy -> install",
+      "validate -> package -> compile -> test -> deploy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vòng đời Default Lifecycle của Maven tuân theo trình tự nghiêm ngặt: 1) validate (kiểm tra tính hợp lệ của project), 2) compile (biên dịch mã nguồn), 3) test (chạy unit test), 4) package (đóng gói ra JAR/WAR), 5) verify (kiểm tra tính toàn vẹn của gói), 6) install (cài gói vào local repository), 7) deploy (đẩy gói lên remote repository). Khi gọi một pha, Maven tự động chạy toàn bộ các pha trước nó.",
+    "difficulty": "medium",
+    "tags": [
+      "Maven",
+      "Build-Lifecycle",
+      "DevOps"
+    ]
+  },
+  {
+    "id": "L9_Q08",
+    "lessonId": 9,
+    "title": "Phạm vi phụ thuộc (Dependency Scope) là 'test' trong file pom.xml của Maven có ý nghĩa gì?",
+    "code": null,
+    "options": [
+      "Thư viện chỉ có sẵn trong classpath khi biên dịch và chạy các ca kiểm thử ở thư mục src/test/java; Hoàn toàn không có sẵn trong src/main/java và không được đóng gói vào sản phẩm cuối",
+      "Thư viện được đóng gói kèm theo ứng dụng để kiểm thử trên môi trường sản xuất (production)",
+      "Thư viện chỉ dùng cho server container cung cấp sẵn tại runtime",
+      "Thư viện bị bỏ qua khi chạy lệnh mvn test"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Maven: scope 'test' (ví dụ như JUnit, Mockito) chỉ xuất hiện trong classpath của các tác vụ kiểm thử (src/test/java). Mã nguồn ứng dụng chính (src/main/java) không thể import được thư viện này (gây lỗi biên dịch) và gói JAR thành phẩm sẽ không chứa thư viện đó, giúp tối ưu dung lượng.",
+    "difficulty": "easy",
+    "tags": [
+      "Maven",
+      "Dependency-Scope",
+      "pom.xml"
+    ]
+  },
+  {
+    "id": "L9_Q09",
+    "lessonId": 9,
+    "title": "Độ phức tạp lặp (Cyclomatic Complexity - McCabe) đo lường điều gì trong mã nguồn phần mềm?",
+    "code": null,
+    "options": [
+      "Số lượng đường đi độc lập tuyến tính qua mã nguồn (Linear Independent Paths), phản ánh độ phức tạp logic và số ca kiểm thử tối thiểu cần thiết để phủ hết các nhánh",
+      "Số lượng dòng mã (Lines of Code) của toàn bộ project",
+      "Thời gian thực thi trung bình tính bằng mili giây của một hàm",
+      "Số lượng biến toàn cục được khai báo trong chương trình"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cyclomatic Complexity là một chỉ số đo lường định lượng cấu trúc điều khiển của chương trình dựa trên đồ thị dòng điều khiển: M = E - N + 2P (hoặc đơn giản là Số điểm quyết định if, while, for, case + 1). Điểm số này cho biết số ca kiểm thử tối thiểu cần có để bao phủ toàn bộ các nhánh logic của phương thức. Chỉ số > 10 thường bị Checkstyle cảnh báo là nguy cơ lỗi cao.",
+    "difficulty": "medium",
+    "tags": [
+      "Cyclomatic-Complexity",
+      "Checkstyle",
+      "Code-Quality"
+    ]
+  },
+  {
+    "id": "L9_Q10",
+    "lessonId": 9,
+    "title": "Vì sao cơ chế ghi log tham số hóa (Parameterized Logging) trong SLF4J (ví dụ: logger.debug(\"User {}\", name)) lại vượt trội hơn phép nối chuỗi (System.out.println(\"User \" + name))?",
+    "code": null,
+    "options": [
+      "Tránh lãng phí tài nguyên CPU và bộ nhớ để thực hiện nối chuỗi String khi mức log DEBUG đang bị tắt",
+      "Cho phép ghi log ra file nhanh gấp 100 lần",
+      "Tự động mã hóa thông tin người dùng",
+      "Bắt buộc log phải được lưu vào cơ sở dữ liệu"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Slide LTNC về Logging Strategy: Nếu dùng phép cộng chuỗi 'User ' + name, JVM luôn luôn phải cấp phát bộ nhớ StringBuilder để nối chuỗi ngay cả khi mức log DEBUG đang bị tắt trong cấu hình Logback. Với Parameterized logging (logger.debug(\"User {}\", name)), SLF4J chỉ kiểm tra mức log trước; nếu DEBUG tắt, hàm return ngay lập tức mà không tốn chi phí định dạng chuỗi.",
+    "difficulty": "medium",
+    "tags": [
+      "Logging",
+      "SLF4J",
+      "Performance"
+    ]
+  },
+  {
+    "id": "L9_Q11",
+    "lessonId": 9,
+    "title": "Đoạn mã kiểm thử JUnit 5 sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import org.junit.jupiter.api.*;\npublic class LifecycleTest {\n    @BeforeAll\n    void initAll() { // Luu y: khong co tu khoa static\n        System.out.println(\"Init\");\n    }\n    @Test\n    void sampleTest() {\n        Assertions.assertTrue(true);\n    }\n}",
+    "options": [
+      "Báo lỗi JUnitException tại runtime: phương thức @BeforeAll bắt buộc phải là static (khi dùng vòng đời mặc định PER_METHOD)",
+      "Chương trình chạy bình thường và in ra 'Init'",
+      "Lỗi biên dịch tại dòng @BeforeAll",
+      "Bỏ qua phương thức initAll() và chỉ chạy sampleTest()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong JUnit 5, mặc định chế độ vòng đời kiểm thử là PER_METHOD (mỗi test case tạo một thể hiện mới của class test). Do đó phương thức @BeforeAll và @AfterAll bắt buộc phải được khai báo với từ khóa static. Nếu khai báo non-static, JUnit 5 sẽ ném ngoại lệ org.junit.platform.commons.JUnitException: @BeforeAll method must be static unless Lifecycle.PER_CLASS is used.",
+    "difficulty": "hard",
+    "tags": [
+      "JUnit5",
+      "BeforeAll",
+      "Static-Requirement"
+    ]
+  },
+  {
+    "id": "L9_Q12",
+    "lessonId": 9,
+    "title": "Đoạn mã sau sử dụng assertion của JUnit 5 để kiểm tra ngoại lệ. Kết quả là gì?",
+    "code": "import org.junit.jupiter.api.Assertions;\npublic class AssertExceptionTest {\n    static int divide(int a, int b) {\n        return a / b;\n    }\n    public static void main(String[] args) {\n        ArithmeticException ex = Assertions.assertThrows(\n            ArithmeticException.class,\n            () -> divide(10, 0)\n        );\n        System.out.println(ex.getMessage());\n    }\n}",
+    "options": [
+      "/ by zero",
+      "ArithmeticException",
+      "Ném ngoại lệ AssertionFailedError do phép chia thất bại",
+      "Lỗi biên dịch tại lambda expression"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức Assertions.assertThrows mong đợi đoạn code trong lambda ném ra đúng ngoại lệ ArithmeticException. Khi gọi divide(10, 0), JVM ném ArithmeticException: / by zero. assertThrows bắt lấy ngoại lệ này thành công và trả về instance của ngoại lệ đó. Lệnh in ex.getMessage() in ra thông điệp chuẩn của JVM là '/ by zero'.",
+    "difficulty": "medium",
+    "tags": [
+      "JUnit5",
+      "assertThrows",
+      "Exception-Testing"
+    ]
+  },
+  {
+    "id": "L9_Q13",
+    "lessonId": 9,
+    "title": "Theo kỹ thuật Phân tích giá trị biên (BVA) cho quy tắc mượn sách trong Đề thi mẫu UET Bài 3: 'Người dùng được mượn sách nếu borrowedBooks < 5 và dữ liệu hợp lệ khi borrowedBooks >= 0'. Bộ giá trị biên cần kiểm thử cho borrowedBooks là gì?",
+    "code": "// boolean canBorrow(int borrowedBooks, boolean hasOverdue, int membershipLevel)\n// Dieu kien: 0 <= borrowedBooks < 5 (hop le)\n// borrowedBooks < 0: khong hop le",
+    "options": [
+      "-1, 0, 1 (biên dưới) và 4, 5, 6 (biên trên)",
+      "Chỉ cần kiểm tra số 0 và số 5",
+      "Chỉ cần kiểm tra số 1, 2, 3, 4",
+      "-10, 0, 10"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trích Đề thi mẫu UET Bài 3: Miền giá trị cho borrowedBooks có biên dưới là 0 (điểm chia giữa không hợp lệ < 0 và hợp lệ >= 0), các giá trị biên cần xét là: -1 (ngoài biên dưới), 0 (biên dưới), 1 (ngay trên biên dưới). Ranh giới mượn được là < 5 (tức <= 4), các giá trị biên trên cần xét là: 4 (biên trên được mượn), 5 (biên không được mượn), 6 (ngay ngoài biên). Bộ giá trị biên chuẩn là: {-1, 0, 1, 4, 5, 6}.",
+    "difficulty": "medium",
+    "tags": [
+      "BVA",
+      "Boundary-Testing",
+      "UET-Exam"
+    ]
+  },
+  {
+    "id": "L9_Q14",
+    "lessonId": 9,
+    "title": "Phương thức sau đây mắc phải Mùi mã nguồn (Code Smell) nào?",
+    "code": "class OrderReceipt {\n    void printCustomerAddress(Customer customer) {\n        String street = customer.getAddress().getStreet();\n        String city = customer.getAddress().getCity();\n        String zip = customer.getAddress().getZipCode();\n        System.out.println(street + \", \" + city + \" \" + zip);\n    }\n}",
+    "options": [
+      "Feature Envy (Ghen tị tính năng) kết hợp với Inappropriate Intimacy (Thân mật thái quá): phương thức thuộc lớp OrderReceipt nhưng chỉ toàn thao tác truy xuất dữ liệu nội bộ của lớp Customer/Address",
+      "Dead Code: mã nguồn không bao giờ được gọi",
+      "Lazy Class: lớp không thực hiện chức năng gì",
+      "Speculative Generality: khái quát hóa suy đoán"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức printCustomerAddress nằm trong OrderReceipt nhưng không hề dùng bất kỳ trường nào của OrderReceipt, mà liên tục truy cập dữ liệu sâu của Customer và Address (vi phạm cả Luật Demeter - Law of Demeter). Đây là biểu hiện điển hình của Code Smell 'Feature Envy'. Nên chuyển phương thức này sang lớp Address hoặc Customer bằng kỹ thuật Move Method.",
+    "difficulty": "medium",
+    "tags": [
+      "Code-Smells",
+      "Feature-Envy",
+      "Law-of-Demeter"
+    ]
+  },
+  {
+    "id": "L9_Q15",
+    "lessonId": 9,
+    "title": "Đoạn mã sau được tái cấu trúc từ cấu trúc if-else sang kế thừa. Kỹ thuật tái cấu trúc này có tên là gì?",
+    "code": "// Truoc khi refactor: if (type == BIRD) fly(); else if (type == DOG) bark();\n// Sau khi refactor:\nabstract class Animal { abstract void makeSound(); }\nclass Dog extends Animal { void makeSound() { System.out.println(\"Gau\"); } }\nclass Bird extends Animal { void makeSound() { System.out.println(\"Hot\"); } }",
+    "options": [
+      "Replace Conditional with Polymorphism (Thay thế câu lệnh điều kiện bằng Đa hình)",
+      "Extract Method (Trích xuất phương thức)",
+      "Inline Class (Nội suy lớp)",
+      "Pull Up Field (Kéo thuộc tính lên lớp cha)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đây là mẫu tái cấu trúc kinh điển 'Replace Conditional with Polymorphism' (Martin Fowler). Các nhánh rẽ if-else hoặc switch-case kiểm tra cờ loại đối tượng được thay thế bằng các lớp con đa hình kế thừa từ lớp cha chung, cho phép hệ thống mở rộng loài vật mới mà không cần chỉnh sửa code cũ.",
+    "difficulty": "easy",
+    "tags": [
+      "Refactoring",
+      "Replace-Conditional-with-Polymorphism"
+    ]
+  },
+  {
+    "id": "L9_Q16",
+    "lessonId": 9,
+    "title": "Khi một lập trình viên thực hiện câu lệnh 'mvn test' trong một dự án Apache Maven, những pha (phases) nào sẽ được tự động thực thi?",
+    "code": "// Console terminal:\n// $ mvn test",
+    "options": [
+      "Các pha validate, compile, và test sẽ lần lượt được thực thi theo thứ tự",
+      "Chỉ duy nhất pha test được thực thi",
+      "Tất cả các pha bao gồm cả package, install và deploy",
+      "Pha compile và deploy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc Maven Lifecycle: Khi bạn gọi một pha cụ thể (như test), Maven sẽ tự động chạy tuần tự TẤT CẢ các pha đứng trước nó trong cùng một build lifecycle trước khi chạy pha đó. Trong default lifecycle, validate và compile đứng trước test, do đó Maven sẽ validate project -> compile mã nguồn -> rồi mới chạy test.",
+    "difficulty": "medium",
+    "tags": [
+      "Maven",
+      "Build-Phases",
+      "Automation"
+    ]
+  },
+  {
+    "id": "L9_Q17",
+    "lessonId": 9,
+    "title": "Đoạn mã sau nằm trong tệp 'src/main/java/App.java'. Điều gì xảy ra khi dự án có thư viện JUnit khai báo với scope là 'test' trong pom.xml?",
+    "code": "// Tep: src/main/java/App.java\nimport org.junit.jupiter.api.Assertions; // Dong nay\n\npublic class App {\n    public static void main(String[] args) {\n        Assertions.assertEquals(1, 1);\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Package org.junit.jupiter.api does not exist, vì dependency có scope 'test' không xuất hiện trong classpath của src/main/java",
+      "Biên dịch thành công và chạy bình thường",
+      "Biên dịch được nhưng ném NoClassDefFoundError khi chạy",
+      "Maven tự động đổi scope thành compile"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong cấu trúc chuẩn của Maven, thư viện có scope 'test' chỉ được đưa vào classpath khi biên dịch thư mục kiểm thử 'src/test/java'. Thư mục mã nguồn chính 'src/main/java' hoàn toàn không nhìn thấy các thư viện test scope, do đó việc import org.junit.* trong src/main/java sẽ bị trình biên dịch javac báo lỗi: 'package org.junit.jupiter.api does not exist'.",
+    "difficulty": "hard",
+    "tags": [
+      "Maven",
+      "Dependency-Scope",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L9_Q18",
+    "lessonId": 9,
+    "title": "Tính Độ phức tạp lặp (Cyclomatic Complexity) của phương thức sau:",
+    "code": "public int process(int a, int b) {\n    int result = 0;\n    if (a > 0) { // Diem quyet dinh 1\n        result += a;\n    }\n    if (b > 0) { // Diem quyet dinh 2\n        result += b;\n    }\n    for (int i = 0; i < a; i++) { // Diem quyet dinh 3\n        result++;\n    }\n    return result;\n}",
+    "options": [
+      "4",
+      "3",
+      "2",
+      "5"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Công thức tính Cyclomatic Complexity nhanh: M = Số điểm quyết định (Decision Points: if, while, for, case, &&, ||) + 1. Trong hàm có: 1 câu lệnh if (a > 0), 1 câu lệnh if (b > 0), 1 vòng lặp for (i < a). Tổng cộng có 3 điểm quyết định. Độ phức tạp Cyclomatic = 3 + 1 = 4.",
+    "difficulty": "medium",
+    "tags": [
+      "Cyclomatic-Complexity",
+      "Code-Metrics"
+    ]
+  },
+  {
+    "id": "L9_Q19",
+    "lessonId": 9,
+    "title": "Bẫy chi phí đánh giá tham số trong SLF4J! Phương thức nặng tính toán sau có được thực thi hay không khi mức log DEBUG bị tắt?",
+    "code": "public class LoggingTrap {\n    static String getExpensiveDetails() {\n        System.out.print(\"Expensive \");\n        return \"detail_info\";\n    }\n    public static void main(String[] args) {\n        // Gia su muc log cua logger dang la INFO (DEBUG bi tat)\n        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(LoggingTrap.class);\n        logger.debug(\"Data: {}\", getExpensiveDetails());\n    }\n}",
+    "options": [
+      "Có được thực thi và in ra 'Expensive ', vì theo ngữ nghĩa ngôn ngữ Java, đối số getExpensiveDetails() bắt buộc phải được tính toán trước khi truyền vào phương thức",
+      "Không được thực thi vì SLF4J tự động bỏ qua",
+      "Lỗi biên dịch do truyền hàm vào log",
+      "Chỉ thực thi nếu dùng System.out.println"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Một cạm bẫy hiệu năng rất tinh tế: Trong Java, trước khi một phương thức được gọi, tất cả các biểu thức đối số của nó BẮT BUỘC phải được tính toán giá trị (eager evaluation). Lệnh getExpensiveDetails() sẽ chạy và in ra 'Expensive ' trước khi được truyền vào hàm debug. Dù sau đó logger.debug thấy mức DEBUG bị tắt và không ghi log ra file, chi phí tính toán của getExpensiveDetails() đã bị lãng phí. Cách khắc phục chuẩn là kiểm tra 'if (logger.isDebugEnabled())' hoặc dùng Supplier trong Java 8.",
+    "difficulty": "hard",
+    "tags": [
+      "SLF4J",
+      "Eager-Evaluation",
+      "Performance-Trap"
+    ]
+  },
+  {
+    "id": "L9_Q20",
+    "lessonId": 9,
+    "title": "Trong tệp cấu hình CI/CD GitHub Actions (.github/workflows/maven.yml), bước nào sau đây BẮT BUỘC phải thực hiện trước khi chạy lệnh biên dịch 'mvn package'?",
+    "code": "name: Java CI with Maven\non: [push, pull_request]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n    # Buoc can thiet nhat o day la gi?\n    - name: Build with Maven\n      run: mvn clean package",
+    "options": [
+      "Sử dụng action 'actions/checkout@v4' để clone mã nguồn của repository về máy ảo runner",
+      "Cài đặt trình duyệt Google Chrome",
+      "Cấu hình tài khoản Docker Hub",
+      "Chạy lệnh git push origin master"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong GitHub Actions, máy ảo runner (ubuntu-latest) khi mới khởi tạo là một môi trường sạch hoàn toàn chưa có mã nguồn dự án. Nếu không có bước '- uses: actions/checkout@v4', runner sẽ không có bất kỳ tệp tin nào (không có pom.xml, không có src/), dẫn tới lệnh 'mvn clean package' lập tức báo lỗi: 'The goal you specified requires a project to execute but there is no POM in this directory'.",
+    "difficulty": "medium",
+    "tags": [
+      "GitHub-Actions",
+      "CI-CD",
+      "DevOps"
+    ]
+  }
+]

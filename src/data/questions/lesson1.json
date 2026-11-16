@@ -1,0 +1,390 @@
+[
+  {
+    "id": "L1_Q01",
+    "lessonId": 1,
+    "title": "Biến cục bộ (local variable) và đối tượng (object instance) trong Java được lưu trữ ở các phân vùng bộ nhớ nào của JVM?",
+    "code": null,
+    "options": [
+      "Biến cục bộ nằm trên Stack của luồng, đối tượng thực sự luôn nằm trên Heap",
+      "Cả biến cục bộ và đối tượng đều nằm hoàn toàn trên Heap",
+      "Cả biến cục bộ và đối tượng đều nằm hoàn toàn trên Stack",
+      "Biến cục bộ nằm trong Metaspace, đối tượng nằm trên Stack"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong kiến trúc bộ nhớ JVM, mỗi luồng có một ngăn xếp Stack riêng. Các biến cục bộ (cả kiểu nguyên thủy và biến tham chiếu) được lưu trong Stack Frame của phương thức đang thực thi. Trong khi đó, các đối tượng thực sự luôn được cấp phát động trên vùng nhớ dùng chung Heap.",
+    "difficulty": "easy",
+    "tags": [
+      "JVM",
+      "Stack-Heap",
+      "Memory"
+    ]
+  },
+  {
+    "id": "L1_Q02",
+    "lessonId": 1,
+    "title": "Bộ thu gom rác (Garbage Collector - GC) trong JVM xác định một đối tượng đủ điều kiện giải phóng bộ nhớ dựa trên nguyên lý nào?",
+    "code": null,
+    "options": [
+      "Đối tượng không còn khả năng tiếp cận (unreachable) từ bất kỳ GC Root nào",
+      "Đối tượng không được gọi phương thức nào trong vòng 10 giây",
+      "Biến tham chiếu đầu tiên tạo ra đối tượng bị gán bằng null",
+      "Lập trình viên bắt buộc phải giải phóng thủ công bằng hàm free() hoặc delete()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JVM sử dụng thuật toán phân tích khả năng tiếp cận (Reachability Analysis). GC Roots bao gồm các biến cục bộ trên Stack, biến static trong Metaspace, và tham chiếu JNI. Khi không còn đường đi tham chiếu hợp lệ nào từ bất kỳ GC Root nào tới đối tượng (unreachable), đối tượng đó đủ điều kiện để GC thu hồi bộ nhớ.",
+    "difficulty": "medium",
+    "tags": [
+      "JVM",
+      "Garbage-Collector",
+      "Reachability"
+    ]
+  },
+  {
+    "id": "L1_Q03",
+    "lessonId": 1,
+    "title": "Phát biểu nào sau đây là ĐÚNG về phương thức System.gc() trong Java?",
+    "code": null,
+    "options": [
+      "Chỉ là lời gợi ý (hint) gửi tới JVM, không đảm bảo GC sẽ được thực thi ngay lập tức",
+      "Bắt buộc JVM phải dừng toàn bộ ứng dụng và dọn sạch bộ nhớ Heap ngay lập tức",
+      "Giải phóng toàn bộ các biến tĩnh (static) và nạp lại class loader",
+      "Là phương thức private nên không thể gọi từ bên ngoài thư viện java.lang"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức System.gc() hoặc Runtime.getRuntime().gc() chỉ gửi tín hiệu gợi ý tới máy ảo JVM rằng hệ thống muốn thu gom rác. JVM có toàn quyền quyết định thời điểm và thuật toán thu gom rác tối ưu, không có gì đảm bảo GC sẽ chạy ngay tức khắc.",
+    "difficulty": "easy",
+    "tags": [
+      "JVM",
+      "Garbage-Collector"
+    ]
+  },
+  {
+    "id": "L1_Q04",
+    "lessonId": 1,
+    "title": "Mức truy cập mặc định (default / package-private) khi không khai báo từ khóa đặc tả truy cập có phạm vi như thế nào?",
+    "code": null,
+    "options": [
+      "Chỉ các lớp nằm trong cùng một package mới có thể truy cập",
+      "Tất cả các lớp trong toàn bộ project đều có thể truy cập",
+      "Chỉ các lớp con kế thừa mới có thể truy cập, kể cả ở package khác",
+      "Chỉ duy nhất bên trong nội bộ lớp khai báo mới truy cập được"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mức truy cập default (package-private) trong Java giới hạn quyền truy cập chỉ cho các class nằm trong cùng package. Các lớp ở ngoài package, dù có kế thừa lớp này, cũng không thể truy cập các thành phần default.",
+    "difficulty": "easy",
+    "tags": [
+      "Access-Modifiers",
+      "Package"
+    ]
+  },
+  {
+    "id": "L1_Q05",
+    "lessonId": 1,
+    "title": "Một lớp ở mức ngoài cùng (Top-level class) trong Java được phép khai báo với những mức truy cập nào?",
+    "code": null,
+    "options": [
+      "Chỉ có thể là public hoặc default (package-private)",
+      "Có thể là public, protected, private hoặc default",
+      "Bắt buộc phải là public",
+      "Có thể là protected hoặc default, nhưng không được là public"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp ở mức cao nhất (top-level class, không nằm lồng trong lớp khác) trong tệp Java chỉ được phép có 2 mức truy cập: public hoặc default. Khai báo private hoặc protected ở top-level sẽ gây lỗi biên dịch: 'modifier private/protected not allowed here'.",
+    "difficulty": "medium",
+    "tags": [
+      "Access-Modifiers",
+      "Class-Structure"
+    ]
+  },
+  {
+    "id": "L1_Q06",
+    "lessonId": 1,
+    "title": "Khi khai báo một biến tham chiếu đối tượng với từ khóa final (ví dụ: final List<String> list = new ArrayList<>()), điều đó có ý nghĩa gì?",
+    "code": null,
+    "options": [
+      "Biến list không thể trỏ sang đối tượng khác, nhưng nội dung đối tượng ArrayList vẫn có thể thêm/bớt phần tử",
+      "Đối tượng ArrayList bị đóng băng bất biến hoàn toàn, không thể thêm hoặc xóa phần tử",
+      "Các phần tử trong danh sách tự động chuyển thành hằng số",
+      "Phương thức clear() của list sẽ gây lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ khóa final trên biến tham chiếu chỉ cố định địa chỉ tham chiếu (không thể gán list = new ArrayList<>() khác). Trạng thái nội tại (internal state) của đối tượng mà nó trỏ tới vẫn có thể thay đổi bình thường trừ khi lớp đó được thiết kế immutable.",
+    "difficulty": "medium",
+    "tags": [
+      "Final",
+      "Reference",
+      "Immutability"
+    ]
+  },
+  {
+    "id": "L1_Q07",
+    "lessonId": 1,
+    "title": "Cơ chế truyền tham số vào phương thức trong Java tuân theo nguyên lý nào?",
+    "code": null,
+    "options": [
+      "Hoàn toàn là truyền theo giá trị (Pass-by-value) cho mọi kiểu dữ liệu",
+      "Truyền theo giá trị cho kiểu nguyên thủy, truyền theo tham chiếu cho kiểu đối tượng",
+      "Hoàn toàn là truyền theo tham chiếu (Pass-by-reference)",
+      "Truyền tham chiếu nếu đối tượng có kiểu mutable, truyền giá trị nếu immutable"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Java 100% là Pass-by-value. Khi truyền một đối tượng vào phương thức, giá trị của biến tham chiếu (chính là địa chỉ bộ nhớ trỏ tới đối tượng) được sao chép và truyền vào. Việc gán lại biến tham số bên trong phương thức không làm thay đổi biến tham chiếu ban đầu ở nơi gọi.",
+    "difficulty": "hard",
+    "tags": [
+      "Pass-by-value",
+      "JVM-Internals"
+    ]
+  },
+  {
+    "id": "L1_Q08",
+    "lessonId": 1,
+    "title": "Phương thức khởi tạo mặc định (default no-arg constructor) được trình biên dịch Java tự động sinh ra khi nào?",
+    "code": null,
+    "options": [
+      "Khi và chỉ khi lớp không định nghĩa bất kỳ constructor nào",
+      "Luôn luôn được sinh ra trong mọi lớp dù có constructor khác hay không",
+      "Khi lớp có ít nhất một constructor có tham số",
+      "Khi lớp kế thừa trực tiếp từ lớp Object"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình biên dịch Java chỉ tự động cung cấp default no-arg constructor khi trong mã nguồn lớp hoàn toàn không khai báo bất kỳ constructor nào. Nếu đã khai báo ít nhất một constructor (dù có hay không có tham số), trình biên dịch sẽ không tự động sinh constructor mặc định nữa.",
+    "difficulty": "easy",
+    "tags": [
+      "Constructor",
+      "Compiler"
+    ]
+  },
+  {
+    "id": "L1_Q09",
+    "lessonId": 1,
+    "title": "Vùng nhớ Metaspace (từ Java 8 thay thế cho PermGen) trong JVM được cấp phát ở đâu và lưu trữ dữ liệu gì?",
+    "code": null,
+    "options": [
+      "Được cấp phát từ bộ nhớ gốc của hệ điều hành (Native Memory), lưu Class Metadata, Bytecode và Constant Pool",
+      "Nằm trong Heap, lưu trữ toàn bộ các chuỗi ký tự String",
+      "Nằm trong Stack, lưu trữ biến cục bộ của phương thức tĩnh",
+      "Nằm trong CPU Cache L1, lưu trữ mã máy sau khi JIT biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ Java 8, PermGen bị loại bỏ và thay bằng Metaspace. Metaspace sử dụng trực tiếp Native Memory của hệ điều hành (không bị giới hạn bởi dung lượng Heap cố định) để lưu trữ Class metadata, Constant pool, Method tables và Bytecode của các lớp đã nạp.",
+    "difficulty": "hard",
+    "tags": [
+      "JVM",
+      "Metaspace",
+      "Memory"
+    ]
+  },
+  {
+    "id": "L1_Q10",
+    "lessonId": 1,
+    "title": "Hiện tượng gì xảy ra khi hai constructor trong cùng một lớp gọi vòng tròn lẫn nhau thông qua từ khóa this()?",
+    "code": null,
+    "options": [
+      "Lỗi biên dịch (Compile-time error): recursive constructor invocation",
+      "Biên dịch thành công nhưng ném ngoại lệ StackOverflowError khi chạy",
+      "Chương trình chạy lặp vô tận làm treo máy",
+      "Biên dịch thành công và JVM tự động ngắt chu trình đệ quy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình biên dịch Java kiểm tra tĩnh luồng gọi constructor và sẽ báo lỗi biên dịch ngay lập tức: 'recursive constructor invocation' nếu phát hiện chu trình gọi đệ quy giữa các constructor qua this().",
+    "difficulty": "medium",
+    "tags": [
+      "Constructor",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L1_Q11",
+    "lessonId": 1,
+    "title": "Đoạn mã sau cho kết quả in ra màn hình là gì?",
+    "code": "class Counter {\n    static int count = 0;\n    int id = 0;\n    Counter() {\n        count++;\n        id++;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Counter c1 = new Counter();\n        Counter c2 = new Counter();\n        System.out.println(c1.count + \" \" + c1.id + \" \" + c2.count + \" \" + c2.id);\n    }\n}",
+    "options": [
+      "2 1 2 1",
+      "1 1 2 2",
+      "2 2 2 2",
+      "1 1 1 1"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biến static 'count' thuộc về phạm vi class và được chia sẻ giữa mọi instance. Khi c1 khởi tạo count=1, khi c2 khởi tạo count=2 (c1.count và c2.count đều trỏ vào biến static này). Biến 'id' là instance variable độc lập cho mỗi đối tượng, nên c1.id=1 và c2.id=1. Kết quả in ra là: 2 1 2 1.",
+    "difficulty": "medium",
+    "tags": [
+      "Static",
+      "Instance-Variable"
+    ]
+  },
+  {
+    "id": "L1_Q12",
+    "lessonId": 1,
+    "title": "Đoạn mã sau cho kết quả in ra là gì?",
+    "code": "public class StringTest {\n    public static void main(String[] args) {\n        String s1 = \"UET\";\n        String s2 = \"UET\";\n        String s3 = new String(\"UET\");\n        String s4 = s3.intern();\n        System.out.println((s1 == s2) + \" \" + (s1 == s3) + \" \" + (s1 == s4));\n    }\n}",
+    "options": [
+      "true false true",
+      "true true true",
+      "false false true",
+      "true false false"
+    ],
+    "correctAnswer": 0,
+    "explanation": "s1 và s2 là chuỗi hằng số (literal) nên cùng trỏ tới một đối tượng duy nhất trong String Constant Pool -> s1 == s2 là true. s3 được tạo bằng toán tử new nên tạo một đối tượng mới độc lập trên Heap -> s1 == s3 là false. Lệnh s3.intern() tìm và trả về tham chiếu từ String Pool (chính là s1) -> s1 == s4 là true.",
+    "difficulty": "medium",
+    "tags": [
+      "String-Pool",
+      "Intern",
+      "Equality"
+    ]
+  },
+  {
+    "id": "L1_Q13",
+    "lessonId": 1,
+    "title": "Kết quả in ra màn hình của đoạn mã sau là gì?",
+    "code": "public class PassTest {\n    static void update(int x, StringBuilder sb) {\n        x = 99;\n        sb.append(\" World\");\n        sb = new StringBuilder(\"New Object\");\n    }\n    public static void main(String[] args) {\n        int a = 10;\n        StringBuilder b = new StringBuilder(\"Hello\");\n        update(a, b);\n        System.out.println(a + \" | \" + b.toString());\n    }\n}",
+    "options": [
+      "10 | Hello World",
+      "99 | Hello World",
+      "10 | New Object",
+      "99 | New Object"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Java truyền tham số theo giá trị. Biến nguyên thủy a được sao chép giá trị nên sau hàm update giá trị vẫn là 10. Biến tham chiếu b truyền bản sao địa chỉ: lệnh sb.append(\" World\") làm thay đổi nội dung đối tượng gốc trên Heap thành \"Hello World\". Lệnh sb = new StringBuilder(\"New Object\") chỉ làm biến cục bộ sb trỏ sang đối tượng mới, không ảnh hưởng tới biến b ở hàm main.",
+    "difficulty": "hard",
+    "tags": [
+      "Pass-by-value",
+      "StringBuilder"
+    ]
+  },
+  {
+    "id": "L1_Q14",
+    "lessonId": 1,
+    "title": "Thứ tự in ra màn hình của đoạn mã sau khi khởi chạy là gì?",
+    "code": "class Sample {\n    static {\n        System.out.print(\"S1 \");\n    }\n    {\n        System.out.print(\"I1 \");\n    }\n    Sample() {\n        System.out.print(\"C1 \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        System.out.print(\"M \");\n        new Sample();\n        new Sample();\n    }\n}",
+    "options": [
+      "M S1 I1 C1 I1 C1 ",
+      "S1 M I1 C1 I1 C1 ",
+      "M I1 C1 S1 I1 C1 ",
+      "S1 I1 C1 M I1 C1 "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Main được nạp đầu tiên và chạy phương thức main(), in ra 'M '. Khi gặp lệnh new Sample() lần đầu, lớp Sample được nạp vào JVM: static block chạy một lần duy nhất in 'S1 '. Tiếp đó instance block in 'I1 ' rồi constructor in 'C1 '. Ở lần new Sample() thứ hai, static block không chạy lại, chỉ có instance block và constructor chạy in 'I1 C1 '. Tổng cộng: 'M S1 I1 C1 I1 C1 '.",
+    "difficulty": "hard",
+    "tags": [
+      "Init-Order",
+      "Static-Block",
+      "Instance-Block"
+    ]
+  },
+  {
+    "id": "L1_Q15",
+    "lessonId": 1,
+    "title": "Đoạn mã sau in ra kết quả gì (cơ chế Integer Cache)?",
+    "code": "public class CacheTest {\n    public static void main(String[] args) {\n        Integer a = 127;\n        Integer b = 127;\n        Integer c = 128;\n        Integer d = 128;\n        System.out.println((a == b) + \" \" + (c == d));\n    }\n}",
+    "options": [
+      "true false",
+      "true true",
+      "false false",
+      "false true"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi gán int cho Integer, Java tự động gọi Integer.valueOf(). Lớp Integer duy trì bộ nhớ đệm IntegerCache cho các giá trị từ -128 đến 127. Vì 127 nằm trong cache nên a và b trỏ tới cùng một instance -> a == b là true. Với 128 vượt quá 127, JVM tạo hai đối tượng Integer riêng biệt trên Heap -> c == d là false.",
+    "difficulty": "medium",
+    "tags": [
+      "Autoboxing",
+      "IntegerCache",
+      "Equality"
+    ]
+  },
+  {
+    "id": "L1_Q16",
+    "lessonId": 1,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "class Entity {\n    final int id;\n    Entity() {\n        // khong gan gia tri cho id\n    }\n    Entity(int id) {\n        this.id = id;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Entity e = new Entity(5);\n    }\n}",
+    "options": [
+      "Lỗi biên dịch tại constructor Entity(): biến final 'id' chưa được khởi tạo",
+      "Biên dịch thành công và biến id tự động nhận giá trị mặc định 0",
+      "Lỗi biên dịch tại hàm main khi gọi new Entity(5)",
+      "Chương trình chạy bình thường và ném NullPointerException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biến blank final (khai báo final nhưng không khởi tạo ngay tại dòng khai báo) bắt buộc phải được gán giá trị chính xác một lần trong TẤT CẢ các constructor của lớp (trừ khi gọi constructor khác qua this()). Vì constructor Entity() không gán giá trị cho id, trình biên dịch sẽ báo lỗi: 'variable id might not have been initialized'.",
+    "difficulty": "medium",
+    "tags": [
+      "Final",
+      "Blank-Final",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L1_Q17",
+    "lessonId": 1,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Student {\n    String name;\n    int age;\n    Student(String name) {\n        System.out.println(\"Khoi tao sinh vien: \" + name);\n        this(name, 18); // loi tai dong nay\n    }\n    Student(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Lời gọi this(...) phải là câu lệnh đầu tiên trong phương thức khởi tạo",
+      "Lỗi biên dịch: Không được phép nạp chồng constructor có số lượng tham số khác nhau",
+      "Lỗi biên dịch: Biến age chưa được khởi tạo",
+      "Biên dịch thành công nhưng xảy ra vòng lặp vô tận"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc ngữ pháp của Java (JLS): Lời gọi constructor khác trong cùng lớp bằng this(...) hoặc gọi constructor lớp cha bằng super(...) BẮT BUỘC phải là câu lệnh đầu tiên trong thân constructor. Do có lệnh System.out.println đứng trước this(...) nên trình biên dịch báo lỗi: 'call to this must be first statement in constructor'.",
+    "difficulty": "easy",
+    "tags": [
+      "Constructor-Chaining",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L1_Q18",
+    "lessonId": 1,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "class Calculator {\n    int scale = 10;\n    public static int compute(int val) {\n        return val * scale;\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Phương thức static không thể truy cập trực tiếp trường non-static 'scale'",
+      "Biên dịch thành công và biến scale được coi là static ngầm định",
+      "Lỗi biên dịch do từ khóa static không thể áp dụng cho hàm trả về int",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức static thuộc về phạm vi lớp và có thể được gọi mà không cần bất kỳ đối tượng nào (không có con trỏ 'this'). Do đó nó không thể truy cập trực tiếp các trường dữ liệu non-static (instance fields) của lớp. Lỗi biên dịch: 'non-static variable scale cannot be referenced from a static context'.",
+    "difficulty": "easy",
+    "tags": [
+      "Static",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L1_Q19",
+    "lessonId": 1,
+    "title": "Sau khi thực hiện xong hàm main, có bao nhiêu đối tượng Node bị thu hồi bởi Garbage Collector?",
+    "code": "class Node {\n    int val;\n    Node(int val) { this.val = val; }\n}\npublic class GCTest {\n    public static void main(String[] args) {\n        Node n1 = new Node(1); // Obj 1\n        Node n2 = new Node(2); // Obj 2\n        Node n3 = new Node(3); // Obj 3\n        n1 = n2;\n        n2 = n3;\n        n3 = null;\n        // Tai diem nay co bao nhieu doi tuong du dieu kien cho GC?\n    }\n}",
+    "options": [
+      "1 đối tượng (Obj 1)",
+      "2 đối tượng (Obj 1 và Obj 3)",
+      "3 đối tượng",
+      "0 đối tượng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phân tích tham chiếu: Ban đầu có 3 đối tượng riêng biệt. Khi n1 = n2: n1 trỏ sang Obj 2. Lúc này Obj 1 không còn bất kỳ biến nào trỏ tới -> Obj 1 trở thành unreachable (đủ điều kiện cho GC). Khi n2 = n3: n2 trỏ sang Obj 3. Khi n3 = null: n3 không trỏ Obj 3 nữa nhưng n2 vẫn đang trỏ tới Obj 3 -> Obj 3 vẫn sống. Biến n1 vẫn trỏ Obj 2 -> Obj 2 vẫn sống. Vậy chỉ có duy nhất 1 đối tượng là Obj 1 đủ điều kiện cho GC thu hồi.",
+    "difficulty": "hard",
+    "tags": [
+      "GC-Reachability",
+      "Memory-Analysis"
+    ]
+  },
+  {
+    "id": "L1_Q20",
+    "lessonId": 1,
+    "title": "Đoạn mã sau minh họa cơ chế copy constructor nông (shallow copy). Kết quả in ra là gì?",
+    "code": "class Battery {\n    int capacity;\n    Battery(int cap) { this.capacity = cap; }\n}\nclass Phone {\n    Battery bat;\n    Phone(Battery bat) { this.bat = bat; }\n    Phone(Phone p) { this.bat = p.bat; } // Shallow copy\n}\npublic class Main {\n    public static void main(String[] args) {\n        Phone p1 = new Phone(new Battery(3000));\n        Phone p2 = new Phone(p1);\n        p2.bat.capacity = 4500;\n        System.out.println(p1.bat.capacity + \" \" + p2.bat.capacity);\n    }\n}",
+    "options": [
+      "4500 4500",
+      "3000 4500",
+      "3000 3000",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Copy constructor của Phone chỉ sao chép biến tham chiếu bat (this.bat = p.bat). Cả p1 và p2 cùng trỏ chung vào một đối tượng Battery duy nhất trên Heap. Khi thay đổi dung lượng qua p2.bat.capacity = 4500, đối tượng dùng chung bị biến đổi, nên p1.bat.capacity cũng mang giá trị 4500.",
+    "difficulty": "medium",
+    "tags": [
+      "Copy-Constructor",
+      "Shallow-Copy"
+    ]
+  }
+]

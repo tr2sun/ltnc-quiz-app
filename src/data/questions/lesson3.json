@@ -1,0 +1,399 @@
+[
+  {
+    "id": "L3_Q01",
+    "lessonId": 3,
+    "title": "Điểm khác biệt căn bản nhất về mặt lưu trữ trạng thái (state) giữa Abstract Class và Interface trong Java là gì?",
+    "code": null,
+    "options": [
+      "Abstract Class có thể chứa các biến thực thể (instance fields) có trạng thái thay đổi; Interface chỉ có thể chứa hằng số (public static final)",
+      "Interface có thể chứa biến thực thể private, Abstract Class thì không",
+      "Abstract Class không thể có constructor; Interface có constructor mặc định",
+      "Interface cho phép kế thừa đơn, Abstract Class cho phép đa kế thừa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khác biệt cốt lõi: Abstract Class đại diện cho bản chất đối tượng ('is-a') và có thể lưu giữ trạng thái riêng thông qua các biến thực thể non-static, non-final, đồng thời có constructor để khởi tạo trạng thái đó. Ngược lại, Interface đại diện cho hợp đồng hành vi ('can-do'), mọi thuộc tính khai báo trong interface đều ngầm định là hằng số public static final, không có constructor và không lưu trạng thái đối tượng.",
+    "difficulty": "medium",
+    "tags": [
+      "Abstract-Class",
+      "Interface",
+      "OOP-Design"
+    ]
+  },
+  {
+    "id": "L3_Q02",
+    "lessonId": 3,
+    "title": "Mẫu thiết kế Template Method (Phương thức khuôn mẫu) thường được cài đặt bằng Abstract Class như thế nào?",
+    "code": null,
+    "options": [
+      "Lớp cha định nghĩa khung sườn thuật toán trong một phương thức cụ thể (thường là final), và ủy quyền các bước chi tiết cho các phương thức trừu tượng (abstract methods) để lớp con cài đặt",
+      "Lớp con ghi đè toàn bộ phương thức khung sườn của lớp cha",
+      "Tất cả các phương thức trong Abstract Class đều bắt buộc phải là abstract",
+      "Sử dụng interface để thay thế hoàn toàn thuật toán tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Template Method pattern định nghĩa khung sườn của một thuật toán trong một phương thức (thường đánh dấu là final để ngăn lớp con phá vỡ cấu trúc thuật toán). Các bước cụ thể trong thuật toán được khai báo là abstract methods hoặc hook methods để các lớp con tự do triển khai theo nghiệp vụ riêng.",
+    "difficulty": "medium",
+    "tags": [
+      "Template-Method",
+      "Design-Patterns",
+      "Abstract-Class"
+    ]
+  },
+  {
+    "id": "L3_Q03",
+    "lessonId": 3,
+    "title": "Mọi trường dữ liệu (fields) khai báo bên trong một Interface trong Java có đặc tính ngầm định nào?",
+    "code": null,
+    "options": [
+      "Luôn luôn là public static final",
+      "Mặc định là private final",
+      "Mặc định là protected static",
+      "Là biến thực thể bình thường có thể sửa đổi bởi lớp triển khai"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo đặc tả JLS, bất kỳ biến nào khai báo trong interface, dù bạn không ghi modifier nào, đều ngầm định (implicitly) có ba từ khóa: public static final (tức là hằng số dùng chung mức interface).",
+    "difficulty": "easy",
+    "tags": [
+      "Interface",
+      "Modifiers",
+      "Constants"
+    ]
+  },
+  {
+    "id": "L3_Q04",
+    "lessonId": 3,
+    "title": "Từ Java 8, phương thức mặc định (default method) trong Interface được giới thiệu nhằm mục đích chủ yếu nào?",
+    "code": null,
+    "options": [
+      "Cho phép bổ sung phương thức mới vào interface mà không làm hỏng tính tương thích ngược (backward compatibility) của các lớp đã triển khai trước đó",
+      "Thay thế hoàn toàn Abstract Class trong mọi tình huống thiết kế",
+      "Cho phép interface lưu trữ biến thực thể động",
+      "Cho phép phương thức trong interface chạy nhanh hơn gấp 2 lần"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mục đích lớn nhất của default method trong Java 8 là 'Interface Evolution' và tương thích ngược (Backward Compatibility). Nhờ có default method, các kỹ sư Java có thể bổ sung các phương thức như forEach(), stream(), removeIf() vào Collection interface mà không làm lỗi hàng triệu lớp của người dùng đang triển khai Collection từ Java 7 trở về trước.",
+    "difficulty": "medium",
+    "tags": [
+      "Interface",
+      "Default-Method",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L3_Q05",
+    "lessonId": 3,
+    "title": "Phát biểu nào sau đây là ĐÚNG về phương thức static trong Interface (từ Java 8)?",
+    "code": null,
+    "options": [
+      "Thuộc về phạm vi của chính interface đó, chỉ có thể được gọi qua TênInterface.tênPhươngThức() và không được kế thừa bởi lớp triển khai",
+      "Được kế thừa bình thường và có thể gọi qua tên lớp con hoặc đối tượng lớp con",
+      "Có thể bị ghi đè (override) bởi các lớp triển khai interface",
+      "Không được phép có phần thân mã lệnh (body)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Static method trong interface thuộc về namespace của interface. Nó KHÔNG được kế thừa bởi các lớp triển khai interface đó. Bạn bắt buộc phải gọi bằng cú pháp: InterfaceName.staticMethod(). Gọi qua instance hoặc tên lớp con sẽ gây lỗi biên dịch.",
+    "difficulty": "hard",
+    "tags": [
+      "Interface",
+      "Static-Method",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L3_Q06",
+    "lessonId": 3,
+    "title": "Quy tắc giải quyết xung đột khi một lớp triển khai 2 interface cùng định nghĩa một default method có cùng chữ ký (Diamond Problem) là gì?",
+    "code": null,
+    "options": [
+      "Trình biên dịch báo lỗi và bắt buộc lớp đó phải ghi đè (override) phương thức để giải quyết mập mờ tường minh",
+      "JVM tự động chọn interface được khai báo đầu tiên trong mệnh đề implements",
+      "JVM tự động chọn ngẫu nhiên một trong hai phương thức khi chạy",
+      "Chương trình tự động ghép nối phần thân của cả hai phương thức lại với nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi xảy ra xung đột default method (hai interface có cùng method signature và không có quan hệ kế thừa lẫn nhau), trình biên dịch Java sẽ báo lỗi 'inherits unrelated defaults'. Lập trình viên bắt buộc phải ghi đè phương thức đó trong lớp triển khai, và có thể tùy ý chọn gọi implementation của interface nào bằng cú pháp InterfaceA.super.methodName().",
+    "difficulty": "hard",
+    "tags": [
+      "Diamond-Problem",
+      "Default-Method",
+      "Interface"
+    ]
+  },
+  {
+    "id": "L3_Q07",
+    "lessonId": 3,
+    "title": "Nguyên tắc 'Lớp luôn chiến thắng' (Class Wins Rule) trong Java 8 giải quyết xung đột phương thức như thế nào?",
+    "code": null,
+    "options": [
+      "Phương thức được cài đặt trong lớp cha (superclass) luôn được ưu tiên áp dụng và ghi đè hoàn toàn default method của interface",
+      "Default method của interface luôn ghi đè phương thức của lớp cha",
+      "Trình biên dịch báo lỗi bắt buộc lớp con phải tự viết lại",
+      "Phương thức nào ngắn hơn sẽ được JVM ưu tiên chọn"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo quy tắc 'Classes win' của JLS: Nếu một lớp vừa kế thừa một phương thức cụ thể từ lớp cha (hoặc lớp ông bà), vừa implements một interface có default method cùng chữ ký, thì cài đặt ở lớp cha LUÔN ĐƯỢC CHỌN và default method của interface sẽ bị bỏ qua hoàn toàn.",
+    "difficulty": "medium",
+    "tags": [
+      "Class-Wins",
+      "Default-Method",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L3_Q08",
+    "lessonId": 3,
+    "title": "Giao diện hàm (Functional Interface) được định nghĩa là interface thỏa mãn điều kiện nào sau đây?",
+    "code": null,
+    "options": [
+      "Chứa duy nhất một phương thức trừu tượng (Single Abstract Method - SAM), có thể có thêm default hoặc static methods",
+      "Không được phép chứa bất kỳ phương thức nào có phần thân",
+      "Bắt buộc phải có đúng một phương thức duy nhất (kể cả default và static)",
+      "Bắt buộc phải khai báo annotation @FunctionalInterface nếu không sẽ bị lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Functional Interface là interface chứa CHÍNH XÁC một phương thức trừu tượng (Single Abstract Method - SAM). Nó có thể có tùy ý số lượng default methods hoặc static methods. Annotation @FunctionalInterface là tùy chọn (optional) giúp trình biên dịch kiểm tra tính hợp lệ của SAM.",
+    "difficulty": "easy",
+    "tags": [
+      "Functional-Interface",
+      "SAM",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L3_Q09",
+    "lessonId": 3,
+    "title": "Vì sao một Abstract Class KHÔNG THỂ khởi tạo đối tượng trực tiếp bằng toán tử new nhưng VẪN ĐƯỢC PHÉP có constructor?",
+    "code": null,
+    "options": [
+      "Constructor của abstract class dùng để khởi tạo các thuộc tính của chính nó khi lớp con được khởi tạo thông qua lệnh super(...)",
+      "Constructor đó chỉ dùng cho reflection của JVM chứ không chạy khi có kế thừa",
+      "Đó là lỗi cú pháp tồn tại từ phiên bản Java cũ",
+      "Constructor của abstract class chỉ dùng để tạo các đối tượng tĩnh (static)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Abstract Class đại diện cho lớp cha chưa hoàn chỉnh nên không thể tạo instance trực tiếp bằng new. Tuy nhiên nó vẫn có trạng thái riêng (các trường dữ liệu). Constructor của Abstract Class được tạo ra để các lớp con gọi tới thông qua super(...) nhằm khởi tạo phần trạng thái kế thừa đó.",
+    "difficulty": "medium",
+    "tags": [
+      "Abstract-Class",
+      "Constructor",
+      "OOP-Concept"
+    ]
+  },
+  {
+    "id": "L3_Q10",
+    "lessonId": 3,
+    "title": "Mối quan hệ kế thừa giữa các Interface trong Java tuân theo quy tắc nào?",
+    "code": null,
+    "options": [
+      "Một interface có thể kế thừa (extends) cùng lúc nhiều interface khác",
+      "Một interface chỉ có thể kế thừa (extends) duy nhất một interface khác",
+      "Một interface có thể implements các interface khác",
+      "Interface không được phép kế thừa từ bất kỳ interface nào"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, trong khi Class chỉ được phép đơn kế thừa từ một Class khác (single inheritance), thì Interface ĐƯỢC PHÉP đa kế thừa từ nhiều interface khác bằng cú pháp: interface C extends A, B. Interface không dùng từ khóa implements.",
+    "difficulty": "easy",
+    "tags": [
+      "Interface",
+      "Multiple-Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q11",
+    "lessonId": 3,
+    "title": "Đoạn mã sau giải quyết xung đột default method như thế nào? Kết quả in ra là gì?",
+    "code": "interface Alpha {\n    default void hello() { System.out.print(\"Alpha \"); }\n}\ninterface Beta {\n    default void hello() { System.out.print(\"Beta \"); }\n}\nclass Combined implements Alpha, Beta {\n    public void hello() {\n        Alpha.super.hello();\n        System.out.print(\"Combined \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Combined().hello();\n    }\n}",
+    "options": [
+      "Alpha Combined ",
+      "Beta Combined ",
+      "Lỗi biên dịch tại lớp Combined",
+      "Combined "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Combined implements cả Alpha và Beta có cùng default method hello(). Lớp Combined đã override lại hello() một cách hợp lệ để xóa bỏ xung đột, đồng thời gọi đích danh Alpha.super.hello() để tái sử dụng mã của interface Alpha. Kết quả in ra: 'Alpha Combined '.",
+    "difficulty": "medium",
+    "tags": [
+      "Diamond-Problem",
+      "Default-Method",
+      "Super-Call"
+    ]
+  },
+  {
+    "id": "L3_Q12",
+    "lessonId": 3,
+    "title": "Áp dụng quy tắc 'Class Wins'. Kết quả in ra màn hình của đoạn mã sau là gì?",
+    "code": "interface Greeting {\n    default void greet() { System.out.print(\"Interface Greet \"); }\n}\nclass Base {\n    public void greet() { System.out.print(\"Base Greet \"); }\n}\nclass Sub extends Base implements Greeting {}\npublic class Main {\n    public static void main(String[] args) {\n        Greeting g = new Sub();\n        g.greet();\n    }\n}",
+    "options": [
+      "Base Greet ",
+      "Interface Greet ",
+      "Lỗi biên dịch do xung đột phương thức greet()",
+      "Ném ngoại lệ AbstractMethodError"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo quy tắc 'Class Wins' của Java 8: cài đặt của phương thức trong lớp cha (Base.greet()) luôn được ưu tiên hơn so với default method của interface (Greeting.greet()). Do đó khi gọi g.greet(), phương thức của lớp Base được thực thi -> in ra 'Base Greet '.",
+    "difficulty": "medium",
+    "tags": [
+      "Class-Wins",
+      "Default-Method",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L3_Q13",
+    "lessonId": 3,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch hoặc thực thi?",
+    "code": "interface Printable {\n    static void print() { System.out.println(\"Printable Static\"); }\n}\nclass Doc implements Printable {}\npublic class Main {\n    public static void main(String[] args) {\n        Doc.print(); // Dong nay\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: static method của interface không thể gọi thông qua lớp triển khai Doc",
+      "In ra 'Printable Static'",
+      "Ném NullPointerException tại runtime",
+      "In ra 'Doc'"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Static method trong interface không được kế thừa bởi các class cài đặt nó. Vì vậy, gọi Doc.print() hoặc new Doc().print() đều gây lỗi biên dịch: 'cannot find symbol method print()'. Muốn gọi static method này, bắt buộc phải dùng tên interface: Printable.print().",
+    "difficulty": "hard",
+    "tags": [
+      "Interface",
+      "Static-Method",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q14",
+    "lessonId": 3,
+    "title": "Đoạn mã sau có lỗi gì khi biên dịch?",
+    "code": "interface Config {\n    int TIMEOUT = 5000;\n}\npublic class Main {\n    public static void main(String[] args) {\n        Config.TIMEOUT += 1000;\n        System.out.println(Config.TIMEOUT);\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Không thể gán lại giá trị cho biến final TIMEOUT",
+      "Lỗi biên dịch: Không thể truy cập trực tiếp biến TIMEOUT qua tên interface",
+      "Biên dịch thành công và in ra 6000",
+      "Ném IllegalAccessException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mọi thuộc tính khai báo trong interface ngầm định là 'public static final'. Do TIMEOUT là hằng số final, lệnh gán Config.TIMEOUT += 1000 cố gắng thay đổi giá trị của nó sẽ bị trình biên dịch từ chối: 'cannot assign a value to final variable TIMEOUT'.",
+    "difficulty": "easy",
+    "tags": [
+      "Interface",
+      "Final-Field",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q15",
+    "lessonId": 3,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "interface Worker {\n    void work();\n}\nclass Developer implements Worker {\n    void work() { // Dong nay\n        System.out.println(\"Coding...\");\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Phương thức work() trong Developer cố tình thu hẹp quyền truy cập từ public xuống default (package-private)",
+      "Lỗi biên dịch: Thiếu annotation @Override",
+      "Lỗi biên dịch: Developer phải khai báo là abstract",
+      "Biên dịch thành công và in ra bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mọi phương thức trừu tượng trong interface ngầm định có quyền truy cập là public. Khi lớp Developer triển khai phương thức work() mà không ghi rõ từ khóa public, phương thức đó sẽ có quyền mặc định (package-private). Điều này vi phạm quy tắc: không được thu hẹp quyền truy cập của phương thức ghi đè. Trình biên dịch báo lỗi: 'attempting to assign weaker access privileges; was public'.",
+    "difficulty": "medium",
+    "tags": [
+      "Interface",
+      "Access-Modifiers",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q16",
+    "lessonId": 3,
+    "title": "Đoạn mã sau minh họa constructor của Abstract Class. Kết quả in ra là gì?",
+    "code": "abstract class Shape {\n    String color;\n    Shape(String color) {\n        this.color = color;\n        System.out.print(\"Shape:\" + color + \" \");\n    }\n}\nclass Circle extends Shape {\n    Circle(String color) {\n        super(color);\n        System.out.print(\"Circle \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Circle(\"Red\");\n    }\n}",
+    "options": [
+      "Shape:Red Circle ",
+      "Circle Shape:Red ",
+      "Circle ",
+      "Lỗi biên dịch: Abstract Class không được phép có constructor"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Abstract Class hoàn toàn có thể có constructor. Khi new Circle(\"Red\") được gọi, nó gọi super(color) lên constructor của Shape. Constructor Shape chạy in ra 'Shape:Red ', sau đó constructor Circle chạy tiếp in ra 'Circle '. Tổng cộng: 'Shape:Red Circle '.",
+    "difficulty": "easy",
+    "tags": [
+      "Abstract-Class",
+      "Constructor",
+      "Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q17",
+    "lessonId": 3,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "@FunctionalInterface\ninterface Transformer {\n    int transform(int x);\n    int reverse(int x);\n}",
+    "options": [
+      "Lỗi biên dịch: Transformer không phải là một Functional Interface hợp lệ vì chứa nhiều hơn 1 phương thức trừu tượng",
+      "Biên dịch thành công vì cả 2 phương thức đều có kiểu trả về là int",
+      "Biên dịch thành công nếu có ít nhất 1 default method",
+      "Cảnh báo của trình biên dịch nhưng vẫn chạy được"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc: Một Functional Interface chỉ được phép có DUY NHẤT một phương thức trừu tượng (Single Abstract Method - SAM). Ở đây Transformer chứa 2 abstract methods (transform và reverse). Annotation @FunctionalInterface yêu cầu trình biên dịch xác thực, nên trình biên dịch sẽ báo lỗi: 'Unexpected @FunctionalInterface annotation; Transformer is not a functional interface (multiple non-overriding abstract methods)'.",
+    "difficulty": "easy",
+    "tags": [
+      "Functional-Interface",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q18",
+    "lessonId": 3,
+    "title": "Đoạn mã sau kiểm tra việc khởi tạo Anonymous Inner Class từ một Abstract Class. Kết quả in ra là gì?",
+    "code": "abstract class Greeter {\n    abstract void sayHi();\n    void sayBye() { System.out.print(\"Bye \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Greeter g = new Greeter() {\n            void sayHi() { System.out.print(\"Hi \"); }\n        };\n        g.sayHi();\n        g.sayBye();\n    }\n}",
+    "options": [
+      "Hi Bye ",
+      "Hi ",
+      "Lỗi biên dịch: Không thể new một Abstract Class",
+      "Ném InstantiationException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cú pháp new Greeter() { ... } không phải là khởi tạo trực tiếp Abstract Class, mà là định nghĩa và khởi tạo một lớp nội danh (Anonymous Inner Class) kế thừa từ Greeter và ghi đè phương thức sayHi(). Do đó chương trình biên dịch và chạy hoàn toàn hợp lệ, in ra 'Hi Bye '.",
+    "difficulty": "medium",
+    "tags": [
+      "Anonymous-Class",
+      "Abstract-Class"
+    ]
+  },
+  {
+    "id": "L3_Q19",
+    "lessonId": 3,
+    "title": "Đoạn mã sau triển khai Template Method Pattern. Kết quả in ra là gì?",
+    "code": "abstract class Beverage {\n    final void prepareRecipe() {\n        boilWater();\n        brew();\n        pourInCup();\n    }\n    void boilWater() { System.out.print(\"Boil \"); }\n    void pourInCup() { System.out.print(\"Pour \"); }\n    abstract void brew();\n}\nclass Tea extends Beverage {\n    void brew() { System.out.print(\"SteepTea \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Beverage b = new Tea();\n        b.prepareRecipe();\n    }\n}",
+    "options": [
+      "Boil SteepTea Pour ",
+      "SteepTea Boil Pour ",
+      "Boil Pour SteepTea ",
+      "Lỗi biên dịch do brew() là abstract"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mẫu Template Method: Phương thức prepareRecipe() định nghĩa khung sườn 3 bước: boilWater() in 'Boil ', brew() gọi phương thức override của Tea in 'SteepTea ', pourInCup() in 'Pour '. Kết quả là 'Boil SteepTea Pour '.",
+    "difficulty": "easy",
+    "tags": [
+      "Template-Method",
+      "Design-Patterns",
+      "Abstract-Class"
+    ]
+  },
+  {
+    "id": "L3_Q20",
+    "lessonId": 3,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "abstract class Device {\n    int code;\n    Device(int code) { this.code = code; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Device d = new Device(101); // Dong nay\n        System.out.println(d.code);\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Device là một abstract class nên không thể khởi tạo trực tiếp bằng toán tử new",
+      "Biên dịch thành công và in ra 101",
+      "Ném ngoại lệ InstantiationError tại runtime",
+      "Biên dịch thành công nhưng ném NullPointerException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Abstract Class đại diện cho một khái niệm trừu tượng chưa hoàn chỉnh. Theo quy tắc cốt lõi của Java, bạn không bao giờ có thể tạo instance trực tiếp từ một abstract class bằng toán tử new Device(...). Muốn sử dụng, bắt buộc phải có một lớp con cụ thể (concrete subclass) kế thừa và khởi tạo lớp con đó. Trình biên dịch báo lỗi: 'Device is abstract; cannot be instantiated'.",
+    "difficulty": "easy",
+    "tags": [
+      "Abstract-Class",
+      "Instantiation-Error",
+      "Compile-Error"
+    ]
+  }
+]

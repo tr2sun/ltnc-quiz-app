@@ -1,0 +1,400 @@
+[
+  {
+    "id": "L4_Q01",
+    "lessonId": 4,
+    "title": "Mục tiêu quan trọng nhất của việc giới thiệu Generics (Lập trình tổng quát) trong Java 5 là gì?",
+    "code": null,
+    "options": [
+      "Đảm bảo an toàn kiểu (Type Safety) tại thời điểm biên dịch và loại bỏ các thao tác ép kiểu tường minh, ngăn ngừa ClassCastException tại runtime",
+      "Tăng tốc độ thực thi của chương trình lên gấp nhiều lần nhờ tối ưu mã máy",
+      "Cho phép một lớp có thể kế thừa từ nhiều lớp khác nhau",
+      "Tự động chuyển đổi các kiểu dữ liệu nguyên thủy sang đối tượng mà không tốn bộ nhớ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trước Java 5, các Collection chỉ lưu trữ Object, đòi hỏi phải ép kiểu thủ công khi lấy ra và tiềm ẩn rủi ro ClassCastException khi chạy. Generics giúp phát hiện sai lệch kiểu dữ liệu ngay tại thời điểm biên dịch (Compile-time Type Safety) và loại bỏ hoàn toàn nhu cầu ép kiểu thủ công.",
+    "difficulty": "easy",
+    "tags": [
+      "Generics",
+      "Type-Safety",
+      "Compile-Time"
+    ]
+  },
+  {
+    "id": "L4_Q02",
+    "lessonId": 4,
+    "title": "Cơ chế 'Xóa kiểu' (Type Erasure) trong Java Generics hoạt động như thế nào?",
+    "code": null,
+    "options": [
+      "Trình biên dịch kiểm tra tính an toàn kiểu tại compile-time, sau đó xóa bỏ toàn bộ thông tin tham số kiểu và thay thế bằng kiểu biên (bound) hoặc Object trong bytecode",
+      "JVM lưu trữ toàn bộ các tham số kiểu generic vào siêu dữ liệu và kiểm tra kiểu tại mỗi câu lệnh thực thi",
+      "Mỗi kiểu generic cụ thể (ví dụ List<Integer>, List<String>) sẽ được JVM biên dịch thành một file .class riêng biệt",
+      "Kiểu dữ liệu generic chỉ bị xóa khi bộ nhớ Heap bị quá tải"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Java triển khai Generics thông qua cơ chế Type Erasure để đảm bảo tính tương thích ngược với các phiên bản Java cũ. Trình biên dịch kiểm tra an toàn kiểu ở compile-time, sau đó xóa các tham số kiểu (thay bằng Object hoặc bound type như Number) và tự động chèn các lệnh ép kiểu bytecode phù hợp. Do đó tại runtime, JVM không lưu thông tin kiểu cụ thể của Collection.",
+    "difficulty": "hard",
+    "tags": [
+      "Type-Erasure",
+      "JVM-Internals",
+      "Bytecode"
+    ]
+  },
+  {
+    "id": "L4_Q03",
+    "lessonId": 4,
+    "title": "Tính chất 'Bất biến kiểu' (Invariance) trong Generics của Java được thể hiện qua phát biểu nào sau đây?",
+    "code": null,
+    "options": [
+      "Mặc dù Integer là lớp con của Number, nhưng List<Integer> KHÔNG PHẢI là kiểu con của List<Number>",
+      "List<Integer> là kiểu con của List<Number> nên có thể gán tự do",
+      "Một khi danh sách Generic đã tạo thì không thể thay đổi kích thước",
+      "Các phương thức trong lớp Generic đều bắt buộc phải là final"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java Generics, các kiểu tham số hóa có tính chất Invariant (bất biến). Nếu A là con của B, GenericType<A> KHÔNG CÓ quan hệ kế thừa với GenericType<B>. Điều này nhằm ngăn ngừa lỗi type safety (nếu List<Integer> là con của List<Number>, ta có thể thêm một số thực Double vào List<Number> đó, làm hỏng List<Integer> ban đầu).",
+    "difficulty": "medium",
+    "tags": [
+      "Generics",
+      "Invariance",
+      "Type-Safety"
+    ]
+  },
+  {
+    "id": "L4_Q04",
+    "lessonId": 4,
+    "title": "Nguyên tắc PECS (Producer Extends, Consumer Super) của Joshua Bloch hướng dẫn sử dụng Wildcard như thế nào?",
+    "code": null,
+    "options": [
+      "Dùng '? extends T' khi bộ sưu tập đóng vai trò cung cấp/đọc dữ liệu (Producer); Dùng '? super T' khi bộ sưu tập đóng vai trò tiêu thụ/ghi dữ liệu (Consumer)",
+      "Dùng '? extends T' khi muốn ghi thêm phần tử mới; Dùng '? super T' khi chỉ muốn đọc phần tử ra",
+      "Dùng '? extends T' cho kiểu nguyên thủy; Dùng '? super T' cho kiểu đối tượng",
+      "Dùng '? extends T' cho phương thức static; Dùng '? super T' cho phương thức instance"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc kinh điển PECS: 1) Producer Extends: Khi bạn chỉ cần đọc dữ liệu kiểu T ra khỏi cấu trúc dữ liệu (cấu trúc sản xuất dữ liệu cho bạn), hãy dùng <? extends T>. 2) Consumer Super: Khi bạn cần thêm/ghi dữ liệu kiểu T vào cấu trúc dữ liệu (cấu trúc tiêu thụ dữ liệu từ bạn), hãy dùng <? super T>.",
+    "difficulty": "hard",
+    "tags": [
+      "PECS",
+      "Wildcard",
+      "Effective-Java"
+    ]
+  },
+  {
+    "id": "L4_Q05",
+    "lessonId": 4,
+    "title": "Đặc điểm của ký tự đại diện giới hạn trên (Upper Bounded Wildcard) '<? extends Number>' là gì?",
+    "code": null,
+    "options": [
+      "Có thể đọc các phần tử ra với kiểu Number an toàn, nhưng KHÔNG THỂ thêm bất kỳ phần tử nào vào (ngoại trừ giá trị null)",
+      "Có thể thêm bất kỳ đối tượng nào là con của Number vào danh sách",
+      "Có thể thêm kiểu Integer nhưng không thể thêm kiểu Double",
+      "Không thể đọc cũng không thể thêm phần tử"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Với List<? extends Number>, danh sách thực tế có thể là List<Integer>, List<Double>, v.v. Vì trình biên dịch không thể biết chắc chắn kiểu con cụ thể nào tại runtime, nó ngăn cấm mọi thao tác ghi (add) bất kỳ đối tượng nào (kể cả Integer hay Double) để đảm bảo type safety. Thao tác ghi duy nhất được phép là null.",
+    "difficulty": "hard",
+    "tags": [
+      "Wildcard",
+      "Upper-Bounded",
+      "Read-Only"
+    ]
+  },
+  {
+    "id": "L4_Q06",
+    "lessonId": 4,
+    "title": "Đặc điểm của ký tự đại diện giới hạn dưới (Lower Bounded Wildcard) '<? super Integer>' là gì?",
+    "code": null,
+    "options": [
+      "Có thể thêm an toàn các phần tử kiểu Integer (hoặc lớp con của Integer) vào danh sách; Khi đọc ra chỉ đảm bảo kiểu Object",
+      "Chỉ có thể đọc các phần tử ra với kiểu Integer an toàn",
+      "Không thể thêm phần tử nào vào danh sách",
+      "Có thể thêm bất kỳ đối tượng Number nào vào danh sách"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Với List<? super Integer>, danh sách thực tế có thể là List<Integer>, List<Number>, hoặc List<Object>. Do đó ta luôn có thể thêm đối tượng kiểu Integer (hoặc con của Integer) vào an toàn. Tuy nhiên khi đọc phần tử ra, kiểu chung an toàn duy nhất mà trình biên dịch biết chắc chắn là Object.",
+    "difficulty": "hard",
+    "tags": [
+      "Wildcard",
+      "Lower-Bounded",
+      "Consumer-Super"
+    ]
+  },
+  {
+    "id": "L4_Q07",
+    "lessonId": 4,
+    "title": "Cú pháp khai báo nhiều ràng buộc (Multiple Bounds) cho tham số kiểu Generic '<T extends A & B>' phải tuân theo quy tắc nào?",
+    "code": null,
+    "options": [
+      "Nếu trong các ràng buộc có một lớp (class), lớp đó BẮT BUỘC phải đứng ở vị trí đầu tiên, theo sau là các interface",
+      "Có thể chứa tối đa hai class và một interface",
+      "Các interface phải đứng trước, class đứng ở cuối cùng",
+      "Chỉ được phép chứa các interface, không được chứa class"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc JLS: Trong cú pháp multiple bounds <T extends Type1 & Type2 & Type3>, nếu có một class thì class đó bắt buộc phải đứng đầu tiên (Type1). Vì Java là đơn kế thừa class nên chỉ được có tối đa 1 class bound, các ràng buộc tiếp theo bắt buộc phải là interface.",
+    "difficulty": "medium",
+    "tags": [
+      "Multiple-Bounds",
+      "Generics-Syntax"
+    ]
+  },
+  {
+    "id": "L4_Q08",
+    "lessonId": 4,
+    "title": "Vì sao các kiểu dữ liệu nguyên thủy (primitive types như int, double) KHÔNG THỂ dùng làm đối số kiểu trong Generics (ví dụ: List<int> là bất hợp lệ)?",
+    "code": null,
+    "options": [
+      "Do cơ chế Type Erasure xóa kiểu về Object; các kiểu nguyên thủy không kế thừa từ java.lang.Object nên không thể tương thích",
+      "Do kiểu nguyên thủy tốn nhiều bộ nhớ hơn kiểu đối tượng",
+      "Do kiểu nguyên thủy không thể truyền qua mạng Internet",
+      "Do trình biên dịch Java không hỗ trợ toán tử số học cho Generics"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, Type Erasure thay thế các type parameters bằng kiểu Object (hoặc bound của nó). Mọi tham chiếu kiểu đối tượng đều kế thừa từ java.lang.Object. Kiểu nguyên thủy (int, boolean, double) là các giá trị thô lưu trực tiếp trên stack chứ không phải con trỏ đối tượng kế thừa Object, do đó không thể gán cho biến kiểu Object.",
+    "difficulty": "medium",
+    "tags": [
+      "Primitive-Types",
+      "Type-Erasure",
+      "Wrapper-Class"
+    ]
+  },
+  {
+    "id": "L4_Q09",
+    "lessonId": 4,
+    "title": "Hạn chế nào sau đây là hệ quả trực tiếp của cơ chế xóa kiểu (Type Erasure) trong Java?",
+    "code": null,
+    "options": [
+      "Không thể khởi tạo trực tiếp thể hiện của tham số kiểu 'new T()' hoặc mảng generic 'new T[10]'",
+      "Không thể sử dụng câu lệnh if-else bên trong lớp generic",
+      "Không thể định nghĩa phương thức trả về kiểu generic",
+      "Lớp generic không thể chứa các thuộc tính private"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì tham số kiểu T bị xóa tại runtime (chỉ còn là Object), JVM không biết kiểu thực tế của T để cấp phát bộ nhớ chính xác. Do đó cú pháp new T() và new T[10] bị cấm hoàn toàn tại compile-time trong Java.",
+    "difficulty": "hard",
+    "tags": [
+      "Type-Erasure",
+      "Generic-Array",
+      "Limitations"
+    ]
+  },
+  {
+    "id": "L4_Q10",
+    "lessonId": 4,
+    "title": "Phát biểu nào sau đây là ĐÚNG về phương thức tĩnh generic (Generic Static Method)?",
+    "code": null,
+    "options": [
+      "Phương thức tĩnh không thể sử dụng tham số kiểu của lớp (Class-level type parameter), mà phải tự khai báo tham số kiểu riêng trước kiểu trả về",
+      "Phương thức tĩnh tự động kế thừa tham số kiểu của lớp khai báo",
+      "Từ khóa static không thể kết hợp với generic",
+      "Phương thức tĩnh generic bắt buộc phải trả về kiểu void"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tham số kiểu ở cấp lớp (class-level type parameter) gắn liền với thể hiện (instance) của lớp. Phương thức static hoạt động ở cấp độ lớp và không có ngữ cảnh instance. Vì vậy phương thức static không thể dùng type parameter của lớp, mà phải tự định nghĩa tham số kiểu riêng, ví dụ: public static <T> void print(T item).",
+    "difficulty": "medium",
+    "tags": [
+      "Generic-Method",
+      "Static-Context"
+    ]
+  },
+  {
+    "id": "L4_Q11",
+    "lessonId": 4,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "import java.util.*;\npublic class TestPECS {\n    public static void main(String[] args) {\n        List<? extends Number> list = new ArrayList<Integer>();\n        list.add(Integer.valueOf(10)); // Dong nay\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Không thể gọi phương thức add(Number) trên List<? extends Number>",
+      "Biên dịch thành công và thêm số 10 vào danh sách",
+      "Ném ngoại lệ UnsupportedOperationException tại runtime",
+      "Ném ClassCastException tại thời điểm khởi tạo ArrayList"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Danh sách List<? extends Number> là một Producer (chỉ đọc). Kiểu thực tế có thể là List<Double>, List<Float>, v.v. Nếu cho phép thêm Integer vào thì sẽ phá vỡ an toàn kiểu của List<Double>. Do đó trình biên dịch cấm gọi add(...) với bất kỳ giá trị nào ngoài null: 'add(capture#1 of ? extends java.lang.Number) in List cannot be applied to (java.lang.Integer)'.",
+    "difficulty": "hard",
+    "tags": [
+      "PECS",
+      "Upper-Bounded",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L4_Q12",
+    "lessonId": 4,
+    "title": "Đoạn mã sau cho kết quả gì khi biên dịch và thực thi?",
+    "code": "import java.util.*;\npublic class ConsumerSuperTest {\n    public static void main(String[] args) {\n        List<? super Integer> list = new ArrayList<Number>();\n        list.add(100);\n        Object obj = list.get(0);\n        System.out.println(obj.getClass().getSimpleName() + \" \" + obj);\n    }\n}",
+    "options": [
+      "Integer 100",
+      "Number 100",
+      "Lỗi biên dịch tại dòng list.add(100)",
+      "Lỗi biên dịch tại dòng Object obj = list.get(0)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Với List<? super Integer> (Consumer), ta hoàn toàn có thể thêm an toàn một đối tượng kiểu Integer (100 được autobox thành Integer). Khi đọc ra qua list.get(0), kiểu trả về an toàn được đảm bảo là Object. Tại runtime, đối tượng thực tế là một Integer -> obj.getClass().getSimpleName() trả về 'Integer', obj in ra 100.",
+    "difficulty": "medium",
+    "tags": [
+      "Consumer-Super",
+      "PECS",
+      "Autoboxing"
+    ]
+  },
+  {
+    "id": "L4_Q13",
+    "lessonId": 4,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "import java.util.*;\npublic class InvarianceTest {\n    public static void main(String[] args) {\n        List<Object> list = new ArrayList<String>(); // Dong nay\n        list.add(123);\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Type mismatch không thể gán ArrayList<String> cho List<Object>",
+      "Biên dịch thành công và thêm số 123 vào danh sách chuỗi",
+      "Biên dịch thành công nhưng ném ClassCastException tại runtime",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tính bất biến (Invariance) của Java Generics ngăn cản việc gán ArrayList<String> cho List<Object>. Nếu phép gán này hợp lệ, dòng tiếp theo ta có thể add một số nguyên 123 vào danh sách chuỗi, làm hỏng toàn bộ tính an toàn kiểu. Trình biên dịch ngăn chặn ngay từ đầu: 'incompatible types: ArrayList<String> cannot be converted to List<Object>'.",
+    "difficulty": "easy",
+    "tags": [
+      "Invariance",
+      "Type-Mismatch",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L4_Q14",
+    "lessonId": 4,
+    "title": "Đoạn mã sau sử dụng phương thức Generic có ràng buộc Comparable. Kết quả in ra là gì?",
+    "code": "public class GenericMethodTest {\n    public static <T extends Comparable<T>> T maximum(T x, T y) {\n        return x.compareTo(y) > 0 ? x : y;\n    }\n    public static void main(String[] args) {\n        System.out.println(maximum(\"Apple\", \"Banana\") + \" \" + maximum(15, 8));\n    }\n}",
+    "options": [
+      "Banana 15",
+      "Apple 15",
+      "Banana 8",
+      "Apple 8"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức generic maximum so sánh hai đối tượng có triển khai Comparable<T>. Với hai chuỗi \"Apple\" và \"Banana\", theo thứ tự bảng chữ cái thì \"Banana\".compareTo(\"Apple\") > 0, do đó maximum trả về \"Banana\". Với hai số nguyên 15 và 8, 15 > 8 nên trả về 15. Kết quả in ra là: 'Banana 15'.",
+    "difficulty": "easy",
+    "tags": [
+      "Generic-Method",
+      "Comparable",
+      "Type-Inference"
+    ]
+  },
+  {
+    "id": "L4_Q15",
+    "lessonId": 4,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch (ảnh hưởng của Type Erasure)?",
+    "code": "import java.util.List;\nclass ErasureClash {\n    public void process(List<String> list) {\n        System.out.println(\"Strings\");\n    }\n    public void process(List<Integer> list) {\n        System.out.println(\"Integers\");\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Cả hai phương thức có cùng chữ ký sau khi xóa kiểu (have the same erasure)",
+      "Biên dịch thành công và nạp chồng bình thường",
+      "Ném ngoại lệ AmbiguousMethodException tại runtime",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Do cơ chế Type Erasure, tại thời điểm biên dịch mã bytecode, cả List<String> và List<Integer> đều bị xóa tham số kiểu và trở thành kiểu thô List. Do đó cả hai phương thức đều có cùng chữ ký trong bytecode là process(List). Trình biên dịch Java phát hiện xung đột và báo lỗi: 'name clash: process(List<Integer>) and process(List<String>) have the same erasure'.",
+    "difficulty": "hard",
+    "tags": [
+      "Type-Erasure",
+      "Name-Clash",
+      "Method-Signature"
+    ]
+  },
+  {
+    "id": "L4_Q16",
+    "lessonId": 4,
+    "title": "Cho lớp Generic Storage trích từ Đề thi mẫu UET. Khai báo nào sau đây sẽ gây LỖI BIÊN DỊCH?",
+    "code": "interface Printable { String print(); }\nclass Report implements Printable {\n    public String print() { return \"Report\"; }\n}\nclass Storage<T extends Printable> {\n    private T item;\n    void save(T item) { this.item = item; }\n}",
+    "options": [
+      "Storage<String> s = new Storage<>();",
+      "Storage<Report> s = new Storage<>();",
+      "Storage<Printable> s = new Storage<>();",
+      "Storage<?> s = new Storage<Report>();"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Storage được định nghĩa với ràng buộc: <T extends Printable>, nghĩa là mọi tham số kiểu T bắt buộc phải là Printable hoặc một lớp triển khai Printable. Vì lớp String trong Java không implements Printable nên khai báo Storage<String> vi phạm ràng buộc kiểu và gây lỗi biên dịch: 'type argument java.lang.String is not within bounds of type-variable T'.",
+    "difficulty": "medium",
+    "tags": [
+      "Bounded-Type",
+      "UET-Exam",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L4_Q17",
+    "lessonId": 4,
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class GenericArray<T> {\n    private T[] data;\n    public GenericArray(int size) {\n        data = new T[size]; // Dong nay\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Không thể tạo mảng trực tiếp từ tham số kiểu generic (generic array creation)",
+      "Lỗi biên dịch do thiếu import java.util.*",
+      "Biên dịch thành công nhưng ném NegativeArraySizeException",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, mảng cần biết thông tin kiểu phần tử cụ thể tại runtime (reified type) để cấp phát bộ nhớ và kiểm tra an toàn kiểu. Nhưng tham số kiểu generic T bị xóa tại compile-time (Type Erasure). Do đó cú pháp new T[size] bị trình biên dịch cấm hoàn toàn: 'generic array creation'. Cách giải quyết chuẩn là tạo mảng (T[]) new Object[size] hoặc dùng Array.newInstance().",
+    "difficulty": "hard",
+    "tags": [
+      "Generic-Array",
+      "Type-Erasure",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L4_Q18",
+    "lessonId": 4,
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "class Box<T> {\n    private static T value; // Dong nay\n}",
+    "options": [
+      "Lỗi biên dịch: Không thể khai báo biến static có kiểu là tham số kiểu của lớp (non-static type variable T cannot be referenced from a static context)",
+      "Biên dịch thành công và biến value được dùng chung cho mọi Box",
+      "Biên dịch thành công nếu T là kiểu Number",
+      "Lỗi do thiếu constructor"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biến static là thành phần dùng chung cho toàn bộ lớp Box bất kể lớp đó được khởi tạo với kiểu nào (Box<String>, Box<Integer>). Nếu cho phép static T value, biến này sẽ không thể xác định được kiểu dữ liệu cụ thể nào. Vì vậy trình biên dịch cấm khai báo biến static bằng tham số kiểu của lớp.",
+    "difficulty": "medium",
+    "tags": [
+      "Static-Context",
+      "Type-Erasure",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L4_Q19",
+    "lessonId": 4,
+    "title": "Hiện tượng Ô nhiễm vùng nhớ Heap (Heap Pollution) bằng Raw Type. Kết quả khi chạy đoạn mã sau là gì?",
+    "code": "import java.util.*;\npublic class RawTypeTrap {\n    public static void main(String[] args) {\n        List rawList = new ArrayList();\n        rawList.add(\"UET CS2043\");\n        rawList.add(100);\n\n        List<String> strList = rawList; // Warning raw type\n        for (String s : strList) {\n            System.out.println(s);\n        }\n    }\n}",
+    "options": [
+      "In ra 'UET CS2043' sau đó ném ClassCastException tại phần tử thứ hai khi ép kiểu sang String",
+      "In ra cả 'UET CS2043' và '100' thành công",
+      "Lỗi biên dịch tại dòng List<String> strList = rawList",
+      "Ném NullPointerException khi duyệt danh sách"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Gán một danh sách thô (raw list) chứa các kiểu dữ liệu lẫn lộn vào một danh sách có kiểu List<String> chỉ gây ra compiler warning. Khi vòng lặp foreach chạy, trình biên dịch tự động chèn lệnh ép kiểu ngầm định (String) phần tử. Phần tử đầu tiên là chuỗi in ra thành công 'UET CS2043'. Phần tử thứ hai là Integer, khi ép kiểu sang String lập tức ném: java.lang.ClassCastException: class java.lang.Integer cannot be cast to class java.lang.String.",
+    "difficulty": "hard",
+    "tags": [
+      "Heap-Pollution",
+      "Raw-Type",
+      "ClassCastException"
+    ]
+  },
+  {
+    "id": "L4_Q20",
+    "lessonId": 4,
+    "title": "Đoạn mã sau áp dụng nguyên tắc PECS để sao chép danh sách. Kết quả in ra là gì?",
+    "code": "import java.util.*;\npublic class CopyTest {\n    public static <T> void copy(List<? super T> dest, List<? extends T> src) {\n        for (T item : src) {\n            dest.add(item);\n        }\n    }\n    public static void main(String[] args) {\n        List<Number> dest = new ArrayList<>();\n        List<Integer> src = Arrays.asList(1, 2, 3);\n        copy(dest, src);\n        System.out.println(dest.size() + \" \" + dest.get(0));\n    }\n}",
+    "options": [
+      "3 1",
+      "3 3",
+      "Lỗi biên dịch tại lời gọi copy(dest, src)",
+      "0 null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hàm copy tuân thủ hoàn hảo nguyên tắc PECS: 'dest' là Consumer (<? super T>) cho phép thêm các phần tử kiểu T vào; 'src' là Producer (<? extends T>) cho phép đọc các phần tử kiểu T ra. Với T suy diễn là Integer, Integer đọc từ src được thêm thành công vào dest kiểu Number. Kích thước dest là 3 và phần tử đầu tiên dest.get(0) là 1.",
+    "difficulty": "medium",
+    "tags": [
+      "PECS",
+      "Collections-Copy",
+      "Type-Inference"
+    ]
+  }
+]

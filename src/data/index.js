@@ -1,9 +1,9 @@
 import { LESSONS_METADATA } from './lessonsMetadata.js';
 import { CHEAT_SHEETS } from './cheatSheetData.js';
 import { EXAM_PRESETS } from './examPresets.js';
+import { SECTION_PRESETS, getPresetsForLesson, getSectionQuestions } from './sectionPresets.js';
 
 import lesson1 from './questions/lesson1.json';
-import lesson2 from './questions/lesson2.json';
 import lesson3 from './questions/lesson3.json';
 import lesson4 from './questions/lesson4.json';
 import lesson5 from './questions/lesson5.json';
@@ -14,7 +14,7 @@ import lesson9 from './questions/lesson9.json';
 
 const ALL_LESSON_FILES = {
   1: lesson1,
-  2: lesson2,
+  2: lesson1, // safe alias fallback
   3: lesson3,
   4: lesson4,
   5: lesson5,
@@ -24,22 +24,24 @@ const ALL_LESSON_FILES = {
   9: lesson9
 };
 
-export { LESSONS_METADATA, CHEAT_SHEETS, EXAM_PRESETS };
+export const VALID_LESSON_IDS = [1, 3, 4, 5, 6, 7, 8, 9];
+
+export { LESSONS_METADATA, CHEAT_SHEETS, EXAM_PRESETS, SECTION_PRESETS, getPresetsForLesson, getSectionQuestions };
 
 /**
- * Get all questions across all lessons
+ * Get all questions across all lessons (285 total questions)
  */
 export function getAllQuestions() {
   const all = [];
-  for (let i = 1; i <= 9; i++) {
-    const list = ALL_LESSON_FILES[i] || [];
+  for (const id of VALID_LESSON_IDS) {
+    const list = ALL_LESSON_FILES[id] || [];
     all.push(...list);
   }
   return all;
 }
 
 /**
- * Get questions by lesson ID (1 to 9)
+ * Get questions by lesson ID
  */
 export function getQuestionsByLesson(lessonId) {
   const numId = Number(lessonId);
@@ -79,10 +81,10 @@ export function getExamQuestions(presetId, count = 30) {
   // Otherwise, construct a balanced random 30-question mock exam
   // Aim for ~3-4 questions per lesson
   const selected = [];
-  const perLesson = Math.max(1, Math.floor(count / 9));
+  const perLesson = Math.max(1, Math.floor(count / VALID_LESSON_IDS.length));
 
-  for (let i = 1; i <= 9; i++) {
-    const lessonList = [...(ALL_LESSON_FILES[i] || [])].sort(() => 0.5 - Math.random());
+  for (const id of VALID_LESSON_IDS) {
+    const lessonList = [...(ALL_LESSON_FILES[id] || [])].sort(() => 0.5 - Math.random());
     selected.push(...lessonList.slice(0, perLesson));
   }
 

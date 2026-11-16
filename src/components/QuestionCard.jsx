@@ -1,8 +1,27 @@
 import React, { useState } from 'react';
-import { Bookmark, HelpCircle, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { Bookmark, HelpCircle, CheckCircle2, XCircle, AlertCircle, Sparkles, CheckSquare, Square, Check } from 'lucide-react';
 import CodeBlock from './CodeBlock';
 
 const OPTION_LABELS = ['A', 'B', 'C', 'D'];
+
+/**
+ * Check if the user's answer is completely correct.
+ * For multiple-select: exact match (no missing, no extra).
+ */
+export function isAnswerCorrect(question, userSelection) {
+  if (userSelection === undefined || userSelection === null) return false;
+  const isMulti = question?.type === 'multiple' || Array.isArray(question?.correctAnswer);
+  if (isMulti) {
+    if (!Array.isArray(userSelection)) return false;
+    const correctArr = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
+    if (userSelection.length !== correctArr.length) return false;
+    const sortedUser = [...userSelection].sort((a, b) => a - b);
+    const sortedCorrect = [...correctArr].sort((a, b) => a - b);
+    return sortedUser.every((val, idx) => val === sortedCorrect[idx]);
+  } else {
+    return userSelection === question.correctAnswer;
+  }
+}
 
 export default function QuestionCard({
   question,
@@ -15,16 +34,47 @@ export default function QuestionCard({
   onToggleBookmark,
 }) {
   const [showManualExplanation, setShowManualExplanation] = useState(false);
+  const [confirmedMultiPractice, setConfirmedMultiPractice] = useState(false);
 
   if (!question) return null;
 
-  const isAnswered = selectedAnswer !== null && selectedAnswer !== undefined;
-  const isCorrect = isAnswered && selectedAnswer === question.correctAnswer;
+  const isMulti = question.type === 'multiple' || Array.isArray(question.correctAnswer);
+  const correctAnswersList = Array.isArray(question.correctAnswer)
+    ? question.correctAnswer
+    : [question.correctAnswer];
+
+  // Selected array representation
+  const selectedList = isMulti
+    ? (Array.isArray(selectedAnswer) ? selectedAnswer : [])
+    : (selectedAnswer !== null && selectedAnswer !== undefined ? [selectedAnswer] : []);
+
+  const isAnswered = isMulti ? selectedList.length > 0 : selectedAnswer !== null && selectedAnswer !== undefined;
+  const isCorrect = isAnswerCorrect(question, selectedAnswer);
+
   const isExam = mode === 'exam';
   const isReview = mode === 'review';
   const isPractice = mode === 'practice';
 
-  const shouldReveal = isReview || (isPractice && isAnswered && showInstantFeedback) || showManualExplanation;
+  // For multi-select in practice mode, reveal when user clicked confirm or instant feedback enabled
+  const shouldReveal = isReview || 
+    (isPractice && isAnswered && showInstantFeedback && (!isMulti || confirmedMultiPractice)) || 
+    showManualExplanation;
+
+  const handleOptionClick = (optIndex) => {
+    if (isReview) return;
+
+    if (isMulti) {
+      let updated;
+      if (selectedList.includes(optIndex)) {
+        updated = selectedList.filter(i => i !== optIndex);
+      } else {
+        updated = [...selectedList, optIndex].sort((a, b) => a - b);
+      }
+      onSelectAnswer(updated);
+    } else {
+      onSelectAnswer(optIndex);
+    }
+  };
 
   const difficultyColors = {
     easy: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
@@ -50,8 +100,21 @@ export default function QuestionCard({
             Câu {questionIndex + 1}
           </span>
           <span className="text-xs text-slate-400 font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800">
-            ID: {question.id}
+            {question.id}
           </span>
+
+          {/* Type Badge: Single vs Multiple */}
+          {isMulti ? (
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300 border border-purple-300 dark:border-purple-800 flex items-center gap-1">
+              <CheckSquare size={12} />
+              <span>Chọn nhiều đáp án</span>
+            </span>
+          ) : (
+            <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+              Chọn 1 đáp án
+            </span>
+          )}
+
           {question.difficulty && (
             <span
               className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
@@ -61,6 +124,7 @@ export default function QuestionCard({
               {difficultyLabels[question.difficulty] || question.difficulty}
             </span>
           )}
+
           {question.tags && question.tags.length > 0 && (
             <div className="hidden sm:flex items-center gap-1">
               {question.tags.slice(0, 2).map((t, idx) => (
@@ -102,8 +166,8 @@ export default function QuestionCard({
       {/* Options List */}
       <div className="space-y-2.5 my-4">
         {question.options.map((optionText, optIndex) => {
-          const isChosen = selectedAnswer === optIndex;
-          const isTheCorrectOption = optIndex === question.correctAnswer;
+          const isChosen = selectedList.includes(optIndex);
+          const isTheCorrectOption = correctAnswersList.includes(optIndex);
 
           let optionStyle =
             'border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 bg-white dark:bg-slate-800/60 text-slate-700 dark:text-slate-200';
@@ -136,17 +200,16 @@ export default function QuestionCard({
           }
 
           return (
-            <label
+            <div
               key={optIndex}
-              onClick={() => {
-                if (!isReview) {
-                  onSelectAnswer(optIndex);
-                }
-              }}
+              onClick={() => handleOptionClick(optIndex)}
               className={`flex items-start gap-3 p-3.5 rounded-xl border transition-all cursor-pointer select-none ${optionStyle}`}
             >
+              {/* Checkbox (Square) for Multi-select, Radio (Rounded-full or pill) for Single */}
               <div
-                className={`flex-shrink-0 w-7 h-7 rounded-lg border font-bold text-xs flex items-center justify-center transition-colors ${badgeStyle}`}
+                className={`flex-shrink-0 w-7 h-7 ${
+                  isMulti ? 'rounded-md' : 'rounded-full'
+                } border font-bold text-xs flex items-center justify-center transition-colors ${badgeStyle}`}
               >
                 {OPTION_LABELS[optIndex]}
               </div>
@@ -164,13 +227,26 @@ export default function QuestionCard({
                   ) : null}
                 </div>
               )}
-            </label>
+            </div>
           );
         })}
       </div>
 
+      {/* Multi-select Confirmation Button for Practice Mode */}
+      {isPractice && isMulti && isAnswered && !shouldReveal && (
+        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
+          <button
+            onClick={() => setConfirmedMultiPractice(true)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer shadow-sm transition"
+          >
+            <Check size={14} />
+            <span>Xác nhận ({selectedList.length} lựa chọn)</span>
+          </button>
+        </div>
+      )}
+
       {/* Practice Mode Controls: Toggle Explanation button if not revealed */}
-      {isPractice && isAnswered && !showInstantFeedback && !showManualExplanation && (
+      {isPractice && isAnswered && !showInstantFeedback && !shouldReveal && (
         <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
           <button
             onClick={() => setShowManualExplanation(true)}
@@ -189,10 +265,10 @@ export default function QuestionCard({
             <div className="flex items-center gap-2 mb-2">
               <Sparkles size={16} className="text-amber-600 dark:text-amber-400" />
               <span className="font-bold text-sm text-amber-900 dark:text-amber-300">
-                Đáp án đúng: {OPTION_LABELS[question.correctAnswer]}
+                Đáp án đúng: {correctAnswersList.map(idx => OPTION_LABELS[idx]).join(', ')}
               </span>
               <span className="text-xs text-amber-700/80 dark:text-amber-400/80 font-medium">
-                (Phân tích chi tiết)
+                ({isMulti ? 'Chọn nhiều đáp án' : 'Phân tích chi tiết'})
               </span>
             </div>
             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans">

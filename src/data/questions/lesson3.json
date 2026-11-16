@@ -2,398 +2,922 @@
   {
     "id": "L3_Q01",
     "lessonId": 3,
-    "title": "Điểm khác biệt căn bản nhất về mặt lưu trữ trạng thái (state) giữa Abstract Class và Interface trong Java là gì?",
+    "type": "single",
+    "title": "Phát biểu nào sau đây phân biệt chính xác nhất giữa Ghi đè phương thức (Method Overriding) và Che giấu phương thức (Method Hiding) trong Java?",
     "code": null,
     "options": [
-      "Abstract Class có thể chứa các biến thực thể (instance fields) có trạng thái thay đổi; Interface chỉ có thể chứa hằng số (public static final)",
-      "Interface có thể chứa biến thực thể private, Abstract Class thì không",
-      "Abstract Class không thể có constructor; Interface có constructor mặc định",
-      "Interface cho phép kế thừa đơn, Abstract Class cho phép đa kế thừa"
+      "Phương thức instance được override và giải quyết tại runtime (liên kết động); phương thức static bị che giấu (hiding) và giải quyết tại compile-time dựa trên kiểu tham chiếu",
+      "Cả phương thức static và instance đều được ghi đè đa hình tại runtime",
+      "Phương thức static không thể kế thừa nên không xảy ra hiện tượng hiding",
+      "Method hiding chỉ áp dụng cho biến dữ liệu (field), không áp dụng cho phương thức static"
     ],
     "correctAnswer": 0,
-    "explanation": "Khác biệt cốt lõi: Abstract Class đại diện cho bản chất đối tượng ('is-a') và có thể lưu giữ trạng thái riêng thông qua các biến thực thể non-static, non-final, đồng thời có constructor để khởi tạo trạng thái đó. Ngược lại, Interface đại diện cho hợp đồng hành vi ('can-do'), mọi thuộc tính khai báo trong interface đều ngầm định là hằng số public static final, không có constructor và không lưu trạng thái đối tượng.",
-    "difficulty": "medium",
+    "explanation": "Chỉ có instance methods mới tham gia vào cơ chế liên kết động (Dynamic Binding). Phương thức static gắn liền với Class chứ không gắn với instance, do đó khi lớp con định nghĩa static method trùng chữ ký với lớp cha, nó chỉ che giấu (hiding) phương thức của cha và được giải quyết tại compile-time dựa vào kiểu khai báo của biến tham chiếu.",
+    "difficulty": "hard",
     "tags": [
-      "Abstract-Class",
-      "Interface",
-      "OOP-Design"
+      "Polymorphism",
+      "Overriding",
+      "Hiding"
     ]
   },
   {
     "id": "L3_Q02",
     "lessonId": 3,
-    "title": "Mẫu thiết kế Template Method (Phương thức khuôn mẫu) thường được cài đặt bằng Abstract Class như thế nào?",
+    "type": "multiple",
+    "title": "Những quy tắc nào sau đây BẮT BUỘC phải tuân thủ khi ghi đè (override) phương thức của lớp cha? (Chọn tất cả các đáp án đúng)",
     "code": null,
     "options": [
-      "Lớp cha định nghĩa khung sườn thuật toán trong một phương thức cụ thể (thường là final), và ủy quyền các bước chi tiết cho các phương thức trừu tượng (abstract methods) để lớp con cài đặt",
-      "Lớp con ghi đè toàn bộ phương thức khung sườn của lớp cha",
-      "Tất cả các phương thức trong Abstract Class đều bắt buộc phải là abstract",
-      "Sử dụng interface để thay thế hoàn toàn thuật toán tại runtime"
+      "Phương thức ghi đè ở lớp con không được phép thu hẹp quyền truy cập so với phương thức ở lớp cha",
+      "Phương thức ở lớp con không được phép ném ngoại lệ Checked mới hoặc rộng hơn phương thức ở lớp cha",
+      "Phương thức ở lớp con có thể trả về một kiểu con (subtype) của kiểu trả về ở lớp cha (Covariant Return Type)",
+      "Phương thức ghi đè bắt buộc phải thêm từ khóa synchronized nếu lớp cha có synchronized"
     ],
-    "correctAnswer": 0,
-    "explanation": "Template Method pattern định nghĩa khung sườn của một thuật toán trong một phương thức (thường đánh dấu là final để ngăn lớp con phá vỡ cấu trúc thuật toán). Các bước cụ thể trong thuật toán được khai báo là abstract methods hoặc hook methods để các lớp con tự do triển khai theo nghiệp vụ riêng.",
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Quy tắc Overriding: 1) Không thu hẹp access modifier; 2) Không ném checked exception rộng hơn; 3) Cho phép kiểu trả về đồng biến (Covariant return). Synchronized không phải là một phần của chữ ký phương thức nên không bắt buộc phải giống nhau.",
     "difficulty": "medium",
     "tags": [
-      "Template-Method",
-      "Design-Patterns",
-      "Abstract-Class"
+      "Overriding",
+      "LSP",
+      "Multi-Select"
     ]
   },
   {
     "id": "L3_Q03",
     "lessonId": 3,
-    "title": "Mọi trường dữ liệu (fields) khai báo bên trong một Interface trong Java có đặc tính ngầm định nào?",
-    "code": null,
+    "type": "single",
+    "title": "Cho đoạn mã sau (trích từ Đề thi mẫu UET). Kết quả in ra màn hình là gì?",
+    "code": "class Employee {\n    public String role() { return \"Employee\"; }\n    public static String policy() { return \"standard\"; }\n}\nclass Manager extends Employee {\n    @Override\n    public String role() { return \"Manager\"; }\n    public static String policy() { return \"management\"; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Employee e = new Manager();\n        System.out.println(e.role());\n        System.out.println(e.policy());\n        System.out.println(((Manager) e).policy());\n    }\n}",
     "options": [
-      "Luôn luôn là public static final",
-      "Mặc định là private final",
-      "Mặc định là protected static",
-      "Là biến thực thể bình thường có thể sửa đổi bởi lớp triển khai"
+      "Manager\\nstandard\\nmanagement",
+      "Manager\\nmanagement\\nmanagement",
+      "Employee\\nstandard\\nmanagement",
+      "Manager\\nstandard\\nstandard"
     ],
     "correctAnswer": 0,
-    "explanation": "Theo đặc tả JLS, bất kỳ biến nào khai báo trong interface, dù bạn không ghi modifier nào, đều ngầm định (implicitly) có ba từ khóa: public static final (tức là hằng số dùng chung mức interface).",
-    "difficulty": "easy",
+    "explanation": "1) e.role(): instance method override -> dynamic binding gọi Manager.role() in 'Manager'; 2) e.policy(): static method hiding -> compile-time binding dựa vào kiểu Employee in 'standard'; 3) ((Manager)e).policy(): kiểu ép sang Manager in 'management'.",
+    "difficulty": "hard",
     "tags": [
-      "Interface",
-      "Modifiers",
-      "Constants"
+      "Static-Hiding",
+      "Dynamic-Binding",
+      "UET-Exam"
     ]
   },
   {
     "id": "L3_Q04",
     "lessonId": 3,
-    "title": "Từ Java 8, phương thức mặc định (default method) trong Interface được giới thiệu nhằm mục đích chủ yếu nào?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "class Parent {}\nclass Child extends Parent {\n    void secret() { System.out.println(\"Secret\"); }\n}\npublic class TestCast {\n    public static void main(String[] args) {\n        Parent p = new Parent();\n        Child c = (Child) p;\n        c.secret();\n    }\n}",
     "options": [
-      "Cho phép bổ sung phương thức mới vào interface mà không làm hỏng tính tương thích ngược (backward compatibility) của các lớp đã triển khai trước đó",
-      "Thay thế hoàn toàn Abstract Class trong mọi tình huống thiết kế",
-      "Cho phép interface lưu trữ biến thực thể động",
-      "Cho phép phương thức trong interface chạy nhanh hơn gấp 2 lần"
+      "Ném ngoại lệ ClassCastException tại dòng ép kiểu Child c = (Child) p",
+      "Chương trình in ra 'Secret'",
+      "Lỗi biên dịch tại dòng Child c = (Child) p",
+      "In ra null và kết thúc bình thường"
     ],
     "correctAnswer": 0,
-    "explanation": "Mục đích lớn nhất của default method trong Java 8 là 'Interface Evolution' và tương thích ngược (Backward Compatibility). Nhờ có default method, các kỹ sư Java có thể bổ sung các phương thức như forEach(), stream(), removeIf() vào Collection interface mà không làm lỗi hàng triệu lớp của người dùng đang triển khai Collection từ Java 7 trở về trước.",
+    "explanation": "Đối tượng thực tế trên Heap được tạo bởi new Parent(), không phải là instance của Child. Ép kiểu xuống (Downcasting) không an toàn này sẽ bị JVM ném ClassCastException tại runtime.",
     "difficulty": "medium",
     "tags": [
-      "Interface",
-      "Default-Method",
-      "Java8"
+      "Downcasting",
+      "ClassCastException"
     ]
   },
   {
     "id": "L3_Q05",
     "lessonId": 3,
-    "title": "Phát biểu nào sau đây là ĐÚNG về phương thức static trong Interface (từ Java 8)?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra tính đa hình của thuộc tính (field). Kết quả in ra là gì?",
+    "code": "class Base {\n    int val = 10;\n    void show() { System.out.print(\"Base:\" + val + \" \"); }\n}\nclass Sub extends Base {\n    int val = 20;\n    void show() { System.out.print(\"Sub:\" + val + \" \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Base b = new Sub();\n        System.out.print(b.val + \" \");\n        b.show();\n    }\n}",
     "options": [
-      "Thuộc về phạm vi của chính interface đó, chỉ có thể được gọi qua TênInterface.tênPhươngThức() và không được kế thừa bởi lớp triển khai",
-      "Được kế thừa bình thường và có thể gọi qua tên lớp con hoặc đối tượng lớp con",
-      "Có thể bị ghi đè (override) bởi các lớp triển khai interface",
-      "Không được phép có phần thân mã lệnh (body)"
+      "10 Sub:20 ",
+      "20 Sub:20 ",
+      "10 Base:10 ",
+      "20 Base:10 "
     ],
     "correctAnswer": 0,
-    "explanation": "Static method trong interface thuộc về namespace của interface. Nó KHÔNG được kế thừa bởi các lớp triển khai interface đó. Bạn bắt buộc phải gọi bằng cú pháp: InterfaceName.staticMethod(). Gọi qua instance hoặc tên lớp con sẽ gây lỗi biên dịch.",
+    "explanation": "Thuộc tính (fields) trong Java KHÔNG có tính đa hình. b.val được liên kết tại compile-time dựa vào kiểu Base -> lấy 10. Phương thức show() có tính đa hình -> gọi Sub.show() in 'Sub:20'. Kết quả: '10 Sub:20 '.",
     "difficulty": "hard",
     "tags": [
-      "Interface",
-      "Static-Method",
-      "Java8"
+      "Field-Hiding",
+      "Polymorphism"
     ]
   },
   {
     "id": "L3_Q06",
     "lessonId": 3,
-    "title": "Quy tắc giải quyết xung đột khi một lớp triển khai 2 interface cùng định nghĩa một default method có cùng chữ ký (Diamond Problem) là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Thứ tự in ra màn hình khi chạy chương trình sau là gì?",
+    "code": "class GrandParent {\n    GrandParent() { System.out.print(\"G \"); }\n}\nclass Parent extends GrandParent {\n    Parent() { System.out.print(\"P \"); }\n}\nclass Child extends Parent {\n    Child() { System.out.print(\"C \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Child();\n    }\n}",
     "options": [
-      "Trình biên dịch báo lỗi và bắt buộc lớp đó phải ghi đè (override) phương thức để giải quyết mập mờ tường minh",
-      "JVM tự động chọn interface được khai báo đầu tiên trong mệnh đề implements",
-      "JVM tự động chọn ngẫu nhiên một trong hai phương thức khi chạy",
-      "Chương trình tự động ghép nối phần thân của cả hai phương thức lại với nhau"
+      "G P C ",
+      "C P G ",
+      "P G C ",
+      "C G P "
     ],
     "correctAnswer": 0,
-    "explanation": "Khi xảy ra xung đột default method (hai interface có cùng method signature và không có quan hệ kế thừa lẫn nhau), trình biên dịch Java sẽ báo lỗi 'inherits unrelated defaults'. Lập trình viên bắt buộc phải ghi đè phương thức đó trong lớp triển khai, và có thể tùy ý chọn gọi implementation của interface nào bằng cú pháp InterfaceA.super.methodName().",
-    "difficulty": "hard",
+    "explanation": "Constructor của lớp con ngầm định gọi super() của lớp cha. Quá trình khởi tạo diễn ra từ trên đỉnh cây kế thừa xuống: GrandParent ('G ') -> Parent ('P ') -> Child ('C ').",
+    "difficulty": "easy",
     "tags": [
-      "Diamond-Problem",
-      "Default-Method",
-      "Interface"
+      "Constructor-Chaining",
+      "Inheritance-Order"
     ]
   },
   {
     "id": "L3_Q07",
     "lessonId": 3,
-    "title": "Nguyên tắc 'Lớp luôn chiến thắng' (Class Wins Rule) trong Java 8 giải quyết xung đột phương thức như thế nào?",
-    "code": null,
+    "type": "single",
+    "title": "Bẫy gọi phương thức đa hình bên trong constructor của lớp cha! Kết quả in ra màn hình là gì?",
+    "code": "class Super {\n    Super() { printThree(); }\n    void printThree() { System.out.print(\"three \"); }\n}\nclass Sub extends Super {\n    int three = 3;\n    @Override\n    void printThree() { System.out.print(three + \" \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Sub();\n    }\n}",
     "options": [
-      "Phương thức được cài đặt trong lớp cha (superclass) luôn được ưu tiên áp dụng và ghi đè hoàn toàn default method của interface",
-      "Default method của interface luôn ghi đè phương thức của lớp cha",
-      "Trình biên dịch báo lỗi bắt buộc lớp con phải tự viết lại",
-      "Phương thức nào ngắn hơn sẽ được JVM ưu tiên chọn"
+      "0 ",
+      "3 ",
+      "three ",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Theo quy tắc 'Classes win' của JLS: Nếu một lớp vừa kế thừa một phương thức cụ thể từ lớp cha (hoặc lớp ông bà), vừa implements một interface có default method cùng chữ ký, thì cài đặt ở lớp cha LUÔN ĐƯỢC CHỌN và default method của interface sẽ bị bỏ qua hoàn toàn.",
-    "difficulty": "medium",
+    "explanation": "Khi constructor Super chạy, printThree() được gọi theo liên kết động của Sub. Tại thời điểm này, biến instance 'three' của Sub chưa được khởi tạo (constructor của Sub chưa chạy) nên mang giá trị mặc định là 0. In ra '0 '.",
+    "difficulty": "hard",
     "tags": [
-      "Class-Wins",
-      "Default-Method",
-      "Java8"
+      "Constructor-Trap",
+      "Dynamic-Binding"
     ]
   },
   {
     "id": "L3_Q08",
     "lessonId": 3,
-    "title": "Giao diện hàm (Functional Interface) được định nghĩa là interface thỏa mãn điều kiện nào sau đây?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "import java.io.IOException;\nclass A {\n    void readFile() throws IOException {}\n}\nclass B extends A {\n    @Override\n    void readFile() throws Exception {} // Dong nay\n}",
     "options": [
-      "Chứa duy nhất một phương thức trừu tượng (Single Abstract Method - SAM), có thể có thêm default hoặc static methods",
-      "Không được phép chứa bất kỳ phương thức nào có phần thân",
-      "Bắt buộc phải có đúng một phương thức duy nhất (kể cả default và static)",
-      "Bắt buộc phải khai báo annotation @FunctionalInterface nếu không sẽ bị lỗi"
+      "Lỗi biên dịch: Phương thức ghi đè không được khai báo ném ngoại lệ Checked rộng hơn phương thức của lớp cha",
+      "Biên dịch thành công vì Exception là lớp cha của IOException",
+      "Lỗi biên dịch do thiếu từ khóa public",
+      "Chương trình chạy bình thường không có lỗi"
     ],
     "correctAnswer": 0,
-    "explanation": "Functional Interface là interface chứa CHÍNH XÁC một phương thức trừu tượng (Single Abstract Method - SAM). Nó có thể có tùy ý số lượng default methods hoặc static methods. Annotation @FunctionalInterface là tùy chọn (optional) giúp trình biên dịch kiểm tra tính hợp lệ của SAM.",
-    "difficulty": "easy",
+    "explanation": "Lớp con B khai báo throws Exception (rộng hơn IOException của lớp cha A), vi phạm quy tắc kế thừa đối với Checked Exception. Trình biên dịch báo lỗi: 'readFile() in B cannot override readFile() in A'.",
+    "difficulty": "medium",
     "tags": [
-      "Functional-Interface",
-      "SAM",
-      "Java8"
+      "Overriding",
+      "Exception-Rules",
+      "Compile-Error"
     ]
   },
   {
     "id": "L3_Q09",
     "lessonId": 3,
-    "title": "Vì sao một Abstract Class KHÔNG THỂ khởi tạo đối tượng trực tiếp bằng toán tử new nhưng VẪN ĐƯỢC PHÉP có constructor?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "class Parent {\n    public void display() { System.out.println(\"Parent\"); }\n}\nclass Child extends Parent {\n    @Override\n    protected void display() { System.out.println(\"Child\"); }\n}",
     "options": [
-      "Constructor của abstract class dùng để khởi tạo các thuộc tính của chính nó khi lớp con được khởi tạo thông qua lệnh super(...)",
-      "Constructor đó chỉ dùng cho reflection của JVM chứ không chạy khi có kế thừa",
-      "Đó là lỗi cú pháp tồn tại từ phiên bản Java cũ",
-      "Constructor của abstract class chỉ dùng để tạo các đối tượng tĩnh (static)"
+      "Lỗi biên dịch: Không thể thu hẹp quyền truy cập từ public xuống protected khi ghi đè",
+      "Biên dịch thành công và phương thức display của Child có quyền protected",
+      "Lỗi biên dịch do thiếu phương thức main",
+      "Chương trình chạy bình thường"
     ],
     "correctAnswer": 0,
-    "explanation": "Abstract Class đại diện cho lớp cha chưa hoàn chỉnh nên không thể tạo instance trực tiếp bằng new. Tuy nhiên nó vẫn có trạng thái riêng (các trường dữ liệu). Constructor của Abstract Class được tạo ra để các lớp con gọi tới thông qua super(...) nhằm khởi tạo phần trạng thái kế thừa đó.",
-    "difficulty": "medium",
-    "tags": [
-      "Abstract-Class",
-      "Constructor",
-      "OOP-Concept"
-    ]
-  },
-  {
-    "id": "L3_Q10",
-    "lessonId": 3,
-    "title": "Mối quan hệ kế thừa giữa các Interface trong Java tuân theo quy tắc nào?",
-    "code": null,
-    "options": [
-      "Một interface có thể kế thừa (extends) cùng lúc nhiều interface khác",
-      "Một interface chỉ có thể kế thừa (extends) duy nhất một interface khác",
-      "Một interface có thể implements các interface khác",
-      "Interface không được phép kế thừa từ bất kỳ interface nào"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Trong Java, trong khi Class chỉ được phép đơn kế thừa từ một Class khác (single inheritance), thì Interface ĐƯỢC PHÉP đa kế thừa từ nhiều interface khác bằng cú pháp: interface C extends A, B. Interface không dùng từ khóa implements.",
+    "explanation": "Phương thức ghi đè ở lớp con không được thu hẹp quyền truy cập (attempting to assign weaker access privileges; was public).",
     "difficulty": "easy",
     "tags": [
-      "Interface",
-      "Multiple-Inheritance"
-    ]
-  },
-  {
-    "id": "L3_Q11",
-    "lessonId": 3,
-    "title": "Đoạn mã sau giải quyết xung đột default method như thế nào? Kết quả in ra là gì?",
-    "code": "interface Alpha {\n    default void hello() { System.out.print(\"Alpha \"); }\n}\ninterface Beta {\n    default void hello() { System.out.print(\"Beta \"); }\n}\nclass Combined implements Alpha, Beta {\n    public void hello() {\n        Alpha.super.hello();\n        System.out.print(\"Combined \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Combined().hello();\n    }\n}",
-    "options": [
-      "Alpha Combined ",
-      "Beta Combined ",
-      "Lỗi biên dịch tại lớp Combined",
-      "Combined "
-    ],
-    "correctAnswer": 0,
-    "explanation": "Lớp Combined implements cả Alpha và Beta có cùng default method hello(). Lớp Combined đã override lại hello() một cách hợp lệ để xóa bỏ xung đột, đồng thời gọi đích danh Alpha.super.hello() để tái sử dụng mã của interface Alpha. Kết quả in ra: 'Alpha Combined '.",
-    "difficulty": "medium",
-    "tags": [
-      "Diamond-Problem",
-      "Default-Method",
-      "Super-Call"
-    ]
-  },
-  {
-    "id": "L3_Q12",
-    "lessonId": 3,
-    "title": "Áp dụng quy tắc 'Class Wins'. Kết quả in ra màn hình của đoạn mã sau là gì?",
-    "code": "interface Greeting {\n    default void greet() { System.out.print(\"Interface Greet \"); }\n}\nclass Base {\n    public void greet() { System.out.print(\"Base Greet \"); }\n}\nclass Sub extends Base implements Greeting {}\npublic class Main {\n    public static void main(String[] args) {\n        Greeting g = new Sub();\n        g.greet();\n    }\n}",
-    "options": [
-      "Base Greet ",
-      "Interface Greet ",
-      "Lỗi biên dịch do xung đột phương thức greet()",
-      "Ném ngoại lệ AbstractMethodError"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Theo quy tắc 'Class Wins' của Java 8: cài đặt của phương thức trong lớp cha (Base.greet()) luôn được ưu tiên hơn so với default method của interface (Greeting.greet()). Do đó khi gọi g.greet(), phương thức của lớp Base được thực thi -> in ra 'Base Greet '.",
-    "difficulty": "medium",
-    "tags": [
-      "Class-Wins",
-      "Default-Method",
-      "Java8"
-    ]
-  },
-  {
-    "id": "L3_Q13",
-    "lessonId": 3,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch hoặc thực thi?",
-    "code": "interface Printable {\n    static void print() { System.out.println(\"Printable Static\"); }\n}\nclass Doc implements Printable {}\npublic class Main {\n    public static void main(String[] args) {\n        Doc.print(); // Dong nay\n    }\n}",
-    "options": [
-      "Lỗi biên dịch: static method của interface không thể gọi thông qua lớp triển khai Doc",
-      "In ra 'Printable Static'",
-      "Ném NullPointerException tại runtime",
-      "In ra 'Doc'"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Static method trong interface không được kế thừa bởi các class cài đặt nó. Vì vậy, gọi Doc.print() hoặc new Doc().print() đều gây lỗi biên dịch: 'cannot find symbol method print()'. Muốn gọi static method này, bắt buộc phải dùng tên interface: Printable.print().",
-    "difficulty": "hard",
-    "tags": [
-      "Interface",
-      "Static-Method",
-      "Compile-Error"
-    ]
-  },
-  {
-    "id": "L3_Q14",
-    "lessonId": 3,
-    "title": "Đoạn mã sau có lỗi gì khi biên dịch?",
-    "code": "interface Config {\n    int TIMEOUT = 5000;\n}\npublic class Main {\n    public static void main(String[] args) {\n        Config.TIMEOUT += 1000;\n        System.out.println(Config.TIMEOUT);\n    }\n}",
-    "options": [
-      "Lỗi biên dịch: Không thể gán lại giá trị cho biến final TIMEOUT",
-      "Lỗi biên dịch: Không thể truy cập trực tiếp biến TIMEOUT qua tên interface",
-      "Biên dịch thành công và in ra 6000",
-      "Ném IllegalAccessException tại runtime"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Mọi thuộc tính khai báo trong interface ngầm định là 'public static final'. Do TIMEOUT là hằng số final, lệnh gán Config.TIMEOUT += 1000 cố gắng thay đổi giá trị của nó sẽ bị trình biên dịch từ chối: 'cannot assign a value to final variable TIMEOUT'.",
-    "difficulty": "easy",
-    "tags": [
-      "Interface",
-      "Final-Field",
-      "Compile-Error"
-    ]
-  },
-  {
-    "id": "L3_Q15",
-    "lessonId": 3,
-    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
-    "code": "interface Worker {\n    void work();\n}\nclass Developer implements Worker {\n    void work() { // Dong nay\n        System.out.println(\"Coding...\");\n    }\n}",
-    "options": [
-      "Lỗi biên dịch: Phương thức work() trong Developer cố tình thu hẹp quyền truy cập từ public xuống default (package-private)",
-      "Lỗi biên dịch: Thiếu annotation @Override",
-      "Lỗi biên dịch: Developer phải khai báo là abstract",
-      "Biên dịch thành công và in ra bình thường"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Mọi phương thức trừu tượng trong interface ngầm định có quyền truy cập là public. Khi lớp Developer triển khai phương thức work() mà không ghi rõ từ khóa public, phương thức đó sẽ có quyền mặc định (package-private). Điều này vi phạm quy tắc: không được thu hẹp quyền truy cập của phương thức ghi đè. Trình biên dịch báo lỗi: 'attempting to assign weaker access privileges; was public'.",
-    "difficulty": "medium",
-    "tags": [
-      "Interface",
+      "Overriding",
       "Access-Modifiers",
       "Compile-Error"
     ]
   },
   {
-    "id": "L3_Q16",
+    "id": "L3_Q10",
     "lessonId": 3,
-    "title": "Đoạn mã sau minh họa constructor của Abstract Class. Kết quả in ra là gì?",
-    "code": "abstract class Shape {\n    String color;\n    Shape(String color) {\n        this.color = color;\n        System.out.print(\"Shape:\" + color + \" \");\n    }\n}\nclass Circle extends Shape {\n    Circle(String color) {\n        super(color);\n        System.out.print(\"Circle \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Circle(\"Red\");\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra cơ chế giải quyết nạp chồng (Overloading resolution). Kết quả in ra là gì?",
+    "code": "public class OverloadTest {\n    static void print(Object o) { System.out.print(\"Object \"); }\n    static void print(String s) { System.out.print(\"String \"); }\n    public static void main(String[] args) {\n        print(null);\n    }\n}",
     "options": [
-      "Shape:Red Circle ",
-      "Circle Shape:Red ",
-      "Circle ",
-      "Lỗi biên dịch: Abstract Class không được phép có constructor"
+      "String ",
+      "Object ",
+      "Lỗi biên dịch do mập mờ (ambiguous method call)",
+      "Ném ngoại lệ NullPointerException tại runtime"
     ],
     "correctAnswer": 0,
-    "explanation": "Abstract Class hoàn toàn có thể có constructor. Khi new Circle(\"Red\") được gọi, nó gọi super(color) lên constructor của Shape. Constructor Shape chạy in ra 'Shape:Red ', sau đó constructor Circle chạy tiếp in ra 'Circle '. Tổng cộng: 'Shape:Red Circle '.",
+    "explanation": "Với đối số null, trình biên dịch ưu tiên chọn phương thức có kiểu cụ thể nhất (most specific). Do String kế thừa từ Object nên String cụ thể hơn, in ra 'String '.",
+    "difficulty": "hard",
+    "tags": [
+      "Overloading",
+      "Most-Specific"
+    ]
+  },
+  {
+    "id": "L3_Q11",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "interface Flyable {}\nclass Bird implements Flyable {}\nclass Airplane implements Flyable {}\npublic class TestInstanceof {\n    public static void main(String[] args) {\n        Flyable f = new Airplane();\n        System.out.println((f instanceof Airplane) + \" \" + (f instanceof Bird) + \" \" + (f instanceof Flyable));\n    }\n}",
+    "options": [
+      "true false true",
+      "true true true",
+      "false false true",
+      "true false false"
+    ],
+    "correctAnswer": 0,
+    "explanation": "f trỏ tới instance Airplane: là Airplane (true), không phải Bird (false), là Flyable (true). Kết quả: 'true false true'.",
     "difficulty": "easy",
     "tags": [
-      "Abstract-Class",
+      "Instanceof",
+      "Interface-Check"
+    ]
+  },
+  {
+    "id": "L3_Q12",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Bẫy đồng biến mảng (Array Covariance) trong Java! Hiện tượng gì xảy ra khi chạy đoạn mã sau?",
+    "code": "public class ArrayTrap {\n    public static void main(String[] args) {\n        Object[] arr = new String[3];\n        arr[0] = \"Hello\";\n        arr[1] = Integer.valueOf(100); // Dong nay\n    }\n}",
+    "options": [
+      "Ném ngoại lệ ArrayStoreException tại runtime khi gán Integer vào arr[1]",
+      "Lỗi biên dịch tại dòng arr[1] = Integer.valueOf(100)",
+      "Chương trình chạy bình thường không có lỗi",
+      "Ném ClassCastException tại thời điểm khởi tạo Object[]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mảng trong Java có tính covariant nên Object[] trỏ tới String[] biên dịch được. Nhưng tại runtime, JVM kiểm tra kiểu thực tế của mảng là String[], nên gán Integer sẽ bị ném java.lang.ArrayStoreException.",
+    "difficulty": "hard",
+    "tags": [
+      "Array-Covariance",
+      "ArrayStoreException"
+    ]
+  },
+  {
+    "id": "L3_Q13",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Khái niệm 'Kiểu trả về đồng biến' (Covariant Return Type) cho phép đoạn mã sau biên dịch và chạy như thế nào?",
+    "code": "class Food {}\nclass FastFood extends Food {}\nclass Restaurant {\n    Food serve() { return new Food(); }\n}\nclass BurgerKing extends Restaurant {\n    @Override\n    FastFood serve() { return new FastFood(); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Restaurant r = new BurgerKing();\n        System.out.println(r.serve().getClass().getSimpleName());\n    }\n}",
+    "options": [
+      "FastFood",
+      "Food",
+      "Lỗi biên dịch do kiểu trả về của serve() khác nhau",
+      "Ném ClassCastException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FastFood là lớp con của Food. Theo cơ chế Covariant Return Type, lớp con BurgerKing được phép ghi đè phương thức serve() và trả về FastFood. Khi gọi r.serve(), đối tượng thực tế FastFood được tạo và in ra 'FastFood'.",
+    "difficulty": "medium",
+    "tags": [
+      "Covariant-Return",
+      "Overriding"
+    ]
+  },
+  {
+    "id": "L3_Q14",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Biểu thức (null instanceof AnyClass) trong Java sẽ trả về kết quả gì?",
+    "code": null,
+    "options": [
+      "Luôn luôn trả về false cho bất kỳ class hay interface nào",
+      "Ném ngoại lệ NullPointerException tại runtime",
+      "Trả về true nếu AnyClass là lớp Object",
+      "Lỗi biên dịch: không thể áp dụng instanceof cho null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc JLS: Toán tử instanceof luôn trả về false nếu toán hạng bên trái mang giá trị null, hoàn toàn an toàn và không bao giờ ném NullPointerException.",
+    "difficulty": "easy",
+    "tags": [
+      "Instanceof",
+      "Null-Safety"
+    ]
+  },
+  {
+    "id": "L3_Q15",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Hiện tượng 'Cắt gọt đối tượng' (Object Slicing) trong C++ có xảy ra trong Java hay không? Vì sao?",
+    "code": null,
+    "options": [
+      "Không xảy ra, vì trong Java mọi biến đối tượng đều là biến tham chiếu; đối tượng thực sự trên Heap luôn giữ đầy đủ kiểu dữ liệu và thuộc tính của lớp con",
+      "Có xảy ra khi ép kiểu Upcasting về kiểu lớp cha",
+      "Có xảy ra khi truyền đối tượng làm tham số cho phương thức",
+      "Chỉ xảy ra khi lớp cha là một abstract class"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, biến đối tượng chỉ lưu tham chiếu (địa chỉ) trỏ tới Heap. Đối tượng thực sự trên Heap không bị cắt gọt (slice) dữ liệu khi gán cho tham chiếu kiểu cha.",
+    "difficulty": "hard",
+    "tags": [
+      "Object-Slicing",
+      "JVM-Memory"
+    ]
+  },
+  {
+    "id": "L3_Q16",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra nếu constructor của lớp con không gọi super(...) và lớp cha không có constructor không tham số?",
+    "code": null,
+    "options": [
+      "Lỗi biên dịch tại constructor của lớp con vì không tìm thấy constructor mặc định của cha",
+      "Chương trình tự động bỏ qua khởi tạo các trường của lớp cha",
+      "Ném NullPointerException khi chạy",
+      "Lớp con tự động tạo constructor không tham số cho cha"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình biên dịch tự động chèn super() vào đầu constructor con. Nếu cha đã có constructor có tham số mà không có no-arg constructor, lời gọi super() thất bại gây lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
       "Constructor",
+      "Super",
       "Inheritance"
     ]
   },
   {
     "id": "L3_Q17",
     "lessonId": 3,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
-    "code": "@FunctionalInterface\ninterface Transformer {\n    int transform(int x);\n    int reverse(int x);\n}",
+    "type": "multiple",
+    "title": "Những phát biểu nào sau đây là ĐÚNG về từ khóa 'final' trong quan hệ kế thừa? (Chọn các đáp án đúng)",
+    "code": null,
     "options": [
-      "Lỗi biên dịch: Transformer không phải là một Functional Interface hợp lệ vì chứa nhiều hơn 1 phương thức trừu tượng",
-      "Biên dịch thành công vì cả 2 phương thức đều có kiểu trả về là int",
-      "Biên dịch thành công nếu có ít nhất 1 default method",
-      "Cảnh báo của trình biên dịch nhưng vẫn chạy được"
+      "Một phương thức final không thể bị ghi đè (override) ở lớp con",
+      "Một lớp final không thể bị kế thừa (không thể extends)",
+      "Một lớp final không thể triển khai bất kỳ interface nào",
+      "Mọi phương thức trong một lớp final đều ngầm định mang thuộc tính final"
     ],
-    "correctAnswer": 0,
-    "explanation": "Quy tắc: Một Functional Interface chỉ được phép có DUY NHẤT một phương thức trừu tượng (Single Abstract Method - SAM). Ở đây Transformer chứa 2 abstract methods (transform và reverse). Annotation @FunctionalInterface yêu cầu trình biên dịch xác thực, nên trình biên dịch sẽ báo lỗi: 'Unexpected @FunctionalInterface annotation; Transformer is not a functional interface (multiple non-overriding abstract methods)'.",
-    "difficulty": "easy",
+    "correctAnswer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "Phương thức final ngăn override (0). Lớp final ngăn kế thừa (1). Lớp final hoàn toàn có thể implements interface bình thường (2 sai). Vì lớp final không thể có lớp con nên mọi phương thức của nó ngầm định là final (3 đúng).",
+    "difficulty": "medium",
     "tags": [
-      "Functional-Interface",
-      "Compile-Error"
+      "Final",
+      "Inheritance",
+      "Multi-Select"
     ]
   },
   {
     "id": "L3_Q18",
     "lessonId": 3,
-    "title": "Đoạn mã sau kiểm tra việc khởi tạo Anonymous Inner Class từ một Abstract Class. Kết quả in ra là gì?",
-    "code": "abstract class Greeter {\n    abstract void sayHi();\n    void sayBye() { System.out.print(\"Bye \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Greeter g = new Greeter() {\n            void sayHi() { System.out.print(\"Hi \"); }\n        };\n        g.sayHi();\n        g.sayBye();\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "class Animal {\n    void sound() { System.out.print(\"Animal \"); }\n}\nclass Dog extends Animal {\n    void sound() { System.out.print(\"Woof \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        Dog d = (Dog) a;\n        d.sound();\n    }\n}",
     "options": [
-      "Hi Bye ",
-      "Hi ",
-      "Lỗi biên dịch: Không thể new một Abstract Class",
-      "Ném InstantiationException tại runtime"
+      "In ra 'Woof '",
+      "In ra 'Animal '",
+      "Ném ClassCastException",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Cú pháp new Greeter() { ... } không phải là khởi tạo trực tiếp Abstract Class, mà là định nghĩa và khởi tạo một lớp nội danh (Anonymous Inner Class) kế thừa từ Greeter và ghi đè phương thức sayHi(). Do đó chương trình biên dịch và chạy hoàn toàn hợp lệ, in ra 'Hi Bye '.",
-    "difficulty": "medium",
+    "explanation": "a trỏ vào instance Dog trên Heap. Ép kiểu xuống (Dog) a hoàn toàn hợp lệ và an toàn vì kiểu thực tế chính là Dog. d.sound() in ra 'Woof '.",
+    "difficulty": "easy",
     "tags": [
-      "Anonymous-Class",
-      "Abstract-Class"
+      "Downcasting",
+      "Polymorphism"
     ]
   },
   {
     "id": "L3_Q19",
     "lessonId": 3,
-    "title": "Đoạn mã sau triển khai Template Method Pattern. Kết quả in ra là gì?",
-    "code": "abstract class Beverage {\n    final void prepareRecipe() {\n        boilWater();\n        brew();\n        pourInCup();\n    }\n    void boilWater() { System.out.print(\"Boil \"); }\n    void pourInCup() { System.out.print(\"Pour \"); }\n    abstract void brew();\n}\nclass Tea extends Beverage {\n    void brew() { System.out.print(\"SteepTea \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Beverage b = new Tea();\n        b.prepareRecipe();\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "class A {\n    int i = 1;\n}\nclass B extends A {\n    int i = 2;\n}\npublic class Main {\n    public static void main(String[] args) {\n        A a = new B();\n        B b = (B) a;\n        System.out.println(a.i + \" \" + b.i);\n    }\n}",
     "options": [
-      "Boil SteepTea Pour ",
-      "SteepTea Boil Pour ",
-      "Boil Pour SteepTea ",
-      "Lỗi biên dịch do brew() là abstract"
+      "1 2",
+      "2 2",
+      "1 1",
+      "2 1"
     ],
     "correctAnswer": 0,
-    "explanation": "Mẫu Template Method: Phương thức prepareRecipe() định nghĩa khung sườn 3 bước: boilWater() in 'Boil ', brew() gọi phương thức override của Tea in 'SteepTea ', pourInCup() in 'Pour '. Kết quả là 'Boil SteepTea Pour '.",
-    "difficulty": "easy",
+    "explanation": "Truy cập thuộc tính được giải quyết tại compile-time: a.i dựa vào kiểu tham chiếu A nên lấy A.i = 1. b.i dựa vào kiểu tham chiếu B nên lấy B.i = 2. Kết quả: '1 2'.",
+    "difficulty": "medium",
     "tags": [
-      "Template-Method",
-      "Design-Patterns",
-      "Abstract-Class"
+      "Field-Hiding",
+      "Reference-Type"
     ]
   },
   {
     "id": "L3_Q20",
     "lessonId": 3,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
-    "code": "abstract class Device {\n    int code;\n    Device(int code) { this.code = code; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Device d = new Device(101); // Dong nay\n        System.out.println(d.code);\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Parent {\n    private void secret() {}\n}\nclass Child extends Parent {\n    @Override\n    public void secret() {} // Dong nay\n}",
     "options": [
-      "Lỗi biên dịch: Device là một abstract class nên không thể khởi tạo trực tiếp bằng toán tử new",
-      "Biên dịch thành công và in ra 101",
-      "Ném ngoại lệ InstantiationError tại runtime",
-      "Biên dịch thành công nhưng ném NullPointerException tại runtime"
+      "Lỗi biên dịch: Phương thức secret() trong Parent là private nên Child không thể ghi đè (method does not override or implement a method from a supertype)",
+      "Biên dịch thành công và mở rộng quyền truy cập thành public",
+      "Lỗi biên dịch do thiếu từ khóa static",
+      "Chương trình chạy bình thường"
     ],
     "correctAnswer": 0,
-    "explanation": "Abstract Class đại diện cho một khái niệm trừu tượng chưa hoàn chỉnh. Theo quy tắc cốt lõi của Java, bạn không bao giờ có thể tạo instance trực tiếp từ một abstract class bằng toán tử new Device(...). Muốn sử dụng, bắt buộc phải có một lớp con cụ thể (concrete subclass) kế thừa và khởi tạo lớp con đó. Trình biên dịch báo lỗi: 'Device is abstract; cannot be instantiated'.",
+    "explanation": "Phương thức private trong lớp cha không được kế thừa bởi lớp con. Do đó lớp con không thể override nó. Annotation @Override sẽ báo lỗi biên dịch vì phương thức này không hề override phương thức nào từ supertype.",
+    "difficulty": "medium",
+    "tags": [
+      "Private",
+      "Overriding",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q21",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi sử dụng từ khóa super?",
+    "code": "class X {\n    String name() { return \"X\"; }\n}\nclass Y extends X {\n    String name() { return super.name() + \"Y\"; }\n}\nclass Z extends Y {\n    String name() { return super.name() + \"Z\"; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(new Z().name());\n    }\n}",
+    "options": [
+      "XYZ",
+      "Z",
+      "YZ",
+      "XZ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Z.name() gọi super.name() (Y.name()) rồi cộng \"Z\". Y.name() lại gọi super.name() (X.name()) rồi cộng \"Y\". X.name() trả về \"X\". Kết quả chuỗi tích lũy: \"XYZ\".",
     "difficulty": "easy",
     "tags": [
-      "Abstract-Class",
-      "Instantiation-Error",
+      "Super",
+      "Inheritance-Chain"
+    ]
+  },
+  {
+    "id": "L3_Q22",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra việc nạp chồng phương thức qua kế thừa. Kết quả in ra là gì?",
+    "code": "class Parent {\n    void show(int a) { System.out.print(\"int \"); }\n}\nclass Child extends Parent {\n    void show(double a) { System.out.print(\"double \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Child c = new Child();\n        c.show(5);\n    }\n}",
+    "options": [
+      "int ",
+      "double ",
+      "Lỗi biên dịch do mập mờ",
+      "Ném ngoại lệ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Child kế thừa phương thức show(int) từ Parent và tự định nghĩa thêm show(double) (đây là overloading qua kế thừa). Khi gọi c.show(5) với số nguyên 5, trình biên dịch khớp chính xác với show(int) và in ra 'int '.",
+    "difficulty": "medium",
+    "tags": [
+      "Overloading",
+      "Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q23",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "class Alpha {}\nclass Beta extends Alpha {}\npublic class Main {\n    public static void main(String[] args) {\n        Alpha a = new Alpha();\n        if (a instanceof Beta) {\n            Beta b = (Beta) a;\n            System.out.println(\"Cast OK\");\n        } else {\n            System.out.println(\"Cannot cast\");\n        }\n    }\n}",
+    "options": [
+      "Cannot cast",
+      "Cast OK",
+      "Ném ClassCastException",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "a trỏ vào đối tượng Alpha, không phải là Beta nên (a instanceof Beta) trả về false. Khối else được thực thi in ra 'Cannot cast', bảo vệ chương trình không bị ClassCastException.",
+    "difficulty": "easy",
+    "tags": [
+      "Instanceof",
+      "Downcasting-Guard"
+    ]
+  },
+  {
+    "id": "L3_Q24",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "final class Secured {}\nclass Hacker extends Secured {} // Dong nay",
+    "options": [
+      "Lỗi biên dịch: Không thể kế thừa lớp final Secured (cannot inherit from final Secured)",
+      "Biên dịch thành công",
+      "Lỗi biên dịch do thiếu phương thức trong Hacker",
+      "Cảnh báo bảo mật từ compiler"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ khóa final trên khai báo lớp cấm tuyệt đối mọi hành vi kế thừa lớp đó. Ví dụ như lớp String, System, Math trong JDK.",
+    "difficulty": "easy",
+    "tags": [
+      "Final-Class",
+      "Inheritance-Restriction"
+    ]
+  },
+  {
+    "id": "L3_Q25",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "class Base {\n    static String getKind() { return \"Base\"; }\n}\nclass Derived extends Base {\n    static String getKind() { return \"Derived\"; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Base b1 = new Base();\n        Base b2 = new Derived();\n        System.out.println(b1.getKind() + \" \" + b2.getKind());\n    }\n}",
+    "options": [
+      "Base Base",
+      "Base Derived",
+      "Derived Derived",
+      "Derived Base"
+    ],
+    "correctAnswer": 0,
+    "explanation": "getKind() là static method. Cả b1 và b2 đều được khai báo với kiểu tham chiếu Base, nên b1.getKind() và b2.getKind() đều được gắn kết tại compile-time tới Base.getKind(). Kết quả in ra: 'Base Base'.",
+    "difficulty": "medium",
+    "tags": [
+      "Static-Hiding",
+      "Static-Binding"
+    ]
+  },
+  {
+    "id": "L3_Q26",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Thành phần protected của một lớp ở Package A có thể được truy cập từ Package B trong tình huống nào?",
+    "code": null,
+    "options": [
+      "Chỉ bên trong các lớp con (subclass) ở Package B kế thừa từ lớp ở Package A, thông qua cơ chế kế thừa",
+      "Mọi lớp ở Package B đều truy cập được nếu có lệnh import",
+      "Hoàn toàn không thể truy cập từ package khác",
+      "Chỉ truy cập được nếu lớp ở Package B là lớp static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "protected cho phép truy cập: 1) Trong cùng package; 2) Khác package: chỉ bên trong lớp con kế thừa từ lớp đó thông qua quan hệ kế thừa.",
+    "difficulty": "medium",
+    "tags": [
+      "Protected",
+      "Package",
+      "Access-Modifiers"
+    ]
+  },
+  {
+    "id": "L3_Q27",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra việc gọi phương thức qua đa hình. Kết quả in ra là gì?",
+    "code": "class Writer {\n    void write() { System.out.print(\"Writing \"); }\n}\nclass Programmer extends Writer {\n    void write() { System.out.print(\"Coding \"); }\n    void debug() { System.out.print(\"Debugging \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Writer w = new Programmer();\n        w.write();\n    }\n}",
+    "options": [
+      "Coding ",
+      "Writing ",
+      "Coding Debugging ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "w tham chiếu tới đối tượng Programmer trên Heap. write() là phương thức được override nên dynamic binding gọi Programmer.write() in ra 'Coding '.",
+    "difficulty": "easy",
+    "tags": [
+      "Dynamic-Binding",
+      "Polymorphism"
+    ]
+  },
+  {
+    "id": "L3_Q28",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Writer {\n    void write() { System.out.print(\"Writing \"); }\n}\nclass Programmer extends Writer {\n    void write() { System.out.print(\"Coding \"); }\n    void debug() { System.out.print(\"Debugging \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Writer w = new Programmer();\n        w.debug(); // Dong nay\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Lớp Writer không chứa phương thức debug() (cannot find symbol method debug())",
+      "Biên dịch thành công và in ra 'Debugging '",
+      "Ném ClassCastException tại runtime",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình biên dịch kiểm tra tính hợp lệ dựa trên kiểu khai báo của biến tham chiếu (Writer). Vì lớp Writer không có phương thức debug(), trình biên dịch báo lỗi: cannot find symbol method debug(). Muốn gọi được phải ép kiểu ((Programmer) w).debug().",
+    "difficulty": "easy",
+    "tags": [
+      "Compile-Time-Check",
+      "Reference-Type"
+    ]
+  },
+  {
+    "id": "L3_Q29",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Mối quan hệ 'has-a' (chứa) và 'is-a' (là) trong hướng đối tượng tương ứng với các kỹ thuật thiết kế nào?",
+    "code": null,
+    "options": [
+      "'has-a' đại diện cho Thành phần hợp thành (Composition/Aggregation); 'is-a' đại diện cho Kế thừa (Inheritance)",
+      "'has-a' đại diện cho Kế thừa; 'is-a' đại diện cho Interface",
+      "'has-a' đại diện cho Đa hình; 'is-a' đại diện cho Đóng gói",
+      "Cả hai đều chỉ dùng cho Kế thừa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong thiết kế OOP: 'is-a' thể hiện mối quan hệ kế thừa (Dog is an Animal). 'has-a' thể hiện sự hợp thành (Car has an Engine). Nguyên tắc vàng của OOP là 'Favor composition over inheritance'.",
+    "difficulty": "easy",
+    "tags": [
+      "has-a",
+      "is-a",
+      "Composition-vs-Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q30",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "class Top {\n    Top() { System.out.print(\"T \"); }\n}\nclass Mid extends Top {\n    Mid() { System.out.print(\"M \"); }\n}\nclass Bottom extends Mid {\n    Bottom() {\n        this(5);\n        System.out.print(\"B1 \");\n    }\n    Bottom(int x) {\n        System.out.print(\"B2 \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Bottom();\n    }\n}",
+    "options": [
+      "T M B2 B1 ",
+      "T M B1 B2 ",
+      "B1 B2 T M ",
+      "B2 B1 T M "
+    ],
+    "correctAnswer": 0,
+    "explanation": "new Bottom() gọi this(5). Constructor Bottom(int x) ngầm định gọi super() của Mid. Mid() ngầm định gọi super() của Top. Do đó: Top in 'T ', Mid in 'M ', Bottom(int) in 'B2 ', sau đó Bottom() in 'B1 '. Kết quả: 'T M B2 B1 '.",
+    "difficulty": "hard",
+    "tags": [
+      "Constructor-Chaining",
+      "this-and-super"
+    ]
+  },
+  {
+    "id": "L3_Q31",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Phát biểu nào sau đây là ĐÚNG về việc ghi đè phương thức có kiểu trả về nguyên thủy trong Java?",
+    "code": null,
+    "options": [
+      "Kiểu trả về nguyên thủy bắt buộc phải giống hệt nhau ở cả lớp cha và lớp con; Tính đồng biến (Covariant Return) chỉ áp dụng cho kiểu tham chiếu đối tượng",
+      "Lớp con có thể đổi kiểu trả về từ int sang long",
+      "Lớp con có thể đổi kiểu trả về từ float sang double",
+      "Lớp con có thể đổi kiểu trả về từ int sang Integer"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Covariant Return Type chỉ áp dụng cho các kiểu đối tượng có quan hệ kế thừa (Subtype). Các kiểu nguyên thủy (int, double, float) không có quan hệ kế thừa nên phương thức ghi đè bắt buộc phải giữ nguyên chính xác kiểu nguyên thủy đó.",
+    "difficulty": "hard",
+    "tags": [
+      "Covariant-Return",
+      "Primitive-Types"
+    ]
+  },
+  {
+    "id": "L3_Q32",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Những phương thức nào sau đây trong một lớp KHÔNG THỂ bị ghi đè (override) ở lớp con? (Chọn tất cả các đáp án đúng)",
+    "code": null,
+    "options": [
+      "Phương thức khai báo với từ khóa final",
+      "Phương thức khai báo với từ khóa static",
+      "Phương thức khai báo với đặc tả truy cập private",
+      "Phương thức khai báo với đặc tả truy cập protected"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1) final method cấm override; 2) static method bị hiding chứ không override; 3) private method không được kế thừa nên không thể override. protected method được kế thừa và override bình thường.",
+    "difficulty": "easy",
+    "tags": [
+      "Overriding-Rules",
+      "Multi-Select"
+    ]
+  },
+  {
+    "id": "L3_Q33",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Parent {\n    void test() throws Exception {}\n}\nclass Child extends Parent {\n    void test() throws Throwable {} // Dong nay\n}",
+    "options": [
+      "Lỗi biên dịch: Throwable rộng hơn Exception được khai báo ở lớp cha",
+      "Biên dịch thành công vì Throwable là lớp cha của Exception",
+      "Lỗi biên dịch do thiếu public",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Throwable là lớp cha của Exception (rộng hơn Exception). Quy tắc overriding quy định lớp con không được ném checked exception rộng hơn lớp cha. Báo lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
+      "Overriding",
+      "Exception-Rules"
+    ]
+  },
+  {
+    "id": "L3_Q34",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "class A {\n    A() { System.out.print(\"A \"); }\n}\nclass B extends A {\n    B(int x) {\n        System.out.print(\"B:\" + x + \" \");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new B(10);\n    }\n}",
+    "options": [
+      "A B:10 ",
+      "B:10 A ",
+      "B:10 ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "B(int x) không gọi super(...) tường minh nên trình biên dịch tự động chèn super() gọi constructor mặc định của A. A() in ra 'A ', sau đó B(int) in ra 'B:10 '. Kết quả: 'A B:10 '.",
+    "difficulty": "easy",
+    "tags": [
+      "Constructor",
+      "Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q35",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra việc ghi đè phương thức toString(). Kết quả in ra là gì?",
+    "code": "class Item {\n    int id;\n    Item(int id) { this.id = id; }\n    public String toString() { return \"Item#\" + id; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Object obj = new Item(42);\n        System.out.println(obj);\n    }\n}",
+    "options": [
+      "Item#42",
+      "Item@ địa chỉ hash",
+      "null",
+      "Lỗi biên dịch do biến obj có kiểu Object"
+    ],
+    "correctAnswer": 0,
+    "explanation": "System.out.println(obj) tự động gọi obj.toString(). Do cơ chế dynamic binding, phương thức toString() được override trong Item sẽ được thực thi và in ra 'Item#42'.",
+    "difficulty": "easy",
+    "tags": [
+      "toString",
+      "Dynamic-Binding"
+    ]
+  },
+  {
+    "id": "L3_Q36",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "class Base {\n    void process() {\n        step1();\n        step2();\n    }\n    void step1() { System.out.print(\"B1 \"); }\n    void step2() { System.out.print(\"B2 \"); }\n}\nclass Sub extends Base {\n    void step2() { System.out.print(\"S2 \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Base b = new Sub();\n        b.process();\n    }\n}",
+    "options": [
+      "B1 S2 ",
+      "B1 B2 ",
+      "S1 S2 ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "b.process() chạy mã của Base: step1() không bị override in 'B1 '. step2() được override trong Sub nên dynamic binding gọi Sub.step2() in 'S2 '. Kết quả: 'B1 S2 '.",
+    "difficulty": "medium",
+    "tags": [
+      "Template-Style",
+      "Dynamic-Binding"
+    ]
+  },
+  {
+    "id": "L3_Q37",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Khi một phương thức ở lớp cha ném ngoại lệ Unchecked (ví dụ NullPointerException), phương thức ghi đè ở lớp con có thể khai báo ném ngoại lệ nào?",
+    "code": null,
+    "options": [
+      "Có thể ném bất kỳ ngoại lệ Unchecked nào hoặc không ném ngoại lệ nào cả, nhưng không được ném Checked Exception mới",
+      "Bắt buộc phải ném đúng NullPointerException",
+      "Không được phép ném bất kỳ ngoại lệ nào",
+      "Bắt buộc phải khai báo throws Exception"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc Checked Exception trong overriding không áp dụng giới hạn cho Unchecked Exceptions (RuntimeException). Lớp con có thể tự do ném bất kỳ RuntimeException nào hoặc không ném gì cả, miễn là không ném Checked Exception mới.",
+    "difficulty": "hard",
+    "tags": [
+      "Overriding",
+      "Unchecked-Exception"
+    ]
+  },
+  {
+    "id": "L3_Q38",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "class Animal {}\nclass Dog extends Animal {}\nclass Cat extends Animal {}\npublic class CastTest {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        Cat c = (Cat) a; // Dong nay\n    }\n}",
+    "options": [
+      "Ném ngoại lệ ClassCastException tại runtime",
+      "Lỗi biên dịch tại dòng (Cat) a",
+      "Biên dịch thành công và biến c có giá trị null",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Do Cat và Animal có quan hệ kế thừa, trình biên dịch cho phép ép kiểu (Cat) a. Nhưng tại runtime đối tượng thực tế là Dog (không thể cast sang Cat), JVM lập tức ném: java.lang.ClassCastException: class Dog cannot be cast to class Cat.",
+    "difficulty": "easy",
+    "tags": [
+      "Downcasting",
+      "ClassCastException"
+    ]
+  },
+  {
+    "id": "L3_Q39",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "class Parent {\n    Parent print() {\n        System.out.print(\"Parent \");\n        return this;\n    }\n}\nclass Child extends Parent {\n    @Override\n    Child print() {\n        super.print();\n        System.out.print(\"Child \");\n        return this;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        new Child().print();\n    }\n}",
+    "options": [
+      "Parent Child ",
+      "Child Parent ",
+      "Child ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Child ghi đè print() với kiểu trả về đồng biến Child. Khi gọi new Child().print(), nó gọi super.print() in 'Parent ', sau đó in tiếp 'Child '. Kết quả: 'Parent Child '.",
+    "difficulty": "easy",
+    "tags": [
+      "Covariant-Return",
+      "Super"
+    ]
+  },
+  {
+    "id": "L3_Q40",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Phương thức clone() mặc định của lớp java.lang.Object thực hiện kiểu sao chép nào?",
+    "code": null,
+    "options": [
+      "Shallow copy (sao chép nông từng trường dữ liệu, đối tượng con bên trong vẫn dùng chung tham chiếu)",
+      "Deep copy (sao chép sâu toàn bộ các đối tượng lồng nhau)",
+      "Chỉ sao chép các trường kiểu số nguyên",
+      "Tự động chuyển đổi đối tượng thành String"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức Object.clone() mặc định thực hiện shallow copy: sao chép bit-by-bit các trường. Các trường tham chiếu sẽ chỉ sao chép địa chỉ, trỏ chung vào cùng đối tượng gốc trên Heap.",
+    "difficulty": "medium",
+    "tags": [
+      "Object-Clone",
+      "Shallow-Copy"
+    ]
+  },
+  {
+    "id": "L3_Q41",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Foo {\n    final void bar() {}\n}\nclass SubFoo extends Foo {\n    void bar() {} // Dong nay\n}",
+    "options": [
+      "Lỗi biên dịch: Không thể ghi đè phương thức final từ lớp cha (bar() in SubFoo cannot override bar() in Foo; overridden method is final)",
+      "Biên dịch thành công",
+      "Lỗi do thiếu @Override",
+      "Lỗi do lớp Foo không phải public"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức được đánh dấu final trong lớp cha cấm hoàn toàn mọi lớp con ghi đè nó. Cố tình định nghĩa lại cùng chữ ký sẽ bị trình biên dịch từ chối.",
+    "difficulty": "easy",
+    "tags": [
+      "Final-Method",
+      "Overriding-Restriction"
+    ]
+  },
+  {
+    "id": "L3_Q42",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "class Shape {\n    void draw() { System.out.print(\"Shape \"); }\n}\nclass Circle extends Shape {\n    void draw() { System.out.print(\"Circle \"); }\n}\nclass Square extends Shape {\n    void draw() { System.out.print(\"Square \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Shape[] shapes = { new Circle(), new Square(), new Shape() };\n        for (Shape s : shapes) {\n            s.draw();\n        }\n    }\n}",
+    "options": [
+      "Circle Square Shape ",
+      "Shape Shape Shape ",
+      "Shape Circle Square ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tính đa hình duyệt mảng: mỗi phần tử Shape trong mảng gọi phương thức draw() của đối tượng thực tế trên Heap: phần tử 0 gọi Circle.draw(), phần tử 1 gọi Square.draw(), phần tử 2 gọi Shape.draw(). Kết quả: 'Circle Square Shape '.",
+    "difficulty": "easy",
+    "tags": [
+      "Polymorphic-Array",
+      "Dynamic-Binding"
+    ]
+  },
+  {
+    "id": "L3_Q43",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class Super {\n    Super(int x) {}\n}\nclass Sub extends Super {\n    // Khong viet constructor nao\n}",
+    "options": [
+      "Lỗi biên dịch: Constructor mặc định được sinh ra của Sub không tìm thấy constructor không tham số super() của Super",
+      "Biên dịch thành công",
+      "Lỗi do lớp Sub rỗng",
+      "Ném NoSuchMethodException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Sub không viết constructor nên compiler tự sinh constructor mặc định Sub() { super(); }. Nhưng Super chỉ có Super(int x) mà không có Super(), dẫn đến lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
+      "Constructor-Rules",
       "Compile-Error"
+    ]
+  },
+  {
+    "id": "L3_Q44",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "class MathUtil {\n    static int add(int a, int b) { return a + b; }\n    static double add(double a, double b) { return a + b + 0.5; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(MathUtil.add(2, 3) + \" \" + MathUtil.add(2.0, 3.0));\n    }\n}",
+    "options": [
+      "5 5.5",
+      "5 5.0",
+      "5.5 5.5",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nạp chồng phương thức tĩnh (static method overloading): Lời gọi add(2, 3) khớp với add(int, int) -> 5. Lời gọi add(2.0, 3.0) khớp với add(double, double) -> 2.0 + 3.0 + 0.5 = 5.5. Kết quả: '5 5.5'.",
+    "difficulty": "easy",
+    "tags": [
+      "Static-Overloading"
+    ]
+  },
+  {
+    "id": "L3_Q45",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "class Person {\n    String name;\n    Person(String name) { this.name = name; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Person p1 = new Person(\"Nam\");\n        Person p2 = new Person(\"Nam\");\n        System.out.println((p1 == p2) + \" \" + p1.equals(p2));\n    }\n}",
+    "options": [
+      "false false",
+      "false true",
+      "true true",
+      "true false"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Person không override phương thức equals(). Mặc định phương thức equals() kế thừa từ java.lang.Object thực hiện so sánh tham chiếu ==. Vì p1 và p2 là 2 đối tượng riêng biệt trên Heap, cả p1 == p2 và p1.equals(p2) đều trả về false. Kết quả: 'false false'.",
+    "difficulty": "medium",
+    "tags": [
+      "Object-equals",
+      "Reference-Comparison"
     ]
   }
 ]

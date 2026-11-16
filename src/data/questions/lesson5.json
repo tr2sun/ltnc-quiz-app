@@ -2,6 +2,7 @@
   {
     "id": "L5_Q01",
     "lessonId": 5,
+    "type": "single",
     "title": "Hợp đồng bất biến (Contract) giữa hai phương thức equals() và hashCode() trong lớp java.lang.Object quy định điều gì?",
     "code": null,
     "options": [
@@ -11,195 +12,62 @@
       "Mọi lớp khi override equals() không nhất thiết phải override hashCode()"
     ],
     "correctAnswer": 0,
-    "explanation": "Quy tắc hợp đồng cốt lõi: 1) Nếu a.equals(b) là true, thì a.hashCode() BẮT BUỘC phải bằng b.hashCode(). 2) Nếu a.hashCode() == b.hashCode(), hai đối tượng CHƯA CHẮC đã bằng nhau theo equals() (xảy ra xung đột băm - hash collision). Nếu vi phạm quy tắc 1, các cấu trúc dữ liệu băm như HashSet và HashMap sẽ hoạt động sai hoàn toàn.",
+    "explanation": "Quy tắc cốt lõi: 1) Nếu a.equals(b) là true, thì a.hashCode() BẮT BUỘC phải bằng b.hashCode(). 2) Nếu a.hashCode() == b.hashCode(), hai đối tượng chưa chắc đã bằng nhau theo equals() (xảy ra hash collision). Vi phạm quy tắc 1 sẽ làm HashSet/HashMap hỏng hoàn toàn.",
     "difficulty": "medium",
     "tags": [
       "equals-hashCode",
-      "Contract",
-      "Object-Class"
+      "Contract"
     ]
   },
   {
     "id": "L5_Q02",
     "lessonId": 5,
-    "title": "Hiện tượng xung đột băm (Hash Collision) trong HashMap xảy ra khi nào và JVM xử lý như thế nào?",
+    "type": "multiple",
+    "title": "Những phát biểu nào sau đây phân biệt ĐÚNG về cây phân cấp Ngoại lệ (Exception Hierarchy) trong Java? (Chọn tất cả các đáp án đúng)",
     "code": null,
     "options": [
-      "Xảy ra khi hai key khác nhau có cùng chỉ số bucket (hash code giống nhau hoặc cùng vị trí index); JVM lưu các phần tử này vào cùng một bucket dưới dạng danh sách liên kết hoặc cây Đỏ-Đen",
-      "Xảy ra khi dung lượng mảng bị đầy; JVM lập tức ném ngoại lệ HashCollisionException",
-      "Xảy ra khi key bị trùng lặp giá trị equals(); JVM ghi đè giá trị cũ",
-      "Xảy ra khi HashMap không cho phép lưu trữ giá trị null"
+      "Cả Error và Exception đều kế thừa trực tiếp từ lớp java.lang.Throwable",
+      "RuntimeException và các lớp con của nó là Unchecked Exception, không bắt buộc phải try-catch hoặc khai báo throws",
+      "Checked Exception kế thừa từ Exception (ngoại trừ RuntimeException), trình biên dịch bắt buộc phải xử lý",
+      "Error đại diện cho lỗi logic người dùng và có thể phục hồi dễ dàng bằng khối catch"
     ],
-    "correctAnswer": 0,
-    "explanation": "Hash collision xảy ra khi hai key không bằng nhau nhưng hàm băm tính ra cùng một chỉ số bucket trong mảng nội bộ của HashMap. JVM giải quyết bằng phương pháp Separate Chaining: lưu các node va chạm thành một LinkedList. Từ Java 8, nếu một bucket có từ 8 phần tử trở lên, nó sẽ tự động chuyển thành cây Đỏ-Đen (Red-Black tree) để tối ưu tìm kiếm từ O(n) về O(log n).",
-    "difficulty": "hard",
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2, 3 đều chính xác theo JLS. 4 sai vì Error là lỗi hệ thống nghiêm trọng cấp máy ảo (OutOfMemoryError, StackOverflowError) không nên và không thể phục hồi.",
+    "difficulty": "medium",
     "tags": [
-      "HashMap",
-      "Hash-Collision",
-      "Separate-Chaining"
+      "Exception-Hierarchy",
+      "Checked-vs-Unchecked",
+      "Multi-Select"
     ]
   },
   {
     "id": "L5_Q03",
     "lessonId": 5,
-    "title": "Phát biểu nào sau đây phân biệt đúng nhất về cây phân cấp trong Java Collections Framework?",
+    "type": "single",
+    "title": "Khối lệnh finally trong cấu trúc try-catch-finally được đảm bảo thực thi trong trường hợp nào?",
     "code": null,
     "options": [
-      "Interface Collection là gốc của List, Set, Queue; Map KHÔNG kế thừa từ Collection mà là một phân nhánh độc lập quản lý cặp key-value",
-      "Map là một interface con trực tiếp kế thừa từ Collection",
-      "Set là một lớp con của List có thêm tính năng loại bỏ trùng lặp",
-      "ArrayList và HashMap cùng kế thừa từ một lớp trừu tượng chung AbstractCollection"
+      "Luôn luôn thực thi dù khối try có kết thúc bình thường, ném ngoại lệ, hay có lệnh return; Chỉ bị bỏ qua khi gọi System.exit() hoặc JVM sập nguồn",
+      "Chỉ thực thi khi có ngoại lệ xảy ra trong khối try",
+      "Chỉ thực thi khi không có bất kỳ lệnh return nào trong khối try hoặc catch",
+      "Không thực thi nếu khối catch đã bắt được ngoại lệ"
     ],
     "correctAnswer": 0,
-    "explanation": "Trong cấu trúc thiết kế của Java Collections Framework: Interface java.util.Collection là gốc của các cấu trúc lưu trữ tập hợp phần tử đơn lẻ (gồm List, Set, Queue). Riêng java.util.Map quản lý cặp khóa - giá trị (Key-Value) có cấu trúc hoàn toàn khác biệt nên KHÔNG kế thừa từ Collection mà đứng độc lập.",
-    "difficulty": "easy",
+    "explanation": "Khối finally luôn chạy ngay cả khi có return trong try/catch. Trường hợp duy nhất không chạy là System.exit() hoặc JVM crash.",
+    "difficulty": "medium",
     "tags": [
-      "Collections-Hierarchy",
-      "Collection-vs-Map"
+      "Finally-Block",
+      "Execution-Guarantee"
     ]
   },
   {
     "id": "L5_Q04",
     "lessonId": 5,
-    "title": "So sánh độ phức tạp thuật toán thời gian giữa ArrayList và LinkedList khi truy cập ngẫu nhiên phần tử theo chỉ số index (get(i))?",
-    "code": null,
-    "options": [
-      "ArrayList mất O(1) do dựa trên mảng liên tục; LinkedList mất O(n) do phải duyệt tuần tự từ đầu hoặc cuối danh sách",
-      "LinkedList mất O(1); ArrayList mất O(n)",
-      "Cả hai cấu trúc đều mất O(1) thời gian",
-      "Cả hai cấu trúc đều mất O(log n) thời gian"
-    ],
-    "correctAnswer": 0,
-    "explanation": "ArrayList sử dụng mảng động nội bộ (contiguous memory array), do đó việc truy cập theo chỉ số get(i) tính toán địa chỉ trực tiếp mất O(1). LinkedList sử dụng danh sách liên kết đôi (doubly-linked list), do không có địa chỉ liên tục nên muốn lấy phần tử ở chỉ số i phải duyệt tuần tự từ đầu hoặc cuối tới vị trí đó, mất thời gian O(n).",
-    "difficulty": "easy",
-    "tags": [
-      "ArrayList",
-      "LinkedList",
-      "Time-Complexity"
-    ]
-  },
-  {
-    "id": "L5_Q05",
-    "lessonId": 5,
-    "title": "Sự khác biệt cốt lõi giữa HashSet và TreeSet trong Java là gì?",
-    "code": null,
-    "options": [
-      "HashSet dựa trên bảng băm (HashMap), không đảm bảo thứ tự, thao tác O(1); TreeSet dựa trên cây Đỏ-Đen (TreeMap), tự động sắp xếp có thứ tự, thao tác O(log n) và đòi hỏi phần tử phải so sánh được",
-      "HashSet tự động sắp xếp phần tử tăng dần; TreeSet lưu theo thứ tự chèn",
-      "TreeSet cho phép lưu nhiều phần tử null; HashSet cấm hoàn toàn giá trị null",
-      "HashSet chỉ lưu trữ được kiểu nguyên thủy; TreeSet chỉ lưu trữ kiểu đối tượng"
-    ],
-    "correctAnswer": 0,
-    "explanation": "HashSet sử dụng bảng băm nên không có bất kỳ thứ tự nào, độ phức tạp trung bình là O(1), cho phép 1 giá trị null. TreeSet được cài đặt bằng cây Đỏ-Đen tự cân bằng, luôn duy trì thứ tự sắp xếp của các phần tử (độ phức tạp O(log n)), không cho phép null và bắt buộc các phần tử phải implements Comparable hoặc cung cấp một Comparator.",
-    "difficulty": "medium",
-    "tags": [
-      "HashSet",
-      "TreeSet",
-      "Data-Structures"
-    ]
-  },
-  {
-    "id": "L5_Q06",
-    "lessonId": 5,
-    "title": "Cơ chế Fail-Fast của Iterator trong Java Collections hoạt động như thế nào?",
-    "code": null,
-    "options": [
-      "Theo dõi biến modCount; nếu phát hiện tập hợp bị thay đổi cấu trúc trong khi đang duyệt (ngoài trừ dùng phương thức iterator.remove()), nó sẽ lập tức ném ConcurrentModificationException",
-      "Tự động sửa lỗi cấu trúc khi phát hiện có luồng khác can thiệp",
-      "Chờ đợi luồng khác kết thúc rồi mới tiếp tục duyệt",
-      "Tạo một bản sao độc lập của tập hợp mỗi khi khởi tạo Iterator"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Các Iterator của ArrayList, HashMap,... là Fail-Fast. Chúng theo dõi biến đếm thay đổi cấu trúc modCount. Khi gọi next(), nếu phát hiện modCount khác với giá trị expectedModCount lúc khởi tạo iterator (do có thao tác add/remove từ ngoài), nó lập tức ném java.util.ConcurrentModificationException để ngăn chặn hành vi không đoán trước được.",
-    "difficulty": "hard",
-    "tags": [
-      "Fail-Fast",
-      "ConcurrentModificationException",
-      "Iterator"
-    ]
-  },
-  {
-    "id": "L5_Q07",
-    "lessonId": 5,
-    "title": "Sự khác nhau căn bản giữa interface java.lang.Comparable và java.util.Comparator là gì?",
-    "code": null,
-    "options": [
-      "Comparable định nghĩa thứ tự tự nhiên (natural ordering) bên trong chính lớp qua compareTo(T o); Comparator định nghĩa chiến lược so sánh tùy biến bên ngoài qua compare(T o1, T o2)",
-      "Comparable nằm ở gói java.util; Comparator nằm ở java.lang",
-      "Comparable có thể định nghĩa nhiều tiêu chí sắp xếp; Comparator chỉ định nghĩa được một tiêu chí duy nhất",
-      "Comparable chỉ dùng cho chuỗi; Comparator chỉ dùng cho số"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Comparable được triển khai trực tiếp bởi chính lớp cần sắp xếp để định nghĩa thứ tự tự nhiên duy nhất của đối tượng thông qua phương thức compareTo(T o). Comparator là một interface riêng biệt bên ngoài cho phép định nghĩa nhiều tiêu chí sắp xếp linh hoạt khác nhau thông qua compare(T o1, T o2) mà không cần can thiệp sửa đổi mã nguồn của lớp.",
-    "difficulty": "medium",
-    "tags": [
-      "Comparable",
-      "Comparator",
-      "Sorting"
-    ]
-  },
-  {
-    "id": "L5_Q08",
-    "lessonId": 5,
-    "title": "Trong HashMap của Java 8+, một bucket dạng danh sách liên kết sẽ được chuyển hóa thành Cây Đỏ-Đen (Treeify) khi thỏa mãn điều kiện nào?",
-    "code": null,
-    "options": [
-      "Số lượng phần tử trong bucket đạt từ 8 trở lên (TREEIFY_THRESHOLD = 8) VÀ tổng dung lượng mảng bucket tối thiểu là 64 (MIN_TREEIFY_CAPACITY = 64)",
-      "Chỉ cần số lượng phần tử trong bucket đạt từ 4 trở lên",
-      "Chỉ cần tổng số phần tử trong toàn bộ HashMap vượt quá 100",
-      "Khi có 2 phần tử có cùng hashCode()"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Cơ chế Treeification trong HashMap (Java 8): Khi số node va chạm trong 1 bucket đạt ngưỡng TREEIFY_THRESHOLD (8), JVM sẽ kiểm tra dung lượng bảng băm. Nếu dung lượng bảng < 64, nó ưu tiên resize phóng to bảng để phân tán node. Chỉ khi dung lượng bảng >= 64 VÀ số phần tử trong bucket >= 8, bucket đó mới chính thức được chuyển đổi thành Red-Black Tree.",
-    "difficulty": "hard",
-    "tags": [
-      "HashMap",
-      "Treeification",
-      "Red-Black-Tree"
-    ]
-  },
-  {
-    "id": "L5_Q09",
-    "lessonId": 5,
-    "title": "Vì sao các đối tượng làm Khóa (Key) trong HashMap nên được thiết kế là Bất biến (Immutable) như String hoặc Integer?",
-    "code": null,
-    "options": [
-      "Nếu trạng thái của key bị thay đổi sau khi chèn vào Map, hashCode của nó sẽ đổi dẫn tới sai lệch chỉ số bucket, khiến phương thức get() không thể tìm lại được đối tượng",
-      "Để giảm thiểu dung lượng RAM cấp phát cho HashMap",
-      "Do Java cấm sử dụng các lớp tự định nghĩa làm key trong HashMap",
-      "Để ngăn cản việc ghi đè giá trị (value) của key đó"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Khi lưu một phần tử vào HashMap, vị trí bucket được tính từ hashCode của key. Nếu key là mutable và bị thay đổi sau khi chèn, hashCode của nó sẽ bị thay đổi theo. Khi ta gọi map.get(key), HashMap sẽ tính hash mới và tìm ở bucket khác, dẫn đến không thể tìm thấy phần tử ban đầu (trả về null), gây rò rỉ bộ nhớ nghiêm trọng.",
-    "difficulty": "hard",
-    "tags": [
-      "HashMap",
-      "Immutable-Key",
-      "Hash-Contract"
-    ]
-  },
-  {
-    "id": "L5_Q10",
-    "lessonId": 5,
-    "title": "Điểm khác biệt giữa hai phương thức poll() và remove() khi lấy phần tử ra khỏi hàng đợi Queue rỗng trong Java là gì?",
-    "code": null,
-    "options": [
-      "poll() trả về null; remove() ném ngoại lệ NoSuchElementException",
-      "poll() ném NoSuchElementException; remove() trả về null",
-      "Cả hai phương thức đều trả về null",
-      "Cả hai phương thức đều ném NullPointerException"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Trong Queue interface: nhóm phương thức kiểm tra an toàn gồm offer(), poll(), peek() sẽ trả về giá trị đặc biệt (false hoặc null) khi hàng đợi đầy/rỗng. Nhóm phương thức truyền thống gồm add(), remove(), element() sẽ ném ngoại lệ (IllegalStateException hoặc NoSuchElementException) khi thất bại.",
-    "difficulty": "easy",
-    "tags": [
-      "Queue",
-      "Collections-API"
-    ]
-  },
-  {
-    "id": "L5_Q11",
-    "lessonId": 5,
+    "type": "single",
     "title": "Lớp Book ghi đè equals() nhưng KHÔNG ghi đè hashCode(). Kết quả in ra kích thước của HashSet sau đoạn mã là gì?",
     "code": "import java.util.*;\nclass Book {\n    int id;\n    Book(int id) { this.id = id; }\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) return true;\n        if (!(o instanceof Book)) return false;\n        return id == ((Book) o).id;\n    }\n}\npublic class SetTest {\n    public static void main(String[] args) {\n        Set<Book> set = new HashSet<>();\n        set.add(new Book(101));\n        set.add(new Book(101));\n        System.out.println(set.size());\n    }\n}",
     "options": [
@@ -209,7 +77,7 @@
       "Ném ngoại lệ IllegalStateException"
     ],
     "correctAnswer": 0,
-    "explanation": "Bẫy vi phạm hợp đồng equals/hashCode! Mặc dù hai đối tượng Book(101) có cùng id và equals() trả về true, nhưng vì không override hashCode() nên chúng sử dụng hashCode mặc định của Object (dựa trên địa chỉ bộ nhớ). Do đó hai đối tượng có hashCode hoàn toàn khác nhau, được đưa vào hai bucket khác nhau trong HashSet. HashSet không phát hiện trùng lặp và kích thước tập hợp là 2!",
+    "explanation": "Do không override hashCode(), hai đối tượng dùng hashCode mặc định của Object (dựa trên địa chỉ bộ nhớ), rơi vào 2 bucket khác nhau trong HashSet. HashSet không phát hiện trùng lặp -> kích thước là 2.",
     "difficulty": "hard",
     "tags": [
       "equals-hashCode",
@@ -218,8 +86,49 @@
     ]
   },
   {
-    "id": "L5_Q12",
+    "id": "L5_Q05",
     "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau cho kết quả trả về là gì khi thực thi phương thức test()?",
+    "code": "public class FinallyReturn {\n    public static int test() {\n        try {\n            return 10;\n        } finally {\n            return 20;\n        }\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "options": [
+      "20",
+      "10",
+      "30",
+      "Lỗi biên dịch do có hai lệnh return"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lệnh return 20 trong khối finally ghi đè hoàn toàn giá trị return 10 của khối try. Hàm test() trả về 20.",
+    "difficulty": "medium",
+    "tags": [
+      "Finally-Block",
+      "Return-Value"
+    ]
+  },
+  {
+    "id": "L5_Q06",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Thứ tự đóng các tài nguyên khi sử dụng try-with-resources trong đoạn mã sau là gì?",
+    "code": "class Res implements AutoCloseable {\n    String name;\n    Res(String name) { this.name = name; }\n    public void close() { System.out.print(\"Close \" + name + \" \"); }\n}\npublic class TryWithResourcesTest {\n    public static void main(String[] args) {\n        try (Res r1 = new Res(\"R1\"); Res r2 = new Res(\"R2\")) {\n            System.out.print(\"Work \");\n        }\n    }\n}",
+    "options": [
+      "Work Close R2 Close R1 ",
+      "Work Close R1 Close R2 ",
+      "Close R1 Close R2 Work ",
+      "Work Close R1 "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tài nguyên trong try-with-resources được đóng tự động theo thứ tự NGƯỢC LẠI với thứ tự khai báo (LIFO): thân try in 'Work ', r2 đóng in 'Close R2 ', r1 đóng in 'Close R1 '. Kết quả: 'Work Close R2 Close R1 '.",
+    "difficulty": "medium",
+    "tags": [
+      "Try-with-resources",
+      "LIFO"
+    ]
+  },
+  {
+    "id": "L5_Q07",
+    "lessonId": 5,
+    "type": "single",
     "title": "Hiện tượng gì xảy ra khi thay đổi trạng thái của Key sau khi đưa vào HashMap trong đoạn mã sau?",
     "code": "import java.util.*;\nclass Key {\n    int val;\n    Key(int v) { this.val = v; }\n    public int hashCode() { return val; }\n    public boolean equals(Object o) { return o instanceof Key && ((Key) o).val == this.val; }\n}\npublic class MapTrap {\n    public static void main(String[] args) {\n        Map<Key, String> map = new HashMap<>();\n        Key k = new Key(5);\n        map.put(k, \"Success\");\n        k.val = 10; // Thay doi gia tri key sau khi put\n        System.out.println(map.get(k) + \" \" + map.get(new Key(5)));\n    }\n}",
     "options": [
@@ -229,37 +138,17 @@
       "null Success"
     ],
     "correctAnswer": 0,
-    "explanation": "1) Khi k.val = 5, phần tử được lưu ở bucket 5. Khi sửa k.val = 10, k.hashCode() trở thành 10. Lệnh map.get(k) tìm ở bucket 10 -> rỗng -> trả về null. 2) Lệnh map.get(new Key(5)) tìm ở bucket 5: trong bucket 5 có đối tượng cũ k, nhưng khi so sánh equals() giữa new Key(5) và k (lúc này k.val đã là 10) thì trả về false -> trả về null. Do đó cả hai đều trả về 'null null'.",
+    "explanation": "Khi k.val đổi thành 10, hash mới = 10 dẫn tới tìm ở bucket khác -> null. Tìm bằng new Key(5) ở bucket 5 thì so sánh equals() trả về false vì k.val hiện tại đã là 10 -> null. Cả hai đều trả về 'null null'.",
     "difficulty": "hard",
     "tags": [
       "HashMap",
-      "Mutable-Key",
-      "Memory-Leak"
+      "Mutable-Key"
     ]
   },
   {
-    "id": "L5_Q13",
+    "id": "L5_Q08",
     "lessonId": 5,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
-    "code": "import java.util.*;\nclass Product {\n    String name;\n    Product(String name) { this.name = name; }\n}\npublic class TreeSetTest {\n    public static void main(String[] args) {\n        Set<Product> set = new TreeSet<>();\n        set.add(new Product(\"Laptop\"));\n        set.add(new Product(\"Phone\"));\n    }\n}",
-    "options": [
-      "Ném ClassCastException tại runtime vì Product không triển khai Comparable",
-      "Chương trình chạy bình thường và sắp xếp theo tên",
-      "Lỗi biên dịch tại dòng set.add()",
-      "Chương trình chạy nhưng chỉ lưu được một phần tử"
-    ],
-    "correctAnswer": 0,
-    "explanation": "TreeSet hoạt động dựa trên cây Đỏ-Đen và bắt buộc các phần tử phải so sánh được với nhau để xác định vị trí trên cây. Vì Product không implements java.lang.Comparable và constructor của TreeSet không được cung cấp Comparator, khi gọi add() lần thứ hai (hoặc ngay lần đầu), JVM cố ép kiểu Product sang Comparable và ném ngoại lệ: java.lang.ClassCastException: class Product cannot be cast to class java.lang.Comparable.",
-    "difficulty": "medium",
-    "tags": [
-      "TreeSet",
-      "Comparable",
-      "ClassCastException"
-    ]
-  },
-  {
-    "id": "L5_Q14",
-    "lessonId": 5,
+    "type": "single",
     "title": "Đoạn mã sau xảy ra lỗi gì khi thực thi?",
     "code": "import java.util.*;\npublic class ForeachRemove {\n    public static void main(String[] args) {\n        List<String> list = new ArrayList<>(Arrays.asList(\"A\", \"B\", \"C\"));\n        for (String s : list) {\n            if (s.equals(\"A\")) {\n                list.remove(s); // Xoa truc tiep tu list\n            }\n        }\n    }\n}",
     "options": [
@@ -269,36 +158,17 @@
       "Vòng lặp chạy vô tận"
     ],
     "correctAnswer": 0,
-    "explanation": "Vòng lặp foreach trong Java thực chất sử dụng Iterator ngầm định. Khi gọi list.remove(s) trực tiếp trên List, cấu trúc mảng bị thay đổi làm tăng biến modCount. Ở lần lặp kế tiếp, phương thức iterator.next() phát hiện modCount != expectedModCount nên lập tức ném ConcurrentModificationException. Muốn xóa an toàn khi đang duyệt phải dùng iterator.remove().",
+    "explanation": "Cơ chế Fail-Fast: Iterator kiểm tra modCount. Xóa trực tiếp qua list.remove(s) làm thay đổi modCount, iterator.next() phát hiện và ném ConcurrentModificationException.",
     "difficulty": "medium",
     "tags": [
-      "ConcurrentModificationException",
-      "Iterator",
-      "Fail-Fast"
+      "Fail-Fast",
+      "ConcurrentModificationException"
     ]
   },
   {
-    "id": "L5_Q15",
+    "id": "L5_Q09",
     "lessonId": 5,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
-    "code": "import java.util.*;\npublic class ArraysAsListTest {\n    public static void main(String[] args) {\n        List<String> list = Arrays.asList(\"Java\", \"Python\", \"C++\");\n        list.add(\"Go\"); // Dong nay\n        System.out.println(list.size());\n    }\n}",
-    "options": [
-      "Ném ngoại lệ UnsupportedOperationException tại dòng list.add(\"Go\")",
-      "Chương trình in ra 4",
-      "Lỗi biên dịch do Arrays.asList trả về kiểu không thể ép sang List<String>",
-      "Ném IndexOutOfBoundsException"
-    ],
-    "correctAnswer": 0,
-    "explanation": "Phương thức Arrays.asList() trả về một thể hiện của lớp tĩnh nội bộ Arrays$ArrayList có kích thước cố định bọc quanh mảng gốc. Lớp này không hỗ trợ các thao tác làm thay đổi kích thước danh sách như add() hoặc remove(). Khi gọi list.add(), nó ném ngoại lệ: java.lang.UnsupportedOperationException.",
-    "difficulty": "medium",
-    "tags": [
-      "Arrays-asList",
-      "UnsupportedOperationException"
-    ]
-  },
-  {
-    "id": "L5_Q16",
-    "lessonId": 5,
+    "type": "single",
     "title": "Bẫy nạp chồng phương thức remove() trong List<Integer>! Kết quả in ra là gì?",
     "code": "import java.util.*;\npublic class ListRemoveTrap {\n    public static void main(String[] args) {\n        List<Integer> list = new ArrayList<>();\n        list.add(10); // index 0\n        list.add(20); // index 1\n        list.add(30); // index 2\n        list.remove(1); // Goi remove(int index) hay remove(Object o)?\n        System.out.println(list);\n    }\n}",
     "options": [
@@ -308,17 +178,97 @@
       "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Lớp List có 2 phương thức remove: remove(int index) và remove(Object o). Khi truyền vào số nguyên nguyên thủy 1 (kiểu int), trình biên dịch ưu tiên khớp chính xác với kiểu nguyên thủy mà không thực hiện autoboxing sang Integer. Do đó nó gọi remove(int index = 1), xóa phần tử tại chỉ số 1 (giá trị 20). Danh sách còn lại là: [10, 30]. Nếu muốn xóa giá trị 1 thì phải truyền list.remove(Integer.valueOf(1)).",
+    "explanation": "Truyền số nguyên nguyên thủy 1 khớp chính xác với remove(int index), xóa phần tử tại index 1 (giá trị 20). Danh sách còn: [10, 30].",
     "difficulty": "hard",
     "tags": [
       "List-Remove",
-      "Overloading-Trap",
       "Autoboxing"
     ]
   },
   {
-    "id": "L5_Q17",
+    "id": "L5_Q10",
     "lessonId": 5,
+    "type": "single",
+    "title": "Từ khóa transient khi áp dụng cho một trường dữ liệu (field) trong Java có ý nghĩa gì?",
+    "code": null,
+    "options": [
+      "Loại trừ trường dữ liệu đó khỏi quá trình tuần tự hóa (Serialization); Khi giải tuần tự hóa, trường này sẽ nhận giá trị mặc định (0, null, false)",
+      "Biến trường đó thành biến chỉ đọc giống như final",
+      "Lưu trường dữ liệu đó vào bộ nhớ vĩnh viễn trên ổ cứng",
+      "Cho phép trường đó được truy cập bởi nhiều luồng mà không cần đồng bộ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "transient báo cho ObjectOutputStream bỏ qua trường dữ liệu này khi serialize. Khi deserialize, trường transient nhận giá trị mặc định (0 hoặc null).",
+    "difficulty": "easy",
+    "tags": [
+      "Transient",
+      "Serialization"
+    ]
+  },
+  {
+    "id": "L5_Q11",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
+    "code": "import java.io.*;\npublic class CatchOrderTest {\n    public static void main(String[] args) {\n        try {\n            FileInputStream fis = new FileInputStream(\"file.txt\");\n        } catch (Exception e) {\n            System.out.println(\"Exception caught\");\n        } catch (FileNotFoundException e) { // Dong nay\n            System.out.println(\"File not found\");\n        }\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: FileNotFoundException đã được bắt bởi khối catch (Exception) ở trước (unreachable catch block)",
+      "Biên dịch thành công và in ra 'File not found'",
+      "Biên dịch thành công và in ra 'Exception caught'",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "catch(Exception) đứng trước catch(FileNotFoundException) khiến khối catch con không bao giờ có thể tiếp cận được (unreachable code). Trình biên dịch báo lỗi.",
+    "difficulty": "easy",
+    "tags": [
+      "Catch-Order",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L5_Q12",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import java.util.*;\nclass Product {\n    String name;\n    Product(String name) { this.name = name; }\n}\npublic class TreeSetTest {\n    public static void main(String[] args) {\n        Set<Product> set = new TreeSet<>();\n        set.add(new Product(\"Laptop\"));\n        set.add(new Product(\"Phone\"));\n    }\n}",
+    "options": [
+      "Ném ClassCastException tại runtime vì Product không triển khai Comparable",
+      "Chương trình chạy bình thường và sắp xếp theo tên",
+      "Lỗi biên dịch tại dòng set.add()",
+      "Chương trình chạy nhưng chỉ lưu được một phần tử"
+    ],
+    "correctAnswer": 0,
+    "explanation": "TreeSet sắp xếp dựa trên cây Đỏ-Đen. Vì Product không implements Comparable và không có Comparator, khi thêm phần tử thứ hai JVM ném ClassCastException: cannot be cast to Comparable.",
+    "difficulty": "medium",
+    "tags": [
+      "TreeSet",
+      "Comparable"
+    ]
+  },
+  {
+    "id": "L5_Q13",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import java.util.*;\npublic class ArraysAsListTest {\n    public static void main(String[] args) {\n        List<String> list = Arrays.asList(\"Java\", \"Python\", \"C++\");\n        list.add(\"Go\"); // Dong nay\n        System.out.println(list.size());\n    }\n}",
+    "options": [
+      "Ném ngoại lệ UnsupportedOperationException tại dòng list.add(\"Go\")",
+      "Chương trình in ra 4",
+      "Lỗi biên dịch do Arrays.asList trả về kiểu không thể ép sang List<String>",
+      "Ném IndexOutOfBoundsException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Arrays.asList() trả về fixed-size list bọc quanh mảng gốc, không hỗ trợ add() hoặc remove(). Gọi list.add() ném java.lang.UnsupportedOperationException.",
+    "difficulty": "easy",
+    "tags": [
+      "Arrays-asList",
+      "UnsupportedOperationException"
+    ]
+  },
+  {
+    "id": "L5_Q14",
+    "lessonId": 5,
+    "type": "single",
     "title": "Giá trị trả về của phương thức map.put(K, V) trong Java là gì?",
     "code": "import java.util.*;\npublic class MapPutTest {\n    public static void main(String[] args) {\n        Map<String, Integer> map = new HashMap<>();\n        Integer v1 = map.put(\"A\", 100);\n        Integer v2 = map.put(\"A\", 200);\n        System.out.println(v1 + \" \" + v2);\n    }\n}",
     "options": [
@@ -328,16 +278,182 @@
       "100 null"
     ],
     "correctAnswer": 0,
-    "explanation": "Theo đặc tả của Map.put(key, value): Phương thức sẽ trả về giá trị CŨ (previous value) đã từng liên kết với key đó, hoặc trả về null nếu key đó chưa từng tồn tại trong map (hoặc trước đó liên kết với null). Lần put đầu tiên key 'A' chưa có -> v1 = null. Lần put thứ hai key 'A' đã có giá trị 100 -> v2 nhận giá trị cũ 100 và giá trị mới của key 'A' được cập nhật thành 200. Kết quả in ra: 'null 100'.",
+    "explanation": "Map.put(k, v) trả về giá trị CŨ (previous value) của key đó, hoặc null nếu trước đó key chưa có trong map. v1 = null, v2 = 100. In ra 'null 100'.",
     "difficulty": "medium",
     "tags": [
       "HashMap",
-      "Map-Put-API"
+      "Map-Put"
+    ]
+  },
+  {
+    "id": "L5_Q15",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Cơ chế Ngoại lệ bị áp chế (Suppressed Exceptions) trong try-with-resources. Kết quả in ra là gì?",
+    "code": "class FaultyRes implements AutoCloseable {\n    public void close() throws Exception {\n        throw new Exception(\"Close Exception\");\n    }\n}\npublic class SuppressedTest {\n    public static void main(String[] args) {\n        try (FaultyRes r = new FaultyRes()) {\n            throw new Exception(\"Try Exception\");\n        } catch (Exception e) {\n            System.out.println(e.getMessage() + \" | Suppressed: \" + e.getSuppressed().length);\n        }\n    }\n}",
+    "options": [
+      "Try Exception | Suppressed: 1",
+      "Close Exception | Suppressed: 1",
+      "Try Exception | Suppressed: 0",
+      "Close Exception | Suppressed: 0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ngoại lệ trong thân try ('Try Exception') được ném ra làm ngoại lệ chính. Ngoại lệ trong close() được tự động đính kèm vào danh sách Suppressed. e.getMessage() = 'Try Exception', e.getSuppressed().length = 1.",
+    "difficulty": "hard",
+    "tags": [
+      "Try-with-resources",
+      "Suppressed-Exceptions"
+    ]
+  },
+  {
+    "id": "L5_Q16",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Hiện tượng xung đột băm (Hash Collision) trong HashMap xảy ra khi nào và JVM xử lý như thế nào?",
+    "code": null,
+    "options": [
+      "Xảy ra khi hai key khác nhau có cùng chỉ số bucket (hash code giống nhau hoặc cùng vị trí index); JVM lưu các phần tử này vào cùng một bucket dưới dạng danh sách liên kết hoặc cây Đỏ-Đen",
+      "Xảy ra khi dung lượng mảng bị đầy; JVM lập tức ném ngoại lệ HashCollisionException",
+      "Xảy ra khi key bị trùng lặp giá trị equals(); JVM ghi đè giá trị cũ",
+      "Xảy ra khi HashMap không cho phép lưu trữ giá trị null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hash collision xảy ra khi 2 key khác nhau ánh xạ vào cùng bucket index. JVM sử dụng Separate Chaining với LinkedList, tự động chuyển thành Red-Black Tree khi bucket >= 8 phần tử.",
+    "difficulty": "hard",
+    "tags": [
+      "HashMap",
+      "Hash-Collision"
+    ]
+  },
+  {
+    "id": "L5_Q17",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Những Collection nào sau đây trong Java KHÔNG CHO PHÉP chứa phần tử mang giá trị null? (Chọn tất cả các đáp án đúng)",
+    "code": null,
+    "options": [
+      "TreeSet (sử dụng Comparable tự nhiên)",
+      "TreeMap (đối với Key khi dùng natural ordering)",
+      "ArrayList",
+      "HashSet"
+    ],
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "TreeSet và TreeMap (key) gọi compareTo() khi chèn. null.compareTo(...) ném NullPointerException nên không cho phép null. ArrayList và HashSet cho phép lưu null bình thường.",
+    "difficulty": "medium",
+    "tags": [
+      "Null-Policy",
+      "TreeSet",
+      "Multi-Select"
     ]
   },
   {
     "id": "L5_Q18",
     "lessonId": 5,
+    "type": "single",
+    "title": "Hiện tượng gì xảy ra khi khối finally ném ra một ngoại lệ mới trong đoạn mã sau?",
+    "code": "public class ExceptionMasking {\n    public static void main(String[] args) {\n        try {\n            throw new NullPointerException(\"Loi o Try\");\n        } finally {\n            throw new IllegalArgumentException(\"Loi o Finally\");\n        }\n    }\n}",
+    "options": [
+      "Ném ra IllegalArgumentException (\"Loi o Finally\"), ngoại lệ NullPointerException bị che giấu hoàn toàn",
+      "Ném ra NullPointerException (\"Loi o Try\")",
+      "Cả hai ngoại lệ được in ra màn hình cùng lúc",
+      "Lỗi biên dịch tại khối finally"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ngoại lệ mới ném ra từ khối finally sẽ ghi đè và nuốt chửng (mask/suppress) ngoại lệ ban đầu từ khối try. Ngoại lệ NullPointerException bị thất lạc.",
+    "difficulty": "hard",
+    "tags": [
+      "Exception-Masking",
+      "Finally-Block"
+    ]
+  },
+  {
+    "id": "L5_Q19",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra quá trình tuần tự hóa đối tượng chứa trường transient. Kết quả in ra là gì?",
+    "code": "import java.io.*;\nclass User implements Serializable {\n    String username;\n    transient int pin;\n    User(String u, int p) { this.username = u; this.pin = p; }\n}\npublic class SerializeTest {\n    public static void main(String[] args) throws Exception {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        ObjectOutputStream oos = new ObjectOutputStream(baos);\n        oos.writeObject(new User(\"vietanh\", 1234));\n\n        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));\n        User u = (User) ois.readObject();\n        System.out.println(u.username + \" \" + u.pin);\n    }\n}",
+    "options": [
+      "vietanh 0",
+      "vietanh 1234",
+      "null 0",
+      "Ném NotSerializableException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trường pin là transient nên không được ghi vào file. Khi giải tuần tự hóa (readObject), trường pin nhận giá trị mặc định của int là 0. In ra 'vietanh 0'.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "Transient"
+    ]
+  },
+  {
+    "id": "L5_Q20",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch (tính chất của Multi-catch)?",
+    "code": "import java.io.*;\nimport java.sql.*;\npublic class MultiCatchTest {\n    public static void main(String[] args) {\n        try {\n            if (args.length == 0) throw new IOException();\n            else throw new SQLException();\n        } catch (IOException | SQLException e) {\n            e = new IOException(); // Dong nay\n        }\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Biến ngoại lệ 'e' trong khối multi-catch ngầm định là final, không thể gán lại",
+      "Lỗi biên dịch: Không được phép gộp IOException và SQLException trong cùng một catch",
+      "Biên dịch thành công và gán lại bình thường",
+      "Ném NullPointerException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong cú pháp multi-catch (catch (TypeA | TypeB e)), biến ngoại lệ e ngầm định mang thuộc tính final (implicitly final). Không thể gán lại giá trị cho e.",
+    "difficulty": "hard",
+    "tags": [
+      "Multi-Catch",
+      "Implicitly-Final"
+    ]
+  },
+  {
+    "id": "L5_Q21",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau có khối finally chứa System.out.println. Kết quả in ra màn hình là gì?",
+    "code": "public class ExitTest {\n    public static void main(String[] args) {\n        try {\n            System.out.print(\"A \");\n            System.exit(0);\n        } finally {\n            System.out.print(\"B \");\n        }\n    }\n}",
+    "options": [
+      "A ",
+      "A B ",
+      "B ",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "System.exit(0) tắt máy ảo JVM ngay lập tức, khối finally KHÔNG ĐƯỢC CHẠY. Chỉ in ra 'A '.",
+    "difficulty": "easy",
+    "tags": [
+      "System-exit",
+      "Finally-Block"
+    ]
+  },
+  {
+    "id": "L5_Q22",
+    "lessonId": 5,
+    "type": "single",
+    "title": "So sánh độ phức tạp thuật toán thời gian giữa ArrayList và LinkedList khi truy cập ngẫu nhiên phần tử theo chỉ số index (get(i))?",
+    "code": null,
+    "options": [
+      "ArrayList mất O(1) do dựa trên mảng liên tục; LinkedList mất O(n) do phải duyệt tuần tự từ đầu hoặc cuối danh sách",
+      "LinkedList mất O(1); ArrayList mất O(n)",
+      "Cả hai cấu trúc đều mất O(1) thời gian",
+      "Cả hai cấu trúc đều mất O(log n) thời gian"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ArrayList có bộ nhớ liên tục O(1) get(i). LinkedList là danh sách liên kết đôi nên phải duyệt tuần tự mất O(n).",
+    "difficulty": "easy",
+    "tags": [
+      "ArrayList",
+      "LinkedList",
+      "Time-Complexity"
+    ]
+  },
+  {
+    "id": "L5_Q23",
+    "lessonId": 5,
+    "type": "single",
     "title": "Đoạn mã sau sử dụng Comparator.thenComparing để sắp xếp danh sách. Kết quả in ra là gì?",
     "code": "import java.util.*;\nclass Student {\n    String name;\n    int score;\n    Student(String n, int s) { this.name = n; this.score = s; }\n    public String toString() { return name + \":\" + score; }\n}\npublic class SortTest {\n    public static void main(String[] args) {\n        List<Student> list = Arrays.asList(\n            new Student(\"An\", 8),\n            new Student(\"Binh\", 9),\n            new Student(\"An\", 10)\n        );\n        list.sort(Comparator.comparing((Student s) -> s.name)\n                            .thenComparingInt(s -> s.score));\n        System.out.println(list);\n    }\n}",
     "options": [
@@ -347,17 +463,17 @@
       "[An:8, Binh:9, An:10]"
     ],
     "correctAnswer": 0,
-    "explanation": "Comparator đầu tiên so sánh theo name tăng dần: \"An\" đứng trước \"Binh\". Khi hai sinh viên cùng tên \"An\", tiêu chí thenComparingInt so sánh theo score tăng dần: điểm 8 đứng trước điểm 10. Do đó thứ tự là: An:8, An:10, rồi đến Binh:9. Kết quả in ra: '[An:8, An:10, Binh:9]'.",
+    "explanation": "Sắp xếp theo tên tăng dần: An đứng trước Binh. Trùng tên An thì so sánh theo score tăng dần: 8 đứng trước 10. Kết quả: '[An:8, An:10, Binh:9]'.",
     "difficulty": "medium",
     "tags": [
       "Comparator",
-      "thenComparing",
-      "Sorting"
+      "thenComparing"
     ]
   },
   {
-    "id": "L5_Q19",
+    "id": "L5_Q24",
     "lessonId": 5,
+    "type": "single",
     "title": "Đoạn mã sau kiểm tra thứ tự lưu trữ của LinkedHashSet. Kết quả in ra là gì?",
     "code": "import java.util.*;\npublic class LinkedHashSetTest {\n    public static void main(String[] args) {\n        Set<String> set = new LinkedHashSet<>();\n        set.add(\"Banana\");\n        set.add(\"Apple\");\n        set.add(\"Mango\");\n        set.add(\"Apple\"); // trung lap\n        System.out.println(String.join(\" \", set));\n    }\n}",
     "options": [
@@ -367,7 +483,7 @@
       "Banana Apple Mango Apple"
     ],
     "correctAnswer": 0,
-    "explanation": "LinkedHashSet vừa đảm bảo tính chất của Set (loại bỏ phần tử trùng lặp) vừa duy trì một danh sách liên kết kép chạy qua các phần tử để bảo toàn thứ tự chèn (insertion-order). Khi thêm lại \"Apple\" lần thứ hai, phần tử bị từ chối và vị trí thứ tự chèn ban đầu không đổi. Kết quả in ra theo đúng thứ tự chèn: 'Banana Apple Mango'.",
+    "explanation": "LinkedHashSet bảo toàn thứ tự chèn (insertion-order) và loại bỏ trùng lặp. Thêm lại \"Apple\" bị từ chối và thứ tự chèn ban đầu không đổi. In ra: 'Banana Apple Mango'.",
     "difficulty": "easy",
     "tags": [
       "LinkedHashSet",
@@ -375,8 +491,9 @@
     ]
   },
   {
-    "id": "L5_Q20",
+    "id": "L5_Q25",
     "lessonId": 5,
+    "type": "single",
     "title": "Đoạn mã sau sử dụng PriorityQueue (Hàng đợi ưu tiên). Kết quả in ra là gì?",
     "code": "import java.util.*;\npublic class PQTest {\n    public static void main(String[] args) {\n        PriorityQueue<Integer> pq = new PriorityQueue<>();\n        pq.add(40);\n        pq.add(10);\n        pq.add(30);\n        pq.add(20);\n        while (!pq.isEmpty()) {\n            System.out.print(pq.poll() + \" \");\n        }\n    }\n}",
     "options": [
@@ -386,12 +503,415 @@
       "10 40 30 20 "
     ],
     "correctAnswer": 0,
-    "explanation": "PriorityQueue trong Java mặc định là Min-Heap (cây vun đống cực tiểu). Mỗi lần gọi poll(), phần tử có độ ưu tiên nhỏ nhất (theo thứ tự tự nhiên của Comparable) sẽ được lấy ra đầu tiên. Vì vậy các số được lấy ra theo thứ tự tăng dần từ bé đến lớn: '10 20 30 40 '.",
+    "explanation": "PriorityQueue mặc định là Min-Heap. poll() luôn lấy ra phần tử nhỏ nhất trước. In ra thứ tự tăng dần: '10 20 30 40 '.",
     "difficulty": "easy",
     "tags": [
       "PriorityQueue",
-      "Min-Heap",
-      "Natural-Ordering"
+      "Min-Heap"
+    ]
+  },
+  {
+    "id": "L5_Q26",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Mục đích của việc khai báo hằng số 'serialVersionUID' trong lớp Serializable là gì?",
+    "code": null,
+    "options": [
+      "Kiểm soát phiên bản của lớp trong quá trình Serialization và Deserialization, tránh InvalidClassException khi lớp bị sửa đổi",
+      "Tăng tốc độ ghi dữ liệu của đối tượng vào đĩa cứng",
+      "Mã hóa bảo mật các trường dữ liệu mật khẩu",
+      "Bắt buộc JVM phải cấp phát dung lượng bộ nhớ cố định cho đối tượng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "serialVersionUID định danh phiên bản tương thích của class giữa quá trình tuần tự hóa và giải tuần tự hóa. Nếu hash không khớp, JVM ném InvalidClassException.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "serialVersionUID"
+    ]
+  },
+  {
+    "id": "L5_Q27",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Biến tĩnh (static field) có được lưu trữ trong quá trình tuần tự hóa (Serialization) của đối tượng hay không? Vì sao?",
+    "code": null,
+    "options": [
+      "Không được lưu, vì biến static thuộc về phạm vi lớp (Class) chứ không phải là một phần trạng thái của thể hiện đối tượng (Instance State)",
+      "Có được lưu bình thường như các trường instance khác",
+      "Chỉ được lưu nếu biến static đó có từ khóa final",
+      "Làm cho quá trình tuần tự hóa bị ném NotSerializableException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Serialization chỉ lưu instance state. Biến static thuộc về class nên không được lưu vào luồng ObjectOutputStream.",
+    "difficulty": "medium",
+    "tags": [
+      "Serialization",
+      "Static-Field"
+    ]
+  },
+  {
+    "id": "L5_Q28",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Sự khác biệt căn bản giữa Luồng Byte (Byte Streams) và Luồng Ký tự (Character Streams) trong Java I/O là gì?",
+    "code": null,
+    "options": [
+      "Byte Streams (InputStream/OutputStream) xử lý dữ liệu nhị phân thô theo từng byte 8-bit; Character Streams (Reader/Writer) xử lý văn bản theo từng ký tự Unicode 16-bit và tự động ánh xạ bảng mã",
+      "Byte Streams chỉ đọc được file văn bản; Character Streams chỉ đọc được ảnh và video",
+      "Character Streams nhanh hơn Byte Streams gấp 10 lần",
+      "Byte Streams không hỗ trợ cơ chế đệm bộ nhớ (Buffering)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Byte Streams xử lý 8-bit raw bytes (ảnh, âm thanh, video). Character Streams xử lý 16-bit Unicode characters theo encoding chuẩn (UTF-8).",
+    "difficulty": "easy",
+    "tags": [
+      "Java-IO",
+      "Byte-Stream",
+      "Character-Stream"
+    ]
+  },
+  {
+    "id": "L5_Q29",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class CustomCheckedException extends Exception {}\npublic class TestCustom {\n    static void doWork() {\n        throw new CustomCheckedException(); // Dong nay\n    }\n    public static void main(String[] args) {\n        doWork();\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Ngoại lệ Checked CustomCheckedException chưa được bắt bằng try-catch hoặc khai báo trong mệnh đề throws của phương thức doWork()",
+      "Lỗi biên dịch do CustomCheckedException không có constructor nhận String",
+      "Biên dịch thành công và ném lỗi tại runtime",
+      "Lỗi biên dịch tại hàm main do thiếu static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CustomCheckedException kế thừa từ Exception nên là Checked Exception. Bắt buộc phải xử lý try-catch hoặc khai báo throws ở chữ ký phương thức doWork().",
+    "difficulty": "easy",
+    "tags": [
+      "Checked-Exception",
+      "Compile-Error"
+    ]
+  },
+  {
+    "id": "L5_Q30",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Điểm khác biệt giữa hai phương thức poll() và remove() khi lấy phần tử ra khỏi hàng đợi Queue rỗng trong Java là gì?",
+    "code": null,
+    "options": [
+      "poll() trả về null; remove() ném ngoại lệ NoSuchElementException",
+      "poll() ném NoSuchElementException; remove() trả về null",
+      "Cả hai phương thức đều trả về null",
+      "Cả hai phương thức đều ném NullPointerException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Queue rỗng: poll() trả về null; remove() ném NoSuchElementException.",
+    "difficulty": "easy",
+    "tags": [
+      "Queue",
+      "Collections-API"
+    ]
+  },
+  {
+    "id": "L5_Q31",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Trong HashMap của Java 8+, một bucket dạng danh sách liên kết sẽ được chuyển hóa thành Cây Đỏ-Đen (Treeify) khi thỏa mãn điều kiện nào?",
+    "code": null,
+    "options": [
+      "Số lượng phần tử trong bucket đạt từ 8 trở lên (TREEIFY_THRESHOLD = 8) VÀ tổng dung lượng mảng bucket tối thiểu là 64 (MIN_TREEIFY_CAPACITY = 64)",
+      "Chỉ cần số lượng phần tử trong bucket đạt từ 4 trở lên",
+      "Chỉ cần tổng số phần tử trong toàn bộ HashMap vượt quá 100",
+      "Khi có 2 phần tử có cùng hashCode()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cơ chế Treeification trong Java 8: Khi số node trong 1 bucket >= 8 VÀ dung lượng toàn bảng >= 64, bucket mới chuyển thành Red-Black Tree để giảm thời gian tìm kiếm từ O(n) về O(log n).",
+    "difficulty": "hard",
+    "tags": [
+      "HashMap",
+      "Treeification"
+    ]
+  },
+  {
+    "id": "L5_Q32",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Những lớp nào sau đây trong Java Collections Framework được thiết kế là An toàn luồng (Thread-safe)? (Chọn các đáp án đúng)",
+    "code": null,
+    "options": [
+      "ConcurrentHashMap",
+      "CopyOnWriteArrayList",
+      "ArrayList",
+      "HashMap"
+    ],
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "ConcurrentHashMap và CopyOnWriteArrayList thuộc gói java.util.concurrent là thread-safe. ArrayList và HashMap không được đồng bộ hóa (non-thread-safe).",
+    "difficulty": "medium",
+    "tags": [
+      "Thread-Safe-Collections",
+      "Multi-Select"
+    ]
+  },
+  {
+    "id": "L5_Q33",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "class SuperClass {\n    void execute() {}\n}\nclass SubClass extends SuperClass {\n    @Override\n    void execute() throws Exception {} // Dong nay\n}",
+    "options": [
+      "Lỗi biên dịch: Phương thức ghi đè không được khai báo ném ngoại lệ Checked mới nếu phương thức ở lớp cha không khai báo",
+      "Lỗi biên dịch: Lớp SubClass phải là abstract",
+      "Biên dịch thành công vì Exception là ngoại lệ chuẩn của Java",
+      "Chương trình chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp cha execute() không ném ngoại lệ Checked nào. Lớp con khai báo ném Exception (Checked) là vi phạm quy tắc ghi đè.",
+    "difficulty": "medium",
+    "tags": [
+      "Overriding",
+      "Throws-Rule"
+    ]
+  },
+  {
+    "id": "L5_Q34",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "import java.util.*;\npublic class MapComputeTest {\n    public static void main(String[] args) {\n        Map<String, Integer> map = new HashMap<>();\n        map.put(\"A\", 1);\n        map.computeIfPresent(\"A\", (k, v) -> v + 10);\n        map.computeIfAbsent(\"B\", k -> 20);\n        System.out.println(map.get(\"A\") + \" \" + map.get(\"B\"));\n    }\n}",
+    "options": [
+      "11 20",
+      "1 20",
+      "11 null",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "computeIfPresent(\"A\"): \"A\" đã có giá trị 1 -> cập nhật thành 1 + 10 = 11. computeIfAbsent(\"B\"): \"B\" chưa có -> tính toán và gán giá trị 20. In ra '11 20'.",
+    "difficulty": "medium",
+    "tags": [
+      "HashMap",
+      "Java8-Map-Methods"
+    ]
+  },
+  {
+    "id": "L5_Q35",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Cơ chế Fail-Fast của Iterator trong Java hoạt động dựa trên việc kiểm tra biến nào?",
+    "code": null,
+    "options": [
+      "Biến modCount (đếm số lần cấu trúc collection bị thay đổi)",
+      "Biến size (kích thước hiện tại)",
+      "Biến hashCode của collection",
+      "Biến boolean isLocked"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Iterator so sánh expectedModCount với biến modCount của collection. Nếu phát hiện modCount bị thay đổi từ bên ngoài (add/remove), nó lập tức ném ConcurrentModificationException.",
+    "difficulty": "medium",
+    "tags": [
+      "Fail-Fast",
+      "modCount"
+    ]
+  },
+  {
+    "id": "L5_Q36",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "public class StackOverflowTest {\n    static void recursive() {\n        recursive();\n    }\n    public static void main(String[] args) {\n        try {\n            recursive();\n        } catch (Exception e) {\n            System.out.println(\"Caught Exception\");\n        }\n    }\n}",
+    "options": [
+      "Ném ngoại lệ java.lang.StackOverflowError và KHÔNG BỊ BẮT bởi khối catch(Exception e)",
+      "In ra 'Caught Exception'",
+      "Chương trình chạy lặp vô tận làm treo máy",
+      "Lỗi biên dịch tại hàm recursive()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "StackOverflowError là một lớp con của java.lang.Error, KHÔNG kế thừa từ Exception. Do đó khối catch(Exception e) không thể bắt được StackOverflowError. Lỗi văng ra làm crash luồng main.",
+    "difficulty": "hard",
+    "tags": [
+      "Error-vs-Exception",
+      "StackOverflowError"
+    ]
+  },
+  {
+    "id": "L5_Q37",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "import java.util.*;\npublic class DequeTest {\n    public static void main(String[] args) {\n        Deque<String> deque = new ArrayDeque<>();\n        deque.push(\"A\");\n        deque.push(\"B\");\n        deque.add(\"C\");\n        System.out.print(deque.pop() + \" \" + deque.removeLast());\n    }\n}",
+    "options": [
+      "B C",
+      "A C",
+      "B A",
+      "A B"
+    ],
+    "correctAnswer": 0,
+    "explanation": "push(\"A\") thêm vào đầu [A]. push(\"B\") thêm vào đầu [B, A]. add(\"C\") thêm vào cuối [B, A, C]. deque.pop() lấy ở đầu ra \"B\". deque.removeLast() lấy ở cuối ra \"C\". Kết quả: 'B C'.",
+    "difficulty": "medium",
+    "tags": [
+      "Deque",
+      "Stack-Queue"
+    ]
+  },
+  {
+    "id": "L5_Q38",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau in ra giá trị gì khi đọc dữ liệu từ BufferedReader?",
+    "code": "import java.io.*;\npublic class ReaderTest {\n    public static void main(String[] args) throws Exception {\n        String data = \"Line1\\nLine2\";\n        BufferedReader br = new BufferedReader(new StringReader(data));\n        System.out.println(br.readLine() + \" \" + br.readLine() + \" \" + br.readLine());\n    }\n}",
+    "options": [
+      "Line1 Line2 null",
+      "Line1 Line2 Line2",
+      "Line1 Line2",
+      "Ném EOFException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "readLine() trả về từng dòng văn bản (bỏ qua ký tự xuống dòng). Khi đã đọc hết file, các lần gọi readLine() tiếp theo trả về null mà không ném ngoại lệ. Kết quả: 'Line1 Line2 null'.",
+    "difficulty": "easy",
+    "tags": [
+      "BufferedReader",
+      "readLine"
+    ]
+  },
+  {
+    "id": "L5_Q39",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Tại sao việc duyệt LinkedList bằng vòng lặp 'for (int i = 0; i < list.size(); i++) list.get(i);' lại là một thảm họa hiệu năng (Anti-pattern)?",
+    "code": null,
+    "options": [
+      "Độ phức tạp tổng thể bị đội lên thành O(n^2), vì mỗi lần gọi get(i) danh sách liên kết lại phải duyệt từ đầu danh sách đến vị trí i",
+      "Gây ra ngoại lệ ConcurrentModificationException",
+      "Làm tràn bộ nhớ Heap của JVM",
+      "Làm hỏng các con trỏ liên kết giữa các node"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mỗi lần get(i) trong LinkedList tốn O(i) bước duyệt. Vòng lặp n lần dẫn đến tổng số phép toán là 1 + 2 + ... + n = O(n^2). Muốn duyệt LinkedList với O(n) bắt buộc phải dùng Iterator hoặc foreach.",
+    "difficulty": "medium",
+    "tags": [
+      "LinkedList",
+      "Performance-AntiPattern"
+    ]
+  },
+  {
+    "id": "L5_Q40",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra tính chất của TreeMap với Comparator đảo ngược. Kết quả in ra là gì?",
+    "code": "import java.util.*;\npublic class TreeMapTest {\n    public static void main(String[] args) {\n        Map<Integer, String> map = new TreeMap<>(Collections.reverseOrder());\n        map.put(3, \"C\");\n        map.put(1, \"A\");\n        map.put(2, \"B\");\n        System.out.println(String.join(\" \", map.values()));\n    }\n}",
+    "options": [
+      "C B A",
+      "A B C",
+      "C A B",
+      "B C A"
+    ],
+    "correctAnswer": 0,
+    "explanation": "TreeMap sử dụng Collections.reverseOrder() sắp xếp Key giảm dần: 3, 2, 1. map.values() duyệt theo thứ tự Key đã sắp xếp, tương ứng với các giá trị: C, B, A. Kết quả: 'C B A'.",
+    "difficulty": "easy",
+    "tags": [
+      "TreeMap",
+      "ReverseOrder"
+    ]
+  },
+  {
+    "id": "L5_Q41",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
+    "code": "import java.io.*;\npublic class CloseableTest {\n    public static void main(String[] args) {\n        String text = \"Hello\";\n        try (text) { // Dong nay\n            System.out.println(text);\n        }\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: String không triển khai interface java.lang.AutoCloseable",
+      "Biên dịch thành công và in ra 'Hello'",
+      "Lỗi do text phải khai báo bên trong dấu ngoặc đơn của try",
+      "Ném NullPointerException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tài nguyên trong try-with-resources bắt buộc phải implements java.lang.AutoCloseable. Lớp String không phải là AutoCloseable nên bị báo lỗi biên dịch.",
+    "difficulty": "easy",
+    "tags": [
+      "Try-with-resources",
+      "AutoCloseable"
+    ]
+  },
+  {
+    "id": "L5_Q42",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi chạy?",
+    "code": "import java.util.*;\npublic class SubListTest {\n    public static void main(String[] args) {\n        List<String> list = new ArrayList<>(Arrays.asList(\"A\", \"B\", \"C\", \"D\"));\n        List<String> sub = list.subList(1, 3); // B, C\n        sub.set(0, \"X\");\n        System.out.println(list);\n    }\n}",
+    "options": [
+      "[A, X, C, D]",
+      "[A, B, C, D]",
+      "[X, C]",
+      "Ném UnsupportedOperationException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "subList() trả về một 'view' (khung nhìn) trên chính danh sách gốc chứ không tạo danh sách mới. Thay đổi phần tử trên subList (sub.set(0, \"X\")) làm thay đổi trực tiếp phần tử tương ứng trong danh sách gốc list. In ra: '[A, X, C, D]'.",
+    "difficulty": "medium",
+    "tags": [
+      "subList",
+      "View-Backed"
+    ]
+  },
+  {
+    "id": "L5_Q43",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau in ra kết quả gì khi thực thi?",
+    "code": "public class TryCatchFlow {\n    static String test() {\n        String res = \"\";\n        try {\n            res += \"T\";\n            throw new Exception();\n        } catch (Exception e) {\n            res += \"C\";\n            return res;\n        } finally {\n            res += \"F\";\n        }\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "options": [
+      "TC",
+      "TCF",
+      "TF",
+      "C"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bẫy lưu giá trị trả về trước khi vào finally: try ném ngoại lệ -> catch chạy làm res = \"TC\". Gặp lệnh return res, JVM lưu tạm giá trị chuỗi \"TC\" vào vùng nhớ trả về. Khối finally chạy làm biến cục bộ res thành \"TCF\", nhưng không có lệnh return trong finally nên giá trị đã lưu \"TC\" vẫn được trả về. Kết quả: 'TC'.",
+    "difficulty": "hard",
+    "tags": [
+      "Finally-Block",
+      "Return-Value-Stack"
+    ]
+  },
+  {
+    "id": "L5_Q44",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Phương thức Collections.unmodifiableList() có thực sự làm cho dữ liệu của danh sách gốc hoàn toàn bất biến (Immutable) hay không? Vì sao?",
+    "code": null,
+    "options": [
+      "Không hoàn toàn, vì nếu danh sách gốc phía dưới bị sửa đổi (add/remove), unmodifiableList cũng sẽ bị thay đổi theo (nó chỉ là một wrapper ngăn cản sửa qua chính nó)",
+      "Có, danh sách gốc tự động bị khóa chặt không thể chỉnh sửa",
+      "Có, JVM tự động sao chép sâu toàn bộ danh sách sang vùng nhớ Read-Only",
+      "Lệnh đó chỉ ngăn cản việc đọc dữ liệu"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Collections.unmodifiableList(list) chỉ là một view bao bọc ngăn thao tác sửa đổi thông qua wrapper đó. Nếu ai đó giữ tham chiếu đến danh sách gốc 'list' và gọi list.add(), danh sách unmodifiable cũng thấy sự thay đổi đó. Để tạo danh sách thực sự immutable trong Java 9+, nên dùng List.copyOf().",
+    "difficulty": "hard",
+    "tags": [
+      "UnmodifiableList",
+      "Immutability-Trap"
+    ]
+  },
+  {
+    "id": "L5_Q45",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import java.util.*;\npublic class CollectionsSortTest {\n    public static void main(String[] args) {\n        List<String> list = Arrays.asList(\"10\", \"2\", \"1\");\n        Collections.sort(list);\n        System.out.println(list);\n    }\n}",
+    "options": [
+      "[1, 10, 2]",
+      "[1, 2, 10]",
+      "[10, 2, 1]",
+      "[2, 10, 1]"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì các phần tử là chuỗi String (\"10\", \"2\", \"1\"), Collections.sort() sắp xếp theo thứ tự bảng chữ cái (lexicographical order): ký tự '1' đứng trước '2', chuỗi \"1\" đứng trước \"10\", \"10\" đứng trước \"2\". Kết quả: '[1, 10, 2]'.",
+    "difficulty": "easy",
+    "tags": [
+      "String-Sort",
+      "Lexicographical"
     ]
   }
 ]

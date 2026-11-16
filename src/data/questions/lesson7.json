@@ -2,395 +2,619 @@
   {
     "id": "L7_Q01",
     "lessonId": 7,
-    "title": "Nguyên lý Trách nhiệm Đơn lẻ (Single Responsibility Principle - SRP) và Đóng/Mở (Open/Closed Principle - OCP) trong SOLID quy định điều gì?",
+    "type": "single",
+    "title": "Sự khác biệt cốt lõi về phân vùng bộ nhớ giữa Tiến trình (Process) và Luồng (Thread) trong JVM là gì?",
     "code": null,
     "options": [
-      "SRP: Một lớp chỉ nên có một lý do duy nhất để thay đổi; OCP: Phần mềm nên mở cho việc mở rộng (Open for extension) nhưng đóng cho việc sửa đổi (Closed for modification)",
-      "SRP: Mỗi project chỉ có duy nhất một lớp chính; OCP: Không cho phép kế thừa lớp đã biên dịch",
-      "SRP: Mỗi phương thức chỉ có tối đa một tham số; OCP: Mọi biến phải là private",
-      "SRP: Một interface chỉ có duy nhất một phương thức; OCP: Mã nguồn phải được bảo mật mã hóa"
+      "Mỗi Process sở hữu không gian địa chỉ bộ nhớ độc lập; Các Thread trong cùng một Process chia sẻ chung vùng nhớ Heap nhưng sở hữu Stack và Con trỏ lệnh (PC) riêng biệt",
+      "Các Process chia sẻ chung bộ nhớ Heap; Các Thread có không gian bộ nhớ hoàn toàn độc lập",
+      "Thread không có ngăn xếp Stack riêng mà dùng chung với Process",
+      "Process và Thread có cấu trúc bộ nhớ hoàn toàn giống hệt nhau"
     ],
     "correctAnswer": 0,
-    "explanation": "SRP quy định mỗi lớp chỉ nên đảm nhận một trách nhiệm nghiệp vụ duy nhất (chỉ có 1 lý do để thay đổi). OCP quy định hệ thống phải dễ dàng mở rộng hành vi mới (bằng cách bổ sung lớp mới, kế thừa, implements) mà không cần phải can thiệp chỉnh sửa mã nguồn cũ đã được kiểm thử ổn định.",
-    "difficulty": "easy",
+    "explanation": "Process có không gian bộ nhớ độc lập. Các Thread trong cùng JVM process chia sẻ chung Heap và Metaspace, nhưng mỗi luồng có ngăn xếp Stack và PC Register riêng để lưu biến cục bộ và vị trí thực thi.",
+    "difficulty": "medium",
     "tags": [
-      "SOLID",
-      "SRP",
-      "OCP"
+      "Process-vs-Thread",
+      "JVM-Memory"
     ]
   },
   {
     "id": "L7_Q02",
     "lessonId": 7,
-    "title": "Nguyên lý Thay thế Liskov (Liskov Substitution Principle - LSP) yêu cầu điều kiện gì đối với quan hệ kế thừa?",
+    "type": "multiple",
+    "title": "So sánh giữa interface Runnable và Callable<V>, những phát biểu nào sau đây là ĐÚNG? (Chọn tất cả các đáp án đúng)",
     "code": null,
     "options": [
-      "Các đối tượng của lớp con phải có thể thay thế hoàn toàn cho đối tượng của lớp cha mà không làm thay đổi tính đúng đắn của chương trình",
-      "Lớp con bắt buộc phải ghi đè toàn bộ các phương thức của lớp cha",
-      "Lớp cha phải có khả năng ép kiểu xuống lớp con mà không bị ngoại lệ",
-      "Mọi thuộc tính của lớp cha phải được chuyển thành public trong lớp con"
+      "Runnable.run() trả về void; Callable.call() có thể trả về một kết quả có kiểu generic V",
+      "Callable.call() cho phép ném ra Checked Exception; Runnable.run() không thể khai báo throws Checked Exception",
+      "Cả hai đều có thể được gửi vào ExecutorService thông qua phương thức submit()",
+      "Callable là interface có sẵn từ Java 1.0, Runnable chỉ xuất hiện từ Java 5"
     ],
-    "correctAnswer": 0,
-    "explanation": "LSP phát biểu rằng nếu S là kiểu con của T, thì các đối tượng kiểu T trong chương trình có thể được thay thế bằng các đối tượng kiểu S mà không làm thay đổi bất kỳ tính chất đúng đắn nào của chương trình. Vi phạm kinh điển của LSP là thiết kế hình Vuông (Square) kế thừa từ hình Chữ Nhật (Rectangle).",
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Trích Đề thi mẫu UET: 1) Runnable trả về void, Callable trả về V; 2) Callable ném Checked Exception, Runnable thì không; 3) ExecutorService.submit() hỗ trợ cả hai. 4 sai vì Runnable có từ Java 1.0, Callable xuất hiện từ Java 5.",
     "difficulty": "medium",
     "tags": [
-      "SOLID",
-      "LSP",
-      "Inheritance"
+      "Runnable",
+      "Callable",
+      "Multi-Select",
+      "UET-Exam"
     ]
   },
   {
     "id": "L7_Q03",
     "lessonId": 7,
-    "title": "Nguyên lý Phân tách Giao diện (ISP) và Đảo ngược Phụ thuộc (DIP) có ý nghĩa như thế nào trong thiết kế kiến trúc phần mềm?",
+    "type": "single",
+    "title": "Vòng đời của một Thread trong Java (Thread.State) bao gồm các trạng thái chuẩn nào?",
     "code": null,
     "options": [
-      "ISP: Nhiều interface hẹp đặc tả tốt hơn một interface khổng lồ; DIP: Các module cấp cao không nên phụ thuộc trực tiếp vào module cấp thấp, cả hai nên phụ thuộc vào trừu tượng (Abstraction)",
-      "ISP: Tất cả các lớp phải dùng chung một interface; DIP: Module cấp cao phải gọi trực tiếp module cấp thấp",
-      "ISP: Interface không được phép có default method; DIP: Phải dùng từ khóa static thay vì interface",
-      "ISP: Phân tách interface theo từng package; DIP: Đảo ngược thứ tự các tham số trong hàm"
+      "NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED",
+      "START, RUNNING, SLEEPING, DEAD",
+      "INIT, RUNNING, WAITING, STOPPED",
+      "READY, EXECUTING, PAUSED, FINISHED"
     ],
     "correctAnswer": 0,
-    "explanation": "ISP (Interface Segregation Principle) khuyên không nên ép client phụ thuộc vào các phương thức mà họ không sử dụng (chia nhỏ 'fat interface'). DIP (Dependency Inversion Principle) khuyến khích lập trình dựa trên trừu tượng (interface/abstract class) thay vì phụ thuộc cứng vào các lớp triển khai cụ thể (concrete classes).",
+    "explanation": "6 trạng thái chuẩn trong enum java.lang.Thread.State: NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED.",
     "difficulty": "medium",
     "tags": [
-      "SOLID",
-      "ISP",
-      "DIP"
+      "Thread-Lifecycle",
+      "Thread-State"
     ]
   },
   {
     "id": "L7_Q04",
     "lessonId": 7,
-    "title": "Các mẫu thiết kế Singleton, Factory Method, Strategy, Decorator, Adapter, Composite được phân loại vào các nhóm GoF nào?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau in ra tên luồng thực thi là gì khi gọi phương thức run()?",
+    "code": "public class ThreadNameTest {\n    public static void main(String[] args) {\n        Thread t = new Thread(() -> {\n            System.out.println(Thread.currentThread().getName());\n        });\n        t.setName(\"Worker-1\");\n        t.run(); // Luu y goi run() thay vi start()\n    }\n}",
     "options": [
-      "Khởi tạo (Creational): Singleton, Factory Method; Cấu trúc (Structural): Adapter, Decorator, Composite; Hành vi (Behavioral): Strategy",
-      "Khởi tạo: Strategy, Decorator; Cấu trúc: Singleton; Hành vi: Factory Method, Adapter",
-      "Khởi tạo: Composite, Adapter; Cấu trúc: Factory Method; Hành vi: Singleton, Decorator",
-      "Tất cả các mẫu thiết kế trên đều thuộc nhóm Kiến trúc (Architectural Patterns)"
+      "main",
+      "Worker-1",
+      "Thread-0",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Theo chuẩn Gang of Four (GoF): 1) Creational (Khởi tạo): Singleton, Factory Method, Abstract Factory, Builder, Prototype. 2) Structural (Cấu trúc): Adapter, Decorator, Composite, Proxy, Facade, Bridge. 3) Behavioral (Hành vi): Strategy, Observer, Command, Template Method, State.",
+    "explanation": "Gọi t.run() trực tiếp thì mã lambda chạy đồng bộ trên chính luồng hiện tại đang gọi nó (main thread). Thread.currentThread().getName() in ra 'main'.",
     "difficulty": "easy",
     "tags": [
-      "Design-Patterns",
-      "GoF-Classification"
+      "Thread-Run",
+      "Thread-Start"
     ]
   },
   {
     "id": "L7_Q05",
     "lessonId": 7,
-    "title": "Trong kỹ thuật Double-Checked Locking khi cài đặt Singleton lười (Lazy Singleton), từ khóa volatile trên biến instance có vai trò quyết định gì?",
-    "code": null,
+    "type": "single",
+    "title": "Hai phương thức sau trong cùng một lớp có thể được thực thi đồng thời bởi hai luồng khác nhau hay không? Vì sao?",
+    "code": "class SyncDual {\n    public synchronized void methodA() {}\n    public static synchronized void methodB() {}\n}",
     "options": [
-      "Ngăn chặn hiện tượng sắp xếp lại lệnh (Instruction Reordering) của trình biên dịch và CPU, đảm bảo đối tượng được khởi tạo hoàn tất trước khi gán tham chiếu cho các luồng khác thấy",
-      "Đảm bảo phương thức getInstance() chạy nhanh hơn gấp 10 lần",
-      "Ngăn cản việc kế thừa lớp Singleton",
-      "Tự động giải phóng bộ nhớ khi Singleton không còn được sử dụng"
+      "Có thể chạy đồng thời, vì methodA chiếm khóa trên đối tượng thực thể (this), còn methodB chiếm khóa trên đối tượng Class (SyncDual.class)",
+      "Không thể chạy đồng thời, vì từ khóa synchronized khóa toàn bộ các phương thức của lớp",
+      "Chỉ chạy đồng thời nếu hai phương thức có tham số khác nhau",
+      "Lỗi biên dịch: không thể vừa có method synchronized vừa có static synchronized"
     ],
     "correctAnswer": 0,
-    "explanation": "Lệnh instance = new Singleton() bao gồm 3 bước: 1) Cấp phát bộ nhớ, 2) Chạy constructor khởi tạo, 3) Gán địa chỉ cho biến instance. Do CPU/Compiler tối ưu có thể đảo bước 3 lên trước bước 2 (Instruction Reordering), luồng khác có thể thấy instance != null và sử dụng đối tượng khi nó CHƯA được khởi tạo xong (partially initialized object). Từ khóa volatile thiết lập rào cản bộ nhớ (Memory Barrier) ngăn chặn việc đảo lệnh này.",
+    "explanation": "methodA khóa trên 'this' (instance lock). methodB khóa trên 'SyncDual.class' (class lock). Hai khóa này là hai đối tượng khác nhau trên Heap nên hai luồng có thể chạy song song mà không chặn nhau.",
     "difficulty": "hard",
     "tags": [
-      "Singleton",
-      "Double-Checked-Locking",
-      "Volatile",
-      "Concurrency"
+      "Monitor-Lock",
+      "Instance-vs-Static-Lock"
     ]
   },
   {
     "id": "L7_Q06",
     "lessonId": 7,
-    "title": "Mục đích cốt lõi của mẫu thiết kế Factory Method Pattern là gì?",
+    "type": "single",
+    "title": "Từ khóa volatile trong Java cung cấp những bảo đảm gì và KHÔNG bảo đảm điều gì?",
     "code": null,
     "options": [
-      "Định nghĩa một giao diện để tạo đối tượng, nhưng để các lớp con quyết định lớp cụ thể nào sẽ được khởi tạo",
-      "Đảm bảo chỉ có một đối tượng duy nhất tồn tại trong toàn bộ ứng dụng",
-      "Chuyển đổi giao diện của một lớp thành một giao diện khác mà client mong đợi",
-      "Bọc quanh một đối tượng để bổ sung thêm các tính năng động mà không dùng kế thừa"
+      "Bảo đảm tính hiển thị (Visibility) giữa các CPU Cache và ngăn đảo lệnh (Instruction Reordering); KHÔNG bảo đảm tính nguyên tử (Atomicity) cho các thao tác phức hợp như count++",
+      "Bảo đảm tuyệt đối tính nguyên tử cho mọi thao tác toán học",
+      "Tự động khóa đối tượng giống hệt như từ khóa synchronized",
+      "Bảo đảm phương thức chạy nhanh hơn mà không cần bộ nhớ đệm"
     ],
     "correctAnswer": 0,
-    "explanation": "Factory Method định nghĩa một phương thức trừu tượng để tạo đối tượng (createProduct()), cho phép lớp cha ủy quyền (delegate) việc khởi tạo đối tượng thực tế cho các lớp con. Điều này giúp tách biệt mã nguồn sử dụng đối tượng khỏi lớp cụ thể của đối tượng đó (Loose Coupling).",
-    "difficulty": "easy",
+    "explanation": "volatile đảm bảo đọc/ghi trực tiếp bộ nhớ chính (Main Memory) và ngăn reordering. Nhưng count++ là 3 thao tác (đọc-tăng-ghi) nên volatile KHÔNG đảm bảo tính nguyên tử.",
+    "difficulty": "hard",
     "tags": [
-      "Factory-Method",
-      "Creational-Pattern"
+      "Volatile",
+      "Visibility",
+      "Atomicity"
     ]
   },
   {
     "id": "L7_Q07",
     "lessonId": 7,
-    "title": "Mẫu thiết kế Chiến lược (Strategy Pattern) giúp giải quyết vấn đề thiết kế nào phổ biến nhất?",
+    "type": "single",
+    "title": "Bốn điều kiện Coffman cần và đủ để xảy ra Bế tắc (Deadlock) giữa các luồng là gì?",
     "code": null,
     "options": [
-      "Loại bỏ các cấu trúc rẽ nhánh if-else hoặc switch-case phức tạp bằng cách đóng gói từng thuật toán vào các lớp chiến lược riêng biệt có thể tráo đổi khi đang chạy",
-      "Tạo bản sao của đối tượng mà không phụ thuộc vào lớp của chúng",
-      "Ngăn ngừa việc tạo nhiều kết nối tới cơ sở dữ liệu",
-      "Đồng bộ hóa các thao tác trên luồng vào ra"
+      "Loại trừ lẫn nhau (Mutual Exclusion), Giữ và chờ (Hold and Wait), Không chiếm đoạt (No Preemption), Chờ đợi vòng tròn (Circular Wait)",
+      "Đa luồng, Thiếu bộ nhớ, Mạng chậm, Lỗi CPU",
+      "Dùng synchronized, Dùng volatile, Dùng Thread.sleep, Dùng wait()",
+      "Quá nhiều tiến trình, Bộ nhớ Heap quá nhỏ, Bộ nhớ Stack quá lớn, Lỗi JIT"
     ],
     "correctAnswer": 0,
-    "explanation": "Strategy Pattern định nghĩa một họ các thuật toán, đóng gói từng thuật toán lại và làm cho chúng có thể tráo đổi lẫn nhau (interchangeable). Nó giúp tuân thủ nguyên lý Open/Closed Principle bằng cách loại bỏ các khối if-else/switch khổng lồ kiểm tra loại thuật toán (ví dụ: tính giá khuyến mãi, thuật toán thanh toán).",
-    "difficulty": "medium",
+    "explanation": "Deadlock xảy ra khi thỏa mãn đồng thời 4 điều kiện Coffman: Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait.",
+    "difficulty": "hard",
     "tags": [
-      "Strategy-Pattern",
-      "OCP",
-      "Code-Smell"
+      "Deadlock",
+      "Coffman-Conditions"
     ]
   },
   {
     "id": "L7_Q08",
     "lessonId": 7,
-    "title": "Mối quan hệ giữa Đối tượng được quan sát (Subject) và Các đối tượng quan sát (Observers) trong Observer Pattern là quan hệ loại nào?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy phương thức doWait()?",
+    "code": "public class WaitTest {\n    static Object lock = new Object();\n    public static void main(String[] args) throws InterruptedException {\n        lock.wait(); // Goi wait() truc tiep khong co synchronized\n    }\n}",
     "options": [
-      "Quan hệ phụ thuộc một - nhiều (One-to-Many): khi Subject thay đổi trạng thái, tất cả Observers đã đăng ký sẽ tự động được thông báo và cập nhật",
-      "Quan hệ phụ thuộc một - một (One-to-One)",
-      "Quan hệ kế thừa trực tiếp nhiều tầng",
-      "Quan hệ độc lập không liên quan lẫn nhau"
+      "Ném ngoại lệ IllegalMonitorStateException tại runtime",
+      "Luồng main bị tạm dừng vô hạn không lỗi",
+      "Lỗi biên dịch do thiếu khối try-catch",
+      "Chương trình kết thúc ngay lập tức"
     ],
     "correctAnswer": 0,
-    "explanation": "Observer Pattern thiết lập mối quan hệ một-nhiều (One-to-Many) lỏng lẻo (loose coupling) giữa Subject và các Observers. Khi trạng thái nội tại của Subject thay đổi, nó duyệt qua danh sách các Observer đã đăng ký và gọi phương thức notify()/update() để các Observer tự đồng bộ trạng thái mới.",
-    "difficulty": "easy",
+    "explanation": "wait(), notify() bắt buộc phải được gọi bên trong khối synchronized trên chính đối tượng đó. Gọi ngoài khối synchronized bị JVM ném IllegalMonitorStateException.",
+    "difficulty": "medium",
     "tags": [
-      "Observer-Pattern",
-      "Loose-Coupling"
+      "wait()",
+      "IllegalMonitorStateException"
     ]
   },
   {
     "id": "L7_Q09",
     "lessonId": 7,
-    "title": "Ưu điểm nổi bật nhất của mẫu thiết kế Trang trí (Decorator Pattern) so với việc sử dụng Kế thừa truyền thống là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Cho đoạn mã trích từ Đề thi mẫu UET Bài 1 (Đoạn code 3). Kết quả in ra là gì?",
+    "code": "import java.util.concurrent.*;\nclass DownloadTask implements Callable<String> {\n    private final String file;\n    DownloadTask(String file) { this.file = file; }\n    public String call() throws Exception {\n        Thread.sleep(100);\n        return \"Done:\" + file;\n    }\n}\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService pool = Executors.newFixedThreadPool(2);\n        Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\n        Future<String> f2 = pool.submit(new DownloadTask(\"B\"));\n        System.out.println(f1.get());\n        System.out.println(f2.get());\n        pool.shutdown();\n    }\n}",
     "options": [
-      "Cho phép bổ sung hành vi/trách nhiệm mới cho đối tượng một cách linh hoạt tại thời điểm thực thi (runtime) mà không làm bùng nổ số lượng lớp con (Class Explosion)",
-      "Tăng tốc độ truy xuất thuộc tính của đối tượng",
-      "Cho phép đối tượng truy cập các phương thức private của lớp khác",
-      "Giảm dung lượng bộ nhớ Heap xuống mức tối thiểu"
+      "Done:A\\nDone:B",
+      "Done:B\\nDone:A",
+      "Lỗi biên dịch tại submit(DownloadTask)",
+      "In ra null do Future chưa tính toán xong"
     ],
     "correctAnswer": 0,
-    "explanation": "Kế thừa mở rộng chức năng ở compile-time và dễ dẫn đến 'Class Explosion' khi có nhiều tổ hợp tính năng (ví dụ: Cà phê có sữa, cà phê có đường, cà phê có cả sữa và đường...). Decorator Pattern giải quyết bằng cách bọc đối tượng (composition), cho phép gắn thêm các lớp vỏ trang trí linh hoạt tại runtime.",
-    "difficulty": "medium",
+    "explanation": "Đề thi mẫu UET Bài 1: f1.get() chặn chờ task A hoàn thành in 'Done:A'. f2.get() lấy kết quả task B in 'Done:B'. Sau đó shutdown pool.",
+    "difficulty": "easy",
     "tags": [
-      "Decorator-Pattern",
-      "Structural-Pattern",
-      "Composition"
+      "ExecutorService",
+      "Future",
+      "UET-Exam"
     ]
   },
   {
     "id": "L7_Q10",
     "lessonId": 7,
-    "title": "Mẫu thiết kế Composite giải quyết 'Mùi mã nguồn' (Code Smell) nào thường gặp trong cấu trúc cây phân cấp?",
-    "code": null,
+    "type": "single",
+    "title": "Theo Đề thi mẫu UET Câu 19: Điều gì xảy ra nếu gọi liên tiếp hai lần f1.get() trên cùng một đối tượng Future?",
+    "code": "Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\nSystem.out.println(f1.get());\nSystem.out.println(f1.get());",
     "options": [
-      "Mùi mã nguồn phải dùng if-else kiểm tra kiểu (instanceof) để phân biệt giữa phần tử lá (Leaf) và phần tử chứa (Container/Composite)",
-      "Mùi mã nguồn phương thức quá dài (Long Method)",
-      "Mùi mã nguồn danh sách tham số quá dài (Long Parameter List)",
-      "Mùi mã nguồn trùng lặp chuỗi ký tự (Duplicate String)"
+      "Lần gọi get() thứ hai trả về ngay kết quả đã lưu trong bộ đệm (cached result) mà KHÔNG thực thi lại tác vụ DownloadTask",
+      "Tác vụ DownloadTask sẽ được đưa vào pool để thực thi lại từ đầu lần thứ hai",
+      "Ném ngoại lệ IllegalStateException vì Future chỉ được get() một lần duy nhất",
+      "Lần thứ hai trả về null"
     ],
     "correctAnswer": 0,
-    "explanation": "Slide bài giảng LTNC chỉ rõ: Code Smell: Distinguishing Between Leaves and Containers. Nếu không dùng Composite, mã nguồn phải liên tục kiểm tra xem một node là file hay thư mục bằng instanceof hoặc cờ isFolder. Composite Pattern giải quyết bằng cách định nghĩa interface Component chung, giúp client đối xử đồng nhất (uniform treatment) với cả phần tử đơn lẻ và tập hợp lồng nhau.",
-    "difficulty": "hard",
+    "explanation": "Đề thi mẫu UET: Future lưu kết quả đã tính toán. Lần gọi get() thứ hai trả về ngay giá trị đã lưu trong cache mà không chạy lại tác vụ.",
+    "difficulty": "medium",
     "tags": [
-      "Composite-Pattern",
-      "Code-Smell",
-      "UET-Slide"
+      "Future",
+      "Caching",
+      "UET-Exam"
     ]
   },
   {
     "id": "L7_Q11",
     "lessonId": 7,
-    "title": "Đoạn mã Singleton sau gặp lỗi gì trong môi trường đa luồng (Multithreading)?",
-    "code": "public class BrokenSingleton {\n    private static BrokenSingleton instance; // Thieu tu khoa gi?\n    private BrokenSingleton() {}\n    public static BrokenSingleton getInstance() {\n        if (instance == null) {\n            synchronized (BrokenSingleton.class) {\n                if (instance == null) {\n                    instance = new BrokenSingleton();\n                }\n            }\n        }\n        return instance;\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi hai luồng cùng chạy?",
+    "code": "public class DeadlockDemo {\n    static final Object lockA = new Object();\n    static final Object lockB = new Object();\n    public static void main(String[] args) {\n        Thread t1 = new Thread(() -> {\n            synchronized (lockA) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockB) { System.out.println(\"T1\"); }\n            }\n        });\n        Thread t2 = new Thread(() -> {\n            synchronized (lockB) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockA) { System.out.println(\"T2\"); }\n            }\n        });\n        t1.start(); t2.start();\n    }\n}",
     "options": [
-      "Thiếu từ khóa volatile trên biến instance, có thể dẫn đến việc luồng khác đọc phải đối tượng chưa được khởi tạo hoàn tất do hiện tượng đảo lệnh (Instruction Reordering)",
-      "Lỗi biên dịch do constructor là private",
-      "Lỗi biên dịch do từ khóa synchronized không thể áp dụng cho BrokenSingleton.class",
-      "Phương thức getInstance() bị deadlock mỗi khi gọi"
+      "Xảy ra Deadlock: T1 giữ lockA chờ lockB, trong khi T2 giữ lockB chờ lockA; chương trình bị treo vô hạn",
+      "In ra 'T1' rồi 'T2' bình thường",
+      "Ném ngoại lệ IllegalMonitorStateException",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Đây là mẫu Double-Checked Locking kinh điển bị lỗi nếu thiếu từ khóa volatile. Khi lệnh new BrokenSingleton() được thực hiện, do hiện tượng instruction reordering, biến instance có thể được gán địa chỉ bộ nhớ trước khi constructor chạy xong. Luồng khác kiểm tra vòng ngoài thấy instance != null sẽ trả về ngay đối tượng chưa hoàn tất, gây lỗi NullPointerException hoặc dữ liệu rác.",
-    "difficulty": "hard",
+    "explanation": "Circular Wait: T1 giữ lockA chờ lockB, T2 giữ lockB chờ lockA. Hai luồng chờ nhau vô hạn tạo thành Deadlock.",
+    "difficulty": "medium",
     "tags": [
-      "Singleton",
-      "Double-Checked-Locking",
-      "Volatile"
+      "Deadlock",
+      "Circular-Wait"
     ]
   },
   {
     "id": "L7_Q12",
     "lessonId": 7,
-    "title": "Đoạn mã sau áp dụng Strategy Pattern. Kết quả in ra là gì?",
-    "code": "interface DiscountStrategy {\n    double applyDiscount(double amount);\n}\nclass VipDiscount implements DiscountStrategy {\n    public double applyDiscount(double amount) { return amount * 0.8; }\n}\nclass Order {\n    DiscountStrategy strategy;\n    Order(DiscountStrategy s) { this.strategy = s; }\n    double checkout(double total) { return strategy.applyDiscount(total); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Order order = new Order(new VipDiscount());\n        System.out.println((int) order.checkout(1000));\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau sử dụng volatile cho biến count++. Kết quả in ra có chắc chắn bằng 2000 hay không?",
+    "code": "class VolatileCounter {\n    volatile int count = 0;\n    void increment() { count++; }\n}\npublic class VolatileTest {\n    public static void main(String[] args) throws InterruptedException {\n        VolatileCounter c = new VolatileCounter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
     "options": [
-      "800",
-      "1000",
-      "200",
-      "Lỗi biên dịch"
+      "Không chắc chắn bằng 2000, giá trị vẫn có thể nhỏ hơn 2000 vì volatile không đảm bảo tính nguyên tử cho phép toán count++",
+      "Chắc chắn bằng 2000 vì volatile đã đồng bộ hóa toàn diện",
+      "Lỗi biên dịch do biến volatile không thể dùng toán tử ++",
+      "Luôn luôn bằng 0"
     ],
     "correctAnswer": 0,
-    "explanation": "Lớp Order nhận chiến lược VipDiscount thông qua Dependency Injection. Khi gọi order.checkout(1000), phương thức ủy quyền cho strategy.applyDiscount(1000) tính toán 1000 * 0.8 = 800.0. Ép kiểu (int) in ra màn hình giá trị 800.",
-    "difficulty": "easy",
+    "explanation": "count++ gồm 3 thao tác đọc-tăng-ghi. volatile không đảm bảo tính nguyên tử nên vẫn bị Race Condition và Lost Update. Kết quả thường < 2000.",
+    "difficulty": "hard",
     "tags": [
-      "Strategy-Pattern",
-      "Polymorphism"
+      "Volatile",
+      "Atomicity-Trap"
     ]
   },
   {
     "id": "L7_Q13",
     "lessonId": 7,
-    "title": "Đoạn mã sau sử dụng Decorator Pattern để tính tiền đồ uống. Kết quả in ra là gì?",
-    "code": "interface Coffee { int cost(); }\nclass SimpleCoffee implements Coffee {\n    public int cost() { return 10; }\n}\nabstract class CoffeeDecorator implements Coffee {\n    protected Coffee coffee;\n    CoffeeDecorator(Coffee c) { this.coffee = c; }\n}\nclass Milk extends CoffeeDecorator {\n    Milk(Coffee c) { super(c); }\n    public int cost() { return coffee.cost() + 5; }\n}\nclass Sugar extends CoffeeDecorator {\n    Sugar(Coffee c) { super(c); }\n    public int cost() { return coffee.cost() + 2; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Coffee c = new Sugar(new Milk(new SimpleCoffee()));\n        System.out.println(c.cost());\n    }\n}",
+    "type": "single",
+    "title": "Phương thức join() trong đoạn mã sau điều khiển thứ tự thực thi như thế nào?",
+    "code": "public class JoinTest {\n    public static void main(String[] args) throws InterruptedException {\n        Thread t = new Thread(() -> {\n            try { Thread.sleep(100); } catch (Exception e) {}\n            System.out.print(\"ThreadDone \");\n        });\n        t.start();\n        t.join(); // Main thread cho t ket thuc\n        System.out.print(\"MainDone \");\n    }\n}",
     "options": [
-      "17",
-      "15",
-      "12",
-      "10"
+      "ThreadDone MainDone ",
+      "MainDone ThreadDone ",
+      "In ngẫu nhiên một trong hai thứ tự",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Cơ chế Decorator xếp lồng (Wrapping): 1) new SimpleCoffee().cost() = 10; 2) new Milk(...).cost() = 10 + 5 = 15; 3) new Sugar(...).cost() = 15 + 2 = 17. Lời gọi c.cost() kích hoạt tính toán từ ngoài vào trong và trả về tổng chi phí là 17.",
-    "difficulty": "medium",
+    "explanation": "t.join() khiến luồng main chuyển sang WAITING chờ luồng t kết thúc. Luồng t in 'ThreadDone ', sau đó luồng main in 'MainDone '.",
+    "difficulty": "easy",
     "tags": [
-      "Decorator-Pattern",
-      "Calculation"
+      "Thread-Join",
+      "Execution-Order"
     ]
   },
   {
     "id": "L7_Q14",
     "lessonId": 7,
-    "title": "Đoạn mã sau cài đặt Observer Pattern. Kết quả in ra màn hình là gì?",
-    "code": "import java.util.*;\ninterface Observer { void update(String msg); }\nclass Subject {\n    private List<Observer> list = new ArrayList<>();\n    void attach(Observer o) { list.add(o); }\n    void notifyAllObservers(String msg) {\n        for (Observer o : list) o.update(msg);\n    }\n}\npublic class ObserverTest {\n    public static void main(String[] args) {\n        Subject s = new Subject();\n        s.attach(msg -> System.out.print(\"O1:\" + msg + \" \"));\n        s.attach(msg -> System.out.print(\"O2:\" + msg + \" \"));\n        s.notifyAllObservers(\"News\");\n    }\n}",
+    "type": "single",
+    "title": "Theo Đề thi mẫu UET Câu 17: Điều gì xảy ra nếu chương trình kết thúc hàm main() mà KHÔNG gọi phương thức pool.shutdown() trên ExecutorService?",
+    "code": "public static void main(String[] args) throws Exception {\n    ExecutorService pool = Executors.newFixedThreadPool(2);\n    pool.submit(() -> System.out.println(\"Running...\"));\n    // Khong co pool.shutdown();\n}",
     "options": [
-      "O1:News O2:News ",
-      "O2:News O1:News ",
-      "O1:News ",
-      "Lỗi biên dịch do dùng biểu thức Lambda"
+      "Tiến trình JVM vẫn tiếp tục chạy ngầm và không thể kết thúc, vì các worker threads trong pool mặc định là Non-Daemon threads",
+      "JVM tự động giải phóng pool và thoát ngay lập tức",
+      "JVM ném ngoại lệ ThreadPoolLeakException khi hàm main return",
+      "Hệ điều hành sẽ tự động gửi tín hiệu kill process sau 5 giây"
     ],
     "correctAnswer": 0,
-    "explanation": "Subject lưu các observers trong ArrayList theo thứ tự đăng ký. Khi notifyAllObservers(\"News\") được gọi, nó duyệt tuần tự qua danh sách: observer 1 in 'O1:News ', sau đó observer 2 in 'O2:News '. Kết quả in ra là 'O1:News O2:News '.",
-    "difficulty": "easy",
+    "explanation": "Đề thi mẫu UET: Các worker threads trong ThreadPool mặc định là Non-Daemon threads. JVM chỉ thoát khi mọi non-daemon threads đã kết thúc. Nếu không gọi pool.shutdown(), worker threads tiếp tục chờ việc làm JVM chạy mãi mãi.",
+    "difficulty": "hard",
     "tags": [
-      "Observer-Pattern",
-      "Lambda"
+      "ExecutorService",
+      "Shutdown",
+      "Non-Daemon",
+      "UET-Exam"
     ]
   },
   {
     "id": "L7_Q15",
     "lessonId": 7,
-    "title": "Đoạn mã sau áp dụng Adapter Pattern để tương thích giao diện. Kết quả in ra là gì?",
-    "code": "interface ModernPrinter { void printDocument(String text); }\nclass LegacyPrinter {\n    void printOldFormat(String text) { System.out.print(\"Legacy: \" + text); }\n}\nclass PrinterAdapter implements ModernPrinter {\n    private LegacyPrinter legacy;\n    PrinterAdapter(LegacyPrinter l) { this.legacy = l; }\n    public void printDocument(String text) { legacy.printOldFormat(text); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        ModernPrinter printer = new PrinterAdapter(new LegacyPrinter());\n        printer.printDocument(\"Hello\");\n    }\n}",
+    "type": "single",
+    "title": "Phương thức Thread.sleep(1000) đưa luồng vào trạng thái nào trong Thread.State?",
+    "code": null,
     "options": [
-      "Legacy: Hello",
-      "Hello",
-      "Modern: Hello",
-      "Lỗi biên dịch"
+      "TIMED_WAITING",
+      "WAITING",
+      "BLOCKED",
+      "TERMINATED"
     ],
     "correctAnswer": 0,
-    "explanation": "PrinterAdapter triển khai giao diện ModernPrinter và bọc lấy đối tượng LegacyPrinter (Object Adapter). Khi client gọi printer.printDocument(\"Hello\"), adapter chuyển đổi lời gọi thành legacy.printOldFormat(\"Hello\"), in ra màn hình 'Legacy: Hello'.",
+    "explanation": "Chờ có thời hạn (sleep(timeout), wait(timeout), join(timeout)) đưa luồng vào trạng thái TIMED_WAITING.",
     "difficulty": "easy",
     "tags": [
-      "Adapter-Pattern",
-      "Structural-Pattern"
+      "Thread-State",
+      "TIMED_WAITING"
     ]
   },
   {
     "id": "L7_Q16",
     "lessonId": 7,
-    "title": "Đoạn mã sau minh họa Factory Method Pattern. Kết quả in ra là gì?",
-    "code": "interface Doc { void open(); }\nclass PdfDoc implements Doc { public void open() { System.out.print(\"Open PDF \"); } }\nabstract class App {\n    abstract Doc createDoc();\n    void openDocument() { Doc d = createDoc(); d.open(); }\n}\nclass PdfApp extends App {\n    Doc createDoc() { return new PdfDoc(); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        App app = new PdfApp();\n        app.openDocument();\n    }\n}",
+    "type": "single",
+    "title": "Ưu điểm của việc triển khai Runnable hoặc Callable thay vì kế thừa trực tiếp từ lớp java.lang.Thread là gì?",
+    "code": null,
     "options": [
-      "Open PDF ",
-      "Open Document ",
-      "Lỗi biên dịch: Không thể gọi createDoc() từ App",
-      "Ném NullPointerException"
+      "Tránh giới hạn đơn kế thừa của Java (cho phép lớp kế thừa lớp khác) và tách biệt rõ ràng giữa tác vụ công việc (Task) với cơ chế thực thi (Runner)",
+      "Làm cho luồng chạy nhanh hơn gấp 5 lần",
+      "Tự động đồng bộ hóa mọi biến trong lớp",
+      "Không bao giờ bị lỗi OutOfMemoryError"
     ],
     "correctAnswer": 0,
-    "explanation": "Mẫu Factory Method: Lớp cha App định nghĩa phương thức nghiệp vụ openDocument(), trong đó ủy quyền việc tạo đối tượng cho phương thức trừu tượng createDoc(). Lớp con PdfApp ghi đè createDoc() và trả về PdfDoc. Khi gọi app.openDocument(), đối tượng PdfDoc được tạo và in ra 'Open PDF '.",
-    "difficulty": "easy",
+    "explanation": "Java chỉ cho phép đơn kế thừa class. Kế thừa Thread làm mất khả năng kế thừa lớp khác. Sử dụng Runnable/Callable tuân thủ nguyên lý Single Responsibility (tách task khỏi runner) và dễ dàng dùng với ThreadPool.",
+    "difficulty": "medium",
     "tags": [
-      "Factory-Method",
-      "Polymorphism"
+      "Runnable",
+      "Design-Best-Practices"
     ]
   },
   {
     "id": "L7_Q17",
     "lessonId": 7,
-    "title": "Đoạn mã sau áp dụng Composite Pattern để tính dung lượng cây thư mục. Kết quả in ra là gì?",
-    "code": "import java.util.*;\ninterface Component { int getSize(); }\nclass FileLeaf implements Component {\n    int size;\n    FileLeaf(int s) { this.size = s; }\n    public int getSize() { return size; }\n}\nclass FolderComposite implements Component {\n    List<Component> children = new ArrayList<>();\n    void add(Component c) { children.add(c); }\n    public int getSize() {\n        int total = 0;\n        for (Component c : children) total += c.getSize();\n        return total;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        FolderComposite root = new FolderComposite();\n        root.add(new FileLeaf(10));\n        FolderComposite sub = new FolderComposite();\n        sub.add(new FileLeaf(20));\n        sub.add(new FileLeaf(30));\n        root.add(sub);\n        System.out.println(root.getSize());\n    }\n}",
+    "type": "multiple",
+    "title": "Những phương thức nào sau đây khi được gọi sẽ KHÔNG GIẢI PHÓNG Monitor lock mà luồng hiện tại đang nắm giữ? (Chọn các đáp án đúng)",
+    "code": null,
     "options": [
-      "60",
-      "50",
-      "10",
-      "Lỗi biên dịch do đệ quy"
+      "Thread.sleep(millis)",
+      "Thread.yield()",
+      "Object.wait()",
+      "Khối lệnh synchronized kết thúc bình thường"
     ],
-    "correctAnswer": 0,
-    "explanation": "Cấu trúc Composite cho phép tính toán đệ quy trên toàn bộ cây: root chứa FileLeaf(10) và sub. Bản thân sub lại chứa FileLeaf(20) và FileLeaf(30) -> sub.getSize() = 20 + 30 = 50. Tổng dung lượng root.getSize() = 10 + 50 = 60.",
-    "difficulty": "medium",
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "Thread.sleep() và Thread.yield() giữ nguyên mọi Monitor lock đang nắm giữ. Object.wait() sẽ giải phóng lock để luồng khác vào monitor. Kết thúc khối synchronized cũng giải phóng lock.",
+    "difficulty": "hard",
     "tags": [
-      "Composite-Pattern",
-      "Tree-Structure",
-      "Recursion"
+      "Monitor-Lock",
+      "sleep-vs-wait",
+      "Multi-Select"
     ]
   },
   {
     "id": "L7_Q18",
     "lessonId": 7,
-    "title": "Cơ chế khởi tạo Singleton của Bill Pugh (Initialization-on-demand holder idiom) hoạt động như thế nào trong đoạn mã sau?",
-    "code": "public class BillPughSingleton {\n    private BillPughSingleton() { System.out.print(\"Init \"); }\n    private static class Holder {\n        private static final BillPughSingleton INSTANCE = new BillPughSingleton();\n    }\n    public static BillPughSingleton getInstance() {\n        return Holder.INSTANCE;\n    }\n    public static void dummy() { System.out.print(\"Dummy \"); }\n    public static void main(String[] args) {\n        BillPughSingleton.dummy();\n        BillPughSingleton.getInstance();\n    }\n}",
+    "type": "single",
+    "title": "Hiện tượng Tranh chấp điều kiện (Race Condition) trong đoạn mã sau dẫn đến kết quả gì?",
+    "code": "class Counter {\n    int count = 0;\n    void increment() { count++; }\n}\npublic class RaceTest {\n    public static void main(String[] args) throws InterruptedException {\n        Counter c = new Counter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
     "options": [
-      "Dummy Init ",
-      "Init Dummy ",
-      "Init Init ",
-      "Dummy "
+      "Giá trị in ra có thể nhỏ hơn hoặc bằng 2000 (thường < 2000) và không thể đoán trước do mất mát cập nhật (lost update)",
+      "Luôn luôn bằng chính xác 2000 trong mọi lần chạy",
+      "Luôn luôn bằng 1000",
+      "Chương trình bị deadlock và không bao giờ kết thúc"
     ],
     "correctAnswer": 0,
-    "explanation": "Kỹ thuật Bill Pugh lợi dụng cơ chế Class Loading của JVM: Lớp nội tĩnh static nested class Holder CHỈ ĐƯỢC NẠP vào bộ nhớ khi nó được tham chiếu lần đầu tiên. Khi gọi BillPughSingleton.dummy(), lớp cha được nạp và in 'Dummy ', nhưng lớp Holder chưa được đụng tới nên constructor Singleton chưa chạy. Chỉ khi gọi getInstance(), Holder mới được nạp và khởi tạo INSTANCE, in ra 'Init '. Kết quả: 'Dummy Init '.",
-    "difficulty": "hard",
+    "explanation": "Hai luồng cùng thao tác ghi đè lên biến count không đồng bộ hóa. Hiện tượng Lost Update làm kết quả thực tế thường nhỏ hơn 2000.",
+    "difficulty": "medium",
     "tags": [
-      "Bill-Pugh",
-      "Singleton",
-      "Class-Loading"
+      "Race-Condition",
+      "Lost-Update"
     ]
   },
   {
     "id": "L7_Q19",
     "lessonId": 7,
-    "title": "Cho đoạn mã Logger trích từ Đề thi mẫu UET Bài 4. Thiết kế này vi phạm nghiêm trọng nguyên lý nào trong SOLID?",
-    "code": "class Logger {\n    void log(String level, String message) {\n        if (level.equals(\"INFO\")) {\n            System.out.println(\"INFO: \" + message);\n        } else if (level.equals(\"ERROR\")) {\n            System.out.println(\"ERROR: \" + message);\n        } else if (level.equals(\"DEBUG\")) {\n            System.out.println(\"DEBUG: \" + message);\n        }\n    }\n}",
+    "type": "single",
+    "title": "Một luồng Daemon (Daemon Thread) trong Java có đặc tính nào sau đây?",
+    "code": null,
     "options": [
-      "Vi phạm Open/Closed Principle (OCP): Mỗi khi bổ sung một loại log mới (ví dụ WARN, FATAL), ta buộc phải sửa đổi mã nguồn phương thức log() cũ bằng cách chèn thêm else-if",
-      "Vi phạm Liskov Substitution Principle do Logger không có lớp con",
-      "Vi phạm Interface Segregation Principle do thiếu interface",
-      "Vi phạm Single Responsibility Principle do có quá nhiều tham số"
+      "Là luồng chạy nền (như GC); khi tất cả các luồng Non-Daemon kết thúc, JVM sẽ tự động chấm dứt toàn bộ Daemon threads và thoát chương trình",
+      "Là luồng có độ ưu tiên cao nhất, luôn được CPU thực thi trước",
+      "Không bao giờ bị lỗi OutOfMemoryError",
+      "Không thể bị ngắt bởi phương thức interrupt()"
     ],
     "correctAnswer": 0,
-    "explanation": "Bài 4 đề thi mẫu UET: Lớp Logger dùng chuỗi if-else so sánh string 'level' là code smell kinh điển (Switch Statements / Conditional Complexity) và vi phạm trực tiếp Open/Closed Principle (OCP). Để thêm mức log mới phải sửa code cũ, dễ sinh lỗi. Giải pháp refactoring chuẩn là áp dụng Đa hình (Polymorphism) hoặc Strategy Pattern (interface LogStrategy với các lớp InfoLogger, ErrorLogger...).",
+    "explanation": "Daemon Thread là luồng phục vụ chạy nền. JVM không chờ đợi Daemon Thread kết thúc. Khi luồng non-daemon cuối cùng chết, JVM lập tức thoát.",
     "difficulty": "medium",
     "tags": [
-      "SOLID",
-      "OCP",
-      "Code-Smell",
-      "UET-Exam"
+      "Daemon-Thread",
+      "JVM-Shutdown"
     ]
   },
   {
     "id": "L7_Q20",
     "lessonId": 7,
-    "title": "Đoạn mã kinh điển sau vi phạm nguyên lý SOLID nào (Liskov Substitution Principle)?",
-    "code": "class Rectangle {\n    protected int width, height;\n    public void setWidth(int w) { this.width = w; }\n    public void setHeight(int h) { this.height = h; }\n    public int getArea() { return width * height; }\n}\nclass Square extends Rectangle {\n    @Override\n    public void setWidth(int w) { this.width = w; this.height = w; }\n    @Override\n    public void setHeight(int h) { this.width = h; this.height = h; }\n}\npublic class Main {\n    static void resize(Rectangle r) {\n        r.setWidth(5);\n        r.setHeight(4);\n        System.out.println(r.getArea()); // Ky vong: 5 * 4 = 20\n    }\n    public static void main(String[] args) {\n        resize(new Square());\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi gọi t.start() hai lần?",
+    "code": "public class StartTwiceTest {\n    public static void main(String[] args) {\n        Thread t = new Thread(() -> System.out.println(\"Running\"));\n        t.start();\n        t.start(); // Dong nay\n    }\n}",
     "options": [
-      "In ra 16, vi phạm Liskov Substitution Principle (LSP) vì Square không thể thay thế cho Rectangle mà vẫn giữ đúng hành vi kỳ vọng",
-      "In ra 20, tuân thủ hoàn hảo LSP",
-      "Lỗi biên dịch do không thể override setWidth",
-      "Ném ClassCastException tại hàm resize"
+      "Ném ngoại lệ java.lang.IllegalThreadStateException tại runtime ở lần gọi start() thứ hai",
+      "Chương trình in ra 'Running' hai lần bình thường",
+      "Lỗi biên dịch do gọi start() hai lần",
+      "Lần gọi thứ hai tự động bị bỏ qua"
     ],
     "correctAnswer": 0,
-    "explanation": "Ví dụ kinh điển vi phạm LSP: Trong hình học toán học Hình vuông là Hình chữ nhật, nhưng trong OOP hành vi của chúng khác nhau. Hàm resize kỳ vọng với bất kỳ Rectangle nào khi setWidth(5) và setHeight(4) thì diện tích phải là 20. Nhưng khi truyền Square vào, lệnh setHeight(4) lại đổi cả width thành 4 -> getArea() = 16. Lớp con Square phá vỡ hợp đồng hành vi của lớp cha Rectangle, vi phạm LSP.",
+    "explanation": "Một Thread chỉ có thể được start một lần duy nhất trong vòng đời của nó (chuyển từ NEW sang RUNNABLE). Khi đã start, gọi lại t.start() sẽ bị JVM ném IllegalThreadStateException.",
+    "difficulty": "easy",
+    "tags": [
+      "Thread-State",
+      "IllegalThreadStateException"
+    ]
+  },
+  {
+    "id": "L7_Q21",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Khác biệt cốt lõi giữa hai phương thức notify() và notifyAll() trong lớp Object là gì?",
+    "code": null,
+    "options": [
+      "notify() chỉ đánh thức ngẫu nhiên một luồng duy nhất đang chờ trong Wait Set của monitor; notifyAll() đánh thức TẤT CẢ các luồng đang chờ cạnh tranh lại khóa",
+      "notify() đánh thức tất cả các luồng; notifyAll() chỉ đánh thức 1 luồng",
+      "notify() kết thúc luồng; notifyAll() tạm dừng luồng",
+      "notify() chỉ dùng cho luồng main"
+    ],
+    "correctAnswer": 0,
+    "explanation": "notify() chỉ chọn ngẫu nhiên 1 luồng trong Wait Set của đối tượng. notifyAll() đánh thức toàn bộ các luồng trong Wait Set để cùng cạnh tranh lại khóa monitor. notifyAll() an toàn hơn để tránh lỡ tín hiệu (lost signal).",
+    "difficulty": "medium",
+    "tags": [
+      "notify-vs-notifyAll",
+      "Wait-Set"
+    ]
+  },
+  {
+    "id": "L7_Q22",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Gói java.util.concurrent.atomic cung cấp các lớp như AtomicInteger, AtomicBoolean hoạt động dựa trên cơ chế phần cứng nào?",
+    "code": null,
+    "options": [
+      "Thao tác Compare-And-Swap (CAS) ở mức CPU, cho phép cập nhật biến một cách nguyên tử mà không cần dùng khóa (Lock-free)",
+      "Tự động dùng từ khóa synchronized bọc quanh mọi hàm",
+      "Tạo ra một bản sao mới của đối tượng mỗi khi thay đổi",
+      "Dừng toàn bộ hệ điều hành khi cập nhật giá trị"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Các lớp Atomic sử dụng chỉ lệnh phần cứng CAS (Compare-And-Swap) không dùng khóa (Lock-free), mang lại hiệu năng cao hơn nhiều so với việc dùng synchronized khi tranh chấp thấp.",
     "difficulty": "hard",
     "tags": [
-      "SOLID",
-      "LSP",
-      "Square-Rectangle-Trap"
+      "AtomicInteger",
+      "CAS",
+      "Lock-Free"
+    ]
+  },
+  {
+    "id": "L7_Q23",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Phương thức Thread.interrupted() khác với phương thức thread.isInterrupted() ở điểm nào?",
+    "code": null,
+    "options": [
+      "Thread.interrupted() là phương thức tĩnh, kiểm tra cờ ngắt của luồng hiện tại VÀ xóa cờ ngắt (reset về false); isInterrupted() là phương thức thể hiện, chỉ kiểm tra cờ ngắt mà KHÔNG xóa cờ",
+      "isInterrupted() xóa cờ ngắt; Thread.interrupted() không xóa",
+      "Thread.interrupted() ném InterruptedException ngay lập tức",
+      "Cả hai phương thức hoạt động hoàn toàn giống hệt nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thread.interrupted() kiểm tra và clear interrupt status của current thread. instance.isInterrupted() kiểm tra mà không làm thay đổi trạng thái cờ ngắt.",
+    "difficulty": "hard",
+    "tags": [
+      "Thread-Interrupt",
+      "Flag-Clearing"
+    ]
+  },
+  {
+    "id": "L7_Q24",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "public class SleepInterruptTest {\n    public static void main(String[] args) {\n        Thread t = new Thread(() -> {\n            try {\n                Thread.sleep(5000);\n            } catch (InterruptedException e) {\n                System.out.println(\"Interrupted\");\n            }\n        });\n        t.start();\n        t.interrupt(); // Ngat luong khi dang ngu\n    }\n}",
+    "options": [
+      "In ra 'Interrupted' gần như ngay lập tức và kết thúc",
+      "Luồng t ngủ đủ 5 giây rồi mới kết thúc",
+      "Ném ngoại lệ RuntimeException làm crash chương trình",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi một luồng đang ở trạng thái TIMED_WAITING (do sleep) bị gọi t.interrupt(), phương thức sleep() lập tức bị ngắt và ném InterruptedException. Khối catch bắt được và in ra 'Interrupted'.",
+    "difficulty": "easy",
+    "tags": [
+      "InterruptedException",
+      "sleep"
+    ]
+  },
+  {
+    "id": "L7_Q25",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Để ngăn chặn Deadlock xảy ra do Circular Wait, chiến lược thiết kế nào sau đây là hiệu quả nhất?",
+    "code": null,
+    "options": [
+      "Quy định một thứ tự toàn cục cố định (Global Lock Ordering) khi chiếm đoạt các khóa: mọi luồng bắt buộc phải chiếm các khóa theo cùng một trình tự",
+      "Tăng dung lượng bộ nhớ Heap của JVM",
+      "Thay thế tất cả các khối synchronized bằng từ khóa volatile",
+      "Tăng độ ưu tiên của tất cả các luồng lên mức MAX_PRIORITY"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biện pháp phòng ngừa deadlock kinh điển là phá vỡ điều kiện Circular Wait bằng Global Lock Ordering: nếu cần lock A và lock B, mọi luồng đều phải chiếm A trước rồi mới chiếm B.",
+    "difficulty": "medium",
+    "tags": [
+      "Deadlock-Prevention",
+      "Lock-Ordering"
+    ]
+  },
+  {
+    "id": "L7_Q26",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import java.util.concurrent.*;\npublic class FutureExceptionTest {\n    public static void main(String[] args) {\n        ExecutorService pool = Executors.newSingleThreadExecutor();\n        Future<Integer> f = pool.submit(() -> {\n            throw new ArithmeticException(\"Divide error\");\n        });\n        try {\n            f.get();\n        } catch (ExecutionException e) {\n            System.out.println(e.getCause().getClass().getSimpleName());\n        } catch (Exception e) {}\n        pool.shutdown();\n    }\n}",
+    "options": [
+      "In ra 'ArithmeticException'",
+      "In ra 'ExecutionException'",
+      "Chương trình bị crash do ngoại lệ không được bắt",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi tác vụ Callable ném ngoại lệ, Future.get() sẽ bọc ngoại lệ đó vào java.util.concurrent.ExecutionException. Lấy e.getCause() sẽ trả về ngoại lệ gốc ArithmeticException.",
+    "difficulty": "medium",
+    "tags": [
+      "ExecutionException",
+      "Future",
+      "Exception-Handling"
+    ]
+  },
+  {
+    "id": "L7_Q27",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Khối lệnh 'synchronized(this)' và phương thức 'public synchronized void method()' có điểm gì tương đồng?",
+    "code": null,
+    "options": [
+      "Cả hai đều chiếm Monitor lock trên cùng một thể hiện đối tượng hiện tại (this)",
+      "Cả hai đều chiếm Monitor lock trên đối tượng Class",
+      "Cả hai đều tạo ra một luồng mới ngầm định",
+      "Cả hai đều cấm các luồng khác đọc biến static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khai báo synchronized ở mức instance method thực chất tương đương về mặt ngữ nghĩa với việc bọc toàn bộ thân phương thức trong khối synchronized(this).",
+    "difficulty": "easy",
+    "tags": [
+      "Synchronized",
+      "this-Monitor"
+    ]
+  },
+  {
+    "id": "L7_Q28",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao vòng lặp kiểm tra điều kiện chờ (while loop) luôn được khuyến nghị khi gọi wait() thay vì câu lệnh if (ví dụ: while(!ready) wait();)?",
+    "code": null,
+    "options": [
+      "Để phòng ngừa hiện tượng Thức giấc giả mạo (Spurious Wakeup) hoặc trường hợp điều kiện đã bị luồng khác thay đổi trước khi luồng này lấy được khóa",
+      "Vì cú pháp Java cấm đặt wait() bên trong câu lệnh if",
+      "Để tăng tốc độ đánh thức luồng",
+      "Để tự động giải phóng bộ nhớ khi chờ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khuyến nghị chuẩn của JLS: Luôn gọi wait() trong vòng lặp while(condition) để phòng ngừa Spurious Wakeup (luồng thức dậy mà không có ai notify) và bảo đảm điều kiện vẫn thỏa mãn sau khi tranh chấp lại được khóa.",
+    "difficulty": "hard",
+    "tags": [
+      "wait()",
+      "Spurious-Wakeup",
+      "Concurrency-Pattern"
+    ]
+  },
+  {
+    "id": "L7_Q29",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy?",
+    "code": "public class YieldTest {\n    public static void main(String[] args) {\n        Thread.yield();\n        System.out.println(\"Yield Done\");\n    }\n}",
+    "options": [
+      "In ra 'Yield Done' bình thường mà không có lỗi",
+      "Ném ngoại lệ IllegalThreadStateException",
+      "Luồng main bị dừng vĩnh viễn",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thread.yield() chỉ là lời gợi ý gửi tới bộ lập lịch CPU rằng luồng hiện tại sẵn sàng nhường lượt cho các luồng khác có cùng độ ưu tiên. Nếu không có luồng nào khác, luồng hiện tại tiếp tục chạy bình thường in ra 'Yield Done'.",
+    "difficulty": "easy",
+    "tags": [
+      "Thread-yield",
+      "CPU-Scheduling"
+    ]
+  },
+  {
+    "id": "L7_Q30",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Đoạn mã sau kiểm tra việc đóng ThreadPool bằng shutdownNow(). Điểm khác biệt giữa shutdown() và shutdownNow() là gì?",
+    "code": null,
+    "options": [
+      "shutdown() từ chối nhận việc mới và chờ các việc đang chạy/trong hàng đợi hoàn thành; shutdownNow() cố gắng ngắt (interrupt) các luồng đang chạy và trả về danh sách các việc chưa được thực hiện",
+      "shutdownNow() tắt máy tính ngay lập tức",
+      "shutdown() hủy các tác vụ đang chạy ngay lập tức",
+      "Hai phương thức hoạt động hoàn toàn giống hệt nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "shutdown() đóng pool một cách êm dịu (graceful): hoàn tất nốt việc đã nhận. shutdownNow() cố gắng dừng ngay lập tức bằng cách gửi interrupt tới worker threads và trả về List<Runnable> các tác vụ còn nằm trong hàng đợi chưa chạy.",
+    "difficulty": "medium",
+    "tags": [
+      "ExecutorService",
+      "shutdownNow"
     ]
   }
 ]

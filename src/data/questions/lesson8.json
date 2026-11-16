@@ -2,401 +2,615 @@
   {
     "id": "L8_Q01",
     "lessonId": 8,
-    "title": "Sự khác biệt cốt lõi về phân vùng bộ nhớ giữa Tiến trình (Process) và Luồng (Thread) trong hệ điều hành và JVM là gì?",
+    "type": "single",
+    "title": "Thứ tự phân cấp từ mức thấp nhất đến mức cao nhất của các cấp độ kiểm thử phần mềm (Testing Levels) là gì?",
     "code": null,
     "options": [
-      "Mỗi Process sở hữu không gian địa chỉ bộ nhớ độc lập; Các Thread trong cùng một Process chia sẻ chung vùng nhớ Heap nhưng sở hữu Stack và Con trỏ lệnh (PC Register) riêng biệt",
-      "Các Process chia sẻ chung bộ nhớ Heap; Các Thread có không gian bộ nhớ hoàn toàn độc lập",
-      "Thread không có ngăn xếp Stack riêng mà dùng chung với Process",
-      "Process và Thread có cấu trúc bộ nhớ hoàn toàn giống hệt nhau"
+      "Unit Testing (Kiểm thử đơn vị) -> Integration Testing (Tích hợp) -> System Testing (Hệ thống) -> Acceptance Testing (Chấp nhận)",
+      "Acceptance Testing -> System Testing -> Integration Testing -> Unit Testing",
+      "Unit Testing -> System Testing -> Integration Testing -> Regression Testing",
+      "White-box Testing -> Black-box Testing -> Grey-box Testing"
     ],
     "correctAnswer": 0,
-    "explanation": "Process là một đơn vị thực thi độc lập có không gian bộ nhớ riêng (không chia sẻ trực tiếp với process khác). Thread là một đơn vị thực thi nhẹ (lightweight) bên trong process. Tất cả các luồng trong cùng một JVM process cùng chia sẻ vùng nhớ Heap và Metaspace, nhưng mỗi luồng có ngăn xếp Stack riêng để lưu biến cục bộ và call frame, cùng bộ đếm chương trình PC riêng.",
-    "difficulty": "medium",
+    "explanation": "4 cấp độ kiểm thử phần mềm chuẩn: Unit Test -> Integration Test -> System Test -> Acceptance Test.",
+    "difficulty": "easy",
     "tags": [
-      "Process-vs-Thread",
-      "JVM-Memory",
-      "Stack-Sharing"
+      "Testing-Levels",
+      "Unit-Testing"
     ]
   },
   {
     "id": "L8_Q02",
     "lessonId": 8,
-    "title": "So sánh giữa interface java.lang.Runnable và java.util.concurrent.Callable<V>, phát biểu nào sau đây là ĐÚNG?",
+    "type": "multiple",
+    "title": "Những phát biểu nào sau đây phân biệt ĐÚNG giữa Phân hoạch tương đương (EP) và Phân tích giá trị biên (BVA)? (Chọn các đáp án đúng)",
     "code": null,
     "options": [
-      "Runnable.run() trả về void và không thể ném Checked Exception; Callable.call() trả về một giá trị có kiểu generic V và có thể ném Checked Exception",
-      "Runnable có thể trả về giá trị kiểu int; Callable không thể trả về giá trị",
-      "Runnable dùng cho luồng đơn; Callable chỉ dùng cho luồng nền daemon",
-      "Callable kế thừa trực tiếp từ Runnable"
+      "EP chia miền dữ liệu đầu vào thành các lớp tương đương hợp lệ và không hợp lệ, chọn 1 giá trị đại diện cho mỗi lớp",
+      "BVA tập trung kiểm thử tại các biên và ranh giới (min, min+, max-, max) nơi lỗi lập trình có xác suất xuất hiện cao nhất",
+      "BVA là kỹ thuật kiểm thử hộp trắng đòi hỏi phải xem mã nguồn chi tiết",
+      "Cả EP và BVA đều là các kỹ thuật thiết kế ca kiểm thử hộp đen (Black-box Testing)"
     ],
-    "correctAnswer": 0,
-    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 14: Runnable định nghĩa phương thức 'void run()' không có giá trị trả về và không khai báo throws Checked Exception. Ngược lại, Callable<V> định nghĩa 'V call() throws Exception' có khả năng trả về kết quả tính toán kiểu V và cho phép ném ra Checked Exception.",
-    "difficulty": "easy",
+    "correctAnswer": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "0, 1, 3 đều đúng. 2 sai vì BVA là kỹ thuật kiểm thử hộp đen (Black-box), không đòi hỏi phải xem mã nguồn bên trong.",
+    "difficulty": "medium",
     "tags": [
-      "Runnable",
-      "Callable",
-      "Concurrency",
-      "UET-Exam"
+      "BVA",
+      "EP",
+      "Black-box-Testing",
+      "Multi-Select"
     ]
   },
   {
     "id": "L8_Q03",
     "lessonId": 8,
-    "title": "Vòng đời của một Thread trong Java (lớp Thread.State) bao gồm các trạng thái chuẩn nào?",
-    "code": null,
+    "type": "single",
+    "title": "Theo kỹ thuật Phân tích giá trị biên (BVA) cho quy tắc mượn sách trong Đề thi mẫu UET Bài 3: 'Người dùng được mượn sách nếu borrowedBooks < 5 và dữ liệu hợp lệ khi borrowedBooks >= 0'. Bộ giá trị biên cần kiểm thử cho borrowedBooks là gì?",
+    "code": "// boolean canBorrow(int borrowedBooks, boolean hasOverdue, int membershipLevel)\n// Dieu kien: 0 <= borrowedBooks < 5 (hop le)\n// borrowedBooks < 0: khong hop le",
     "options": [
-      "NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED",
-      "START, RUNNING, SLEEPING, DEAD",
-      "INIT, RUNNING, WAITING, STOPPED",
-      "READY, EXECUTING, PAUSED, FINISHED"
+      "-1, 0, 1 (biên dưới) và 4, 5, 6 (biên trên)",
+      "Chỉ cần kiểm tra số 0 và số 5",
+      "Chỉ cần kiểm tra số 1, 2, 3, 4",
+      "-10, 0, 10"
     ],
     "correctAnswer": 0,
-    "explanation": "Theo enum java.lang.Thread.State trong JVM chuẩn, vòng đời Thread có đúng 6 trạng thái: 1) NEW (mới tạo, chưa start), 2) RUNNABLE (đang chạy hoặc sẵn sàng chạy), 3) BLOCKED (chờ lấy monitor lock synchronized), 4) WAITING (chờ vô hạn qua wait(), join()), 5) TIMED_WAITING (chờ có thời hạn qua sleep(), wait(timeout)), 6) TERMINATED (đã hoàn thành run() hoặc gặp lỗi).",
+    "explanation": "Đề thi mẫu UET Bài 3: Biên dưới tại 0: {-1, 0, 1}. Biên trên tại ranh giới < 5 (tức <= 4): {4, 5, 6}. Bộ giá trị biên chuẩn là: {-1, 0, 1, 4, 5, 6}.",
     "difficulty": "medium",
     "tags": [
-      "Thread-Lifecycle",
-      "Thread-State"
+      "BVA",
+      "Boundary-Testing",
+      "UET-Exam"
     ]
   },
   {
     "id": "L8_Q04",
     "lessonId": 8,
-    "title": "Hiện tượng gì xảy ra khi lập trình viên gọi trực tiếp phương thức thread.run() thay vì thread.start()?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã kiểm thử JUnit 5 sau xảy ra hiện tượng gì khi chạy?",
+    "code": "import org.junit.jupiter.api.*;\npublic class LifecycleTest {\n    @BeforeAll\n    void initAll() { // Luu y: khong co tu khoa static\n        System.out.println(\"Init\");\n    }\n    @Test\n    void sampleTest() {\n        Assertions.assertTrue(true);\n    }\n}",
     "options": [
-      "Phương thức run() sẽ được thực thi tuần tự trên chính luồng hiện tại (calling thread, thường là main), KHÔNG CÓ luồng mới nào được hệ điều hành tạo ra",
-      "JVM ném ngoại lệ IllegalThreadStateException",
-      "Hệ điều hành vẫn tạo một luồng mới chạy ngầm song song",
-      "Chương trình bị treo vô hạn"
+      "Báo lỗi JUnitException tại runtime: phương thức @BeforeAll bắt buộc phải là static (khi dùng vòng đời mặc định PER_METHOD)",
+      "Chương trình chạy bình thường và in ra 'Init'",
+      "Lỗi biên dịch tại dòng @BeforeAll",
+      "Bỏ qua phương thức initAll() và chỉ chạy sampleTest()"
     ],
     "correctAnswer": 0,
-    "explanation": "Phương thức start() yêu cầu JVM đăng ký với hệ điều hành để tạo ra một luồng native mới và luồng đó sẽ gọi run(). Nếu gọi trực tiếp run(), nó chỉ là một lời gọi phương thức thông thường, chạy tuần tự trên luồng gọi nó (ví dụ thread 'main') mà không có bất kỳ tính toán song song nào.",
-    "difficulty": "easy",
+    "explanation": "Trong JUnit 5, mặc định chế độ vòng đời là PER_METHOD. Phương thức @BeforeAll và @AfterAll bắt buộc phải là static. Nếu là non-static sẽ ném org.junit.platform.commons.JUnitException.",
+    "difficulty": "hard",
     "tags": [
-      "Thread-Start",
-      "Thread-Run",
-      "Concurrency"
+      "JUnit5",
+      "BeforeAll",
+      "Static-Requirement"
     ]
   },
   {
     "id": "L8_Q05",
     "lessonId": 8,
-    "title": "Khóa nội tại (Intrinsic Lock / Monitor Lock) trong phương thức synchronized hoạt động như thế nào giữa instance method và static method?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau sử dụng assertion của JUnit 5 để kiểm tra ngoại lệ. Kết quả là gì?",
+    "code": "import org.junit.jupiter.api.Assertions;\npublic class AssertExceptionTest {\n    static int divide(int a, int b) {\n        return a / b;\n    }\n    public static void main(String[] args) {\n        ArithmeticException ex = Assertions.assertThrows(\n            ArithmeticException.class,\n            () -> divide(10, 0)\n        );\n        System.out.println(ex.getMessage());\n    }\n}",
     "options": [
-      "Phương thức instance synchronized khóa trên đối tượng thực thể hiện tại (this); Phương thức static synchronized khóa trên đối tượng Class (ClassName.class)",
-      "Cả hai phương thức đều khóa trên đối tượng this",
-      "Cả hai phương thức đều khóa trên toàn bộ máy ảo JVM",
-      "Static synchronized không sử dụng khóa mà dùng cơ chế hàng đợi"
+      "/ by zero",
+      "ArithmeticException",
+      "Ném ngoại lệ AssertionFailedError do phép chia thất bại",
+      "Lỗi biên dịch tại lambda expression"
     ],
     "correctAnswer": 0,
-    "explanation": "Mỗi đối tượng Java đều có một Monitor lock. Khi một luồng vào phương thức synchronized non-static, nó chiếm khóa của thể hiện đó (this). Nhưng khi vào static synchronized method, nó chiếm khóa của đối tượng java.lang.Class đại diện cho lớp đó. Do hai khóa này là hai đối tượng khác nhau trên Heap, một luồng chạy instance method và một luồng chạy static method của cùng một lớp có thể chạy đồng thời mà không chặn nhau.",
-    "difficulty": "hard",
+    "explanation": "assertThrows bắt thành công ArithmeticException khi chia cho 0. ex.getMessage() in ra thông điệp chuẩn '/ by zero'.",
+    "difficulty": "medium",
     "tags": [
-      "Synchronized",
-      "Monitor-Lock",
-      "Class-Lock"
+      "JUnit5",
+      "assertThrows"
     ]
   },
   {
     "id": "L8_Q06",
     "lessonId": 8,
-    "title": "Từ khóa volatile trong Java cung cấp những bảo đảm gì và KHÔNG bảo đảm điều gì?",
+    "type": "single",
+    "title": "Mùi mã nguồn 'Feature Envy' (Ghen tị tính năng) được định nghĩa như thế nào theo Martin Fowler?",
     "code": null,
     "options": [
-      "Bảo đảm tính hiển thị (Visibility) giữa các CPU Cache và ngăn đảo lệnh (Instruction Reordering); KHÔNG bảo đảm tính nguyên tử (Atomicity) cho các thao tác phức hợp như count++",
-      "Bảo đảm tuyệt đối tính nguyên tử cho mọi thao tác toán học",
-      "Tự động khóa đối tượng giống hệt như từ khóa synchronized",
-      "Bảo đảm phương thức chạy nhanh hơn mà không cần bộ nhớ đệm"
+      "Một phương thức của lớp A lại quan tâm và truy cập dữ liệu (thông qua getters/fields) của lớp B nhiều hơn chính dữ liệu của lớp A",
+      "Hai lớp có tên gọi và chức năng giống hệt nhau",
+      "Một lớp có quá nhiều tính năng mà không sử dụng hết",
+      "Một phương thức chứa quá nhiều biến cục bộ"
     ],
     "correctAnswer": 0,
-    "explanation": "Từ khóa volatile buộc các luồng đọc/ghi trực tiếp từ bộ nhớ chính (Main Memory) thay vì CPU Cache riêng, đảm bảo mọi thay đổi của một luồng được các luồng khác thấy ngay lập tức (Visibility) và thiết lập rào cản bộ nhớ. Tuy nhiên nó KHÔNG đảm bảo tính nguyên tử: thao tác count++ thực chất là 3 bước đọc-sửa-ghi, nên vẫn bị Race Condition nếu nhiều luồng cùng thực hiện.",
-    "difficulty": "hard",
+    "explanation": "Slide LTNC về Refactoring: Feature Envy xảy ra khi một phương thức truy cập dữ liệu của lớp khác nhiều hơn lớp của chính nó. Kỹ thuật refactoring chuẩn là Move Method.",
+    "difficulty": "medium",
     "tags": [
-      "Volatile",
-      "Visibility",
-      "Atomicity",
-      "Race-Condition"
+      "Code-Smells",
+      "Feature-Envy"
     ]
   },
   {
     "id": "L8_Q07",
     "lessonId": 8,
-    "title": "Bốn điều kiện Coffman cần và đủ để xảy ra Bế tắc (Deadlock) giữa các luồng là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Phương thức sau đây mắc phải Mùi mã nguồn (Code Smell) nào?",
+    "code": "class OrderReceipt {\n    void printCustomerAddress(Customer customer) {\n        String street = customer.getAddress().getStreet();\n        String city = customer.getAddress().getCity();\n        String zip = customer.getAddress().getZipCode();\n        System.out.println(street + \", \" + city + \" \" + zip);\n    }\n}",
     "options": [
-      "Loại trừ lẫn nhau (Mutual Exclusion), Giữ và chờ (Hold and Wait), Không chiếm đoạt (No Preemption), Chờ đợi vòng tròn (Circular Wait)",
-      "Đa luồng, Thiếu bộ nhớ, Mạng chậm, Lỗi CPU",
-      "Dùng synchronized, Dùng volatile, Dùng Thread.sleep, Dùng wait()",
-      "Quá nhiều tiến trình, Bộ nhớ Heap quá nhỏ, Bộ nhớ Stack quá lớn, Lỗi JIT"
+      "Feature Envy (Ghen tị tính năng) kết hợp với Inappropriate Intimacy (Thân mật thái quá): phương thức thuộc lớp OrderReceipt nhưng chỉ toàn thao tác truy xuất dữ liệu nội bộ của Customer/Address",
+      "Dead Code: mã nguồn không bao giờ được gọi",
+      "Lazy Class: lớp không thực hiện chức năng gì",
+      "Speculative Generality: khái quát hóa suy đoán"
     ],
     "correctAnswer": 0,
-    "explanation": "Deadlock xảy ra khi và chỉ khi cả 4 điều kiện Coffman đồng thời thỏa mãn: 1) Mutual Exclusion (tài nguyên không thể chia sẻ đồng thời), 2) Hold and Wait (luồng đang giữ tài nguyên này lại yêu cầu thêm tài nguyên khác), 3) No Preemption (không thể cướp tài nguyên đang bị giữ), 4) Circular Wait (chu trình chờ đợi vòng tròn T1 chờ T2, T2 chờ T1). Biện pháp phá deadlock phổ biến nhất là phá vỡ Circular Wait bằng cách luôn chiếm khóa theo một thứ tự cố định.",
-    "difficulty": "hard",
+    "explanation": "printCustomerAddress nằm trong OrderReceipt nhưng chỉ thao tác trên dữ liệu sâu của Customer và Address. Đây là biểu hiện điển hình của Feature Envy.",
+    "difficulty": "medium",
     "tags": [
-      "Deadlock",
-      "Coffman-Conditions"
+      "Code-Smells",
+      "Feature-Envy"
     ]
   },
   {
     "id": "L8_Q08",
     "lessonId": 8,
-    "title": "Quy tắc bắt buộc khi gọi các phương thức wait(), notify(), notifyAll() trong Java là gì?",
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Thay thế điều kiện bằng Đa hình' (Replace Conditional with Polymorphism) nên được áp dụng khi nào?",
     "code": null,
     "options": [
-      "Bắt buộc phải được gọi bên trong một khối hoặc phương thức synchronized trên chính đối tượng monitor đó, nếu không sẽ ném IllegalMonitorStateException",
-      "Chỉ có thể gọi từ bên trong phương thức run() của lớp Thread",
-      "Chỉ có thể gọi từ luồng chính (main thread)",
-      "Bắt buộc phải truyền tham số thời gian timeout"
+      "Khi có một lệnh switch-case hoặc chuỗi if-else dài thực hiện các hành vi khác nhau dựa trên kiểu của đối tượng hoặc mã loại (type code)",
+      "Khi một phương thức quá ngắn chỉ có một dòng lệnh",
+      "Khi một lớp không có bất kỳ phương thức nào",
+      "Khi cần tăng tốc độ chạy của vòng lặp for"
     ],
     "correctAnswer": 0,
-    "explanation": "wait(), notify() và notifyAll() là các phương thức giao tiếp liên luồng thuộc lớp Object. Cơ chế hoạt động của chúng yêu cầu luồng hiện tại phải đang nắm giữ Monitor lock của đối tượng đó. Nếu gọi chúng mà không sở hữu khóa (bên ngoài khối synchronized), JVM sẽ ném ngay java.lang.IllegalMonitorStateException tại runtime.",
+    "explanation": "Khi có chuỗi if-else hoặc switch-case rẽ nhánh theo loại đối tượng, ta nên thay thế bằng các lớp con đa hình để tuân thủ Open/Closed Principle.",
     "difficulty": "medium",
     "tags": [
-      "wait-notify",
-      "IllegalMonitorStateException",
-      "Synchronization"
+      "Refactoring",
+      "Polymorphism"
     ]
   },
   {
     "id": "L8_Q09",
     "lessonId": 8,
-    "title": "Việc sử dụng Thread Pool (như ExecutorService) giải quyết những nhược điểm lớn nào của việc tự tạo Thread bằng tay (new Thread())?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau được tái cấu trúc từ cấu trúc if-else sang kế thừa. Kỹ thuật tái cấu trúc này có tên là gì?",
+    "code": "// Truoc: if (type == BIRD) fly(); else if (type == DOG) bark();\n// Sau:\nabstract class Animal { abstract void makeSound(); }\nclass Dog extends Animal { void makeSound() { System.out.println(\"Gau\"); } }\nclass Bird extends Animal { void makeSound() { System.out.println(\"Hot\"); } }",
     "options": [
-      "Tái sử dụng các luồng có sẵn để tránh chi phí tạo/hủy luồng đắt đỏ của hệ điều hành, đồng thời kiểm soát giới hạn số lượng luồng tối đa để tránh cạn kiệt tài nguyên hệ thống (OutOfMemoryError)",
-      "Giúp các luồng tự động không bị lỗi NullPointerException",
-      "Tăng tốc độ mạng Internet khi tải dữ liệu",
-      "Tự động giải phóng các biến static không dùng"
+      "Replace Conditional with Polymorphism (Thay thế câu lệnh điều kiện bằng Đa hình)",
+      "Extract Method (Trích xuất phương thức)",
+      "Inline Class (Nội suy lớp)",
+      "Pull Up Field (Kéo thuộc tính lên lớp cha)"
     ],
     "correctAnswer": 0,
-    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 20: Tự tạo luồng bằng new Thread() tốn kém tài nguyên lớn của OS (cấp phát ~1MB Stack cho mỗi luồng, chi phí ngữ cảnh Context Switching). Nếu tạo hàng ngàn luồng có thể làm crash hệ thống với lỗi OutOfMemoryError. Thread Pool giúp tái sử dụng lại các worker threads và đặt hàng đợi công việc (BlockingQueue) có kiểm soát giới hạn tài nguyên an toàn.",
-    "difficulty": "medium",
+    "explanation": "Mẫu tái cấu trúc Replace Conditional with Polymorphism: chuyển các nhánh rẽ điều kiện thành các lớp con ghi đè phương thức đa hình.",
+    "difficulty": "easy",
     "tags": [
-      "ExecutorService",
-      "Thread-Pool",
-      "UET-Exam"
+      "Refactoring",
+      "Polymorphism"
     ]
   },
   {
     "id": "L8_Q10",
     "lessonId": 8,
-    "title": "Hành vi của phương thức Future.get() trong Java Concurrency là gì?",
+    "type": "single",
+    "title": "Trong JUnit 5, phát biểu nào sau đây phân biệt ĐÚNG về hai annotation @BeforeEach và @BeforeAll?",
     "code": null,
     "options": [
-      "Là phương thức đồng bộ chặn (blocking): nếu tác vụ chưa hoàn thành, luồng gọi nó sẽ bị tạm dừng (chuyển sang WAITING) cho đến khi tác vụ có kết quả hoặc ném ngoại lệ",
-      "Luôn trả về kết quả ngay lập tức; nếu chưa xong trả về null",
-      "Hủy bỏ tác vụ đang chạy nếu mất hơn 1 giây",
-      "Tự động tạo ra một luồng mới để tính toán"
+      "@BeforeEach thực thi trước MỖI phương thức kiểm thử @Test; @BeforeAll thực thi DUY NHẤT MỘT LẦN trước toàn bộ các test trong class và bắt buộc phải là phương thức static",
+      "@BeforeEach bắt buộc phải là static; @BeforeAll là non-static",
+      "@BeforeAll thực thi sau khi tất cả các test kết thúc",
+      "Cả @BeforeEach và @BeforeAll đều thực thi trước mỗi phương thức test"
     ],
     "correctAnswer": 0,
-    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 16: Future.get() là lời gọi chặn (blocking call). Nếu công việc tính toán chưa xong, luồng gọi get() sẽ bị block và chuyển vào trạng thái WAITING cho đến khi worker thread hoàn tất phương thức call() và gán kết quả vào Future.",
+    "explanation": "@BeforeEach chạy trước mỗi @Test. @BeforeAll chạy một lần duy nhất trước toàn bộ test class và bắt buộc phải là static.",
     "difficulty": "easy",
     "tags": [
-      "Future",
-      "Blocking",
-      "Concurrency",
-      "UET-Exam"
+      "JUnit5",
+      "Lifecycle-Annotations"
     ]
   },
   {
     "id": "L8_Q11",
     "lessonId": 8,
-    "title": "Đoạn mã sau in ra tên luồng thực thi là gì khi gọi phương thức run()?",
-    "code": "public class ThreadNameTest {\n    public static void main(String[] args) {\n        Thread t = new Thread(() -> {\n            System.out.println(Thread.currentThread().getName());\n        });\n        t.setName(\"Worker-1\");\n        t.run(); // Luu y goi run() thay vi start()\n    }\n}",
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Extract Method' (Trích xuất phương thức) giải quyết mùi mã nguồn nào?",
+    "code": null,
     "options": [
-      "main",
-      "Worker-1",
-      "Thread-0",
-      "Lỗi biên dịch"
+      "Phương thức quá dài (Long Method) hoặc đoạn mã bị trùng lặp (Duplicated Code)",
+      "Lớp không làm gì cả (Lazy Class)",
+      "Tên biến quá ngắn",
+      "Quá nhiều lớp con trong cây kế thừa"
     ],
     "correctAnswer": 0,
-    "explanation": "Vì gọi t.run() thay vì t.start(), không có luồng mới nào được khởi tạo. Khối lambda bên trong run() được thực thi đồng bộ trên chính luồng hiện tại đang gọi nó, tức là luồng 'main'. Do đó Thread.currentThread().getName() trả về 'main'.",
+    "explanation": "Extract Method lấy một đoạn mã có mục đích rõ ràng bên trong một phương thức dài để tạo thành một phương thức con mới có tên mang tính mô tả cao.",
     "difficulty": "easy",
     "tags": [
-      "Thread-Run",
-      "Thread-Name"
+      "Extract-Method",
+      "Refactoring"
     ]
   },
   {
     "id": "L8_Q12",
     "lessonId": 8,
-    "title": "Hiện tượng Tranh chấp điều kiện (Race Condition) trong đoạn mã sau dẫn đến kết quả gì?",
-    "code": "class Counter {\n    int count = 0;\n    void increment() { count++; }\n}\npublic class RaceTest {\n    public static void main(String[] args) throws InterruptedException {\n        Counter c = new Counter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau sử dụng assertTimeout trong JUnit 5. Mục đích của ca kiểm thử này là gì?",
+    "code": "import org.junit.jupiter.api.*;\nimport java.time.Duration;\npublic class PerformanceTest {\n    @Test\n    void testTimeout() {\n        Assertions.assertTimeout(Duration.ofMillis(500), () -> {\n            Thread.sleep(100);\n        });\n    }\n}",
     "options": [
-      "Giá trị in ra có thể nhỏ hơn hoặc bằng 2000 (thường < 2000) và không thể đoán trước chính xác do mất mát cập nhật (lost update)",
-      "Luôn luôn bằng chính xác 2000 trong mọi lần chạy",
-      "Luôn luôn bằng 1000",
-      "Chương trình bị deadlock và không bao giờ kết thúc"
+      "Kiểm tra xem tác vụ trong khối lambda có hoàn thành trong khoảng thời gian tối đa 500ms hay không",
+      "Bắt buộc tác vụ phải chạy đúng chính xác 500ms",
+      "Tạm dừng kiểm thử trong 500ms trước khi chạy",
+      "Lỗi biên dịch do không thể truyền Duration"
     ],
     "correctAnswer": 0,
-    "explanation": "Phương thức increment() không được đồng bộ hóa (synchronized). Thao tác count++ bao gồm 3 bước: đọc count, tăng 1, ghi lại. Khi 2 luồng chạy đồng thời trên các lõi CPU, chúng có thể đọc cùng một giá trị cũ và ghi đè lẫn nhau (Lost Update). Do đó kết quả thực tế thường nhỏ hơn 2000 và thay đổi tùy mỗi lần chạy.",
-    "difficulty": "medium",
+    "explanation": "assertTimeout kiểm thử hiệu năng/thời gian thực thi: nếu đoạn mã trong lambda mất nhiều hơn thời gian quy định (500ms), ca kiểm thử sẽ bị đánh trượt (failed).",
+    "difficulty": "easy",
     "tags": [
-      "Race-Condition",
-      "Lost-Update",
-      "Synchronization"
+      "JUnit5",
+      "assertTimeout"
     ]
   },
   {
     "id": "L8_Q13",
     "lessonId": 8,
-    "title": "Đoạn mã sau sử dụng từ khóa volatile cho biến đếm count. Kết quả in ra có chắc chắn bằng 2000 hay không?",
-    "code": "class VolatileCounter {\n    volatile int count = 0;\n    void increment() { count++; }\n}\npublic class VolatileTest {\n    public static void main(String[] args) throws InterruptedException {\n        VolatileCounter c = new VolatileCounter();\n        Thread t1 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        Thread t2 = new Thread(() -> { for (int i = 0; i < 1000; i++) c.increment(); });\n        t1.start(); t2.start();\n        t1.join(); t2.join();\n        System.out.println(c.count);\n    }\n}",
+    "type": "single",
+    "title": "Mùi mã nguồn 'Data Class' (Lớp dữ liệu thuần túy) là gì?",
+    "code": null,
     "options": [
-      "Không chắc chắn bằng 2000, giá trị vẫn có thể nhỏ hơn 2000 vì volatile không đảm bảo tính nguyên tử cho phép toán count++",
-      "Chắc chắn bằng 2000 vì volatile đã đồng bộ hóa toàn diện",
-      "Lỗi biên dịch do biến volatile không thể dùng toán tử ++",
-      "Luôn luôn bằng 0"
+      "Lớp chỉ chứa các trường dữ liệu cùng getters/setters mà hoàn toàn không có bất kỳ hành vi nghiệp vụ nào",
+      "Lớp có quá nhiều phương thức tính toán phức tạp",
+      "Lớp kết nối tới cơ sở dữ liệu SQL",
+      "Lớp chứa dữ liệu bị mã hóa"
     ],
     "correctAnswer": 0,
-    "explanation": "Bẫy rất phổ biến về từ khóa volatile: volatile chỉ đảm bảo tính nhìn thấy (visibility) giá trị mới nhất trong bộ nhớ chính, nhưng count++ là một phép toán phức hợp (compound action) không nguyên tử. Hai luồng vẫn có thể đọc cùng một giá trị đồng thời và ghi đè giá trị tăng, gây thất thoát cập nhật. Để đảm bảo đúng 2000, phải dùng synchronized hoặc AtomicInteger.",
-    "difficulty": "hard",
+    "explanation": "Data Class là lớp thiếu hướng đối tượng, chỉ lưu dữ liệu thô (dumb data container). Nên áp dụng Move Method để đưa các hành vi thao tác dữ liệu về chính lớp này.",
+    "difficulty": "medium",
     "tags": [
-      "Volatile",
-      "Non-Atomic",
-      "Compound-Operation"
+      "Code-Smells",
+      "Data-Class"
     ]
   },
   {
     "id": "L8_Q14",
     "lessonId": 8,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi hai luồng cùng chạy?",
-    "code": "public class DeadlockDemo {\n    static final Object lockA = new Object();\n    static final Object lockB = new Object();\n    public static void main(String[] args) {\n        Thread t1 = new Thread(() -> {\n            synchronized (lockA) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockB) { System.out.println(\"T1 finished\"); }\n            }\n        });\n        Thread t2 = new Thread(() -> {\n            synchronized (lockB) {\n                try { Thread.sleep(50); } catch (Exception e) {}\n                synchronized (lockA) { System.out.println(\"T2 finished\"); }\n            }\n        });\n        t1.start(); t2.start();\n    }\n}",
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Pull Up Method' (Kéo phương thức lên) được áp dụng khi nào?",
+    "code": null,
     "options": [
-      "Xảy ra Bế tắc (Deadlock): T1 giữ lockA chờ lockB, trong khi T2 giữ lockB chờ lockA; chương trình bị treo vô hạn",
-      "Chương trình in ra 'T1 finished' rồi 'T2 finished' bình thường",
-      "Ném ngoại lệ IllegalMonitorStateException tại runtime",
-      "Lỗi biên dịch do sleep trong khối synchronized"
+      "Khi nhiều lớp con có các phương thức có phần thân xử lý giống hệt nhau, ta đưa phương thức đó lên lớp cha chung để loại bỏ trùng lặp mã",
+      "Khi chuyển phương thức từ private sang public",
+      "Khi xóa bỏ một phương thức khỏi lớp cha",
+      "Khi đổi kiểu trả về của phương thức sang void"
     ],
     "correctAnswer": 0,
-    "explanation": "Kịch bản Deadlock kinh điển do khóa chéo (Circular Wait): Luồng T1 chiếm lockA rồi ngủ 50ms; trong lúc đó luồng T2 chiếm lockB rồi ngủ 50ms. Khi thức dậy, T1 cố gắng lấy lockB (đang bị T2 giữ) nên bị chặn; T2 cố gắng lấy lockA (đang bị T1 giữ) nên cũng bị chặn. Cả hai luồng chờ đợi lẫn nhau vô hạn tạo thành chu trình bế tắc.",
-    "difficulty": "medium",
+    "explanation": "Pull Up Method: Khi các lớp con có phương thức thực hiện công việc giống nhau, chuyển phương thức đó lên lớp cha chung để tái sử dụng mã.",
+    "difficulty": "easy",
     "tags": [
-      "Deadlock",
-      "Circular-Wait",
-      "Monitor-Lock"
+      "Refactoring",
+      "Pull-Up-Method"
     ]
   },
   {
     "id": "L8_Q15",
     "lessonId": 8,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy phương thức doWait()?",
-    "code": "public class WaitTest {\n    static Object lock = new Object();\n    public static void main(String[] args) throws InterruptedException {\n        lock.wait(); // Goi wait() truc tiep khong co synchronized\n    }\n}",
+    "type": "single",
+    "title": "Annotation @Disabled trong JUnit 5 có tác dụng gì?",
+    "code": null,
     "options": [
-      "Ném ngoại lệ IllegalMonitorStateException tại runtime",
-      "Luồng main bị tạm dừng vô hạn không lỗi",
-      "Lỗi biên dịch do thiếu khối try-catch",
-      "Chương trình kết thúc ngay lập tức"
+      "Tạm thời bỏ qua (skip) không thực thi phương thức kiểm thử hoặc lớp kiểm thử đó",
+      "Xóa vĩnh viễn ca kiểm thử khỏi bộ nhớ",
+      "Bắt buộc ca kiểm thử đó phải pass",
+      "Chỉ chạy ca kiểm thử đó trên hệ điều hành Linux"
     ],
     "correctAnswer": 0,
-    "explanation": "Phương thức wait() của Object yêu cầu luồng hiện tại phải đang sở hữu Monitor lock của đối tượng đó trước khi gọi (tức là phải nằm bên trong khối synchronized (lock) { ... }). Do luồng main chưa chiếm lock của biến lock mà đã gọi lock.wait(), JVM lập tức ném: java.lang.IllegalMonitorStateException: current thread is not owner.",
-    "difficulty": "medium",
+    "explanation": "@Disabled (tương đương @Ignore trong JUnit 4) dùng để tạm thời vô hiệu hóa không chạy ca kiểm thử đó trong lần test hiện tại.",
+    "difficulty": "easy",
     "tags": [
-      "wait()",
-      "IllegalMonitorStateException",
-      "Monitor-Owner"
+      "JUnit5",
+      "Disabled-Annotation"
     ]
   },
   {
     "id": "L8_Q16",
     "lessonId": 8,
-    "title": "Cho đoạn mã trích từ Đề thi mẫu UET Bài 1 (Đoạn code 3). Kết quả in ra là gì?",
-    "code": "import java.util.concurrent.*;\nclass DownloadTask implements Callable<String> {\n    private final String file;\n    DownloadTask(String file) { this.file = file; }\n    public String call() throws Exception {\n        Thread.sleep(100);\n        return \"Done:\" + file;\n    }\n}\npublic class Main {\n    public static void main(String[] args) throws Exception {\n        ExecutorService pool = Executors.newFixedThreadPool(2);\n        Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\n        Future<String> f2 = pool.submit(new DownloadTask(\"B\"));\n        System.out.println(f1.get());\n        System.out.println(f2.get());\n        pool.shutdown();\n    }\n}",
+    "type": "single",
+    "title": "Mùi mã nguồn 'Primitive Obsession' (Ám ảnh kiểu nguyên thủy) là gì?",
+    "code": null,
     "options": [
-      "Done:A\\nDone:B",
-      "Done:B\\nDone:A",
-      "Lỗi biên dịch tại submit(DownloadTask)",
-      "In ra null do Future chưa tính toán xong"
+      "Lạm dụng các kiểu dữ liệu nguyên thủy (như int, String) để biểu diễn các khái niệm nghiệp vụ phức tạp (như Số điện thoại, Tiền tệ, Địa chỉ) thay vì tạo các lớp đối tượng riêng biệt",
+      "Không bao giờ sử dụng kiểu int trong chương trình",
+      "Chỉ sử dụng kiểu float thay vì double",
+      "Ép kiểu nguyên thủy liên tục gây lỗi tràn số"
     ],
     "correctAnswer": 0,
-    "explanation": "Đề thi mẫu UET Bài 1: Hai tác vụ DownloadTask được gửi vào pool gồm 2 worker threads. f1.get() chặn luồng main chờ tác vụ tải file A hoàn thành và in ra 'Done:A'. Tiếp đó f2.get() lấy kết quả tác vụ tải file B và in ra 'Done:B'. Sau đó pool được đóng bằng shutdown().",
-    "difficulty": "easy",
+    "explanation": "Primitive Obsession là việc dùng chuỗi String hoặc số int để đại diện cho các khái niệm nghiệp vụ có ràng buộc (như ZipCode, Email, PhoneNumber). Giải pháp refactoring là 'Replace Data Value with Object'.",
+    "difficulty": "medium",
     "tags": [
-      "ExecutorService",
-      "Callable",
-      "Future",
-      "UET-Exam"
+      "Code-Smells",
+      "Primitive-Obsession"
     ]
   },
   {
     "id": "L8_Q17",
     "lessonId": 8,
-    "title": "Theo Đề thi mẫu UET Câu 19: Điều gì xảy ra nếu gọi liên tiếp hai lần f1.get() trên cùng một đối tượng Future?",
-    "code": "Future<String> f1 = pool.submit(new DownloadTask(\"A\"));\nSystem.out.println(f1.get());\nSystem.out.println(f1.get());",
+    "type": "multiple",
+    "title": "Những assertion nào sau đây là assertions chuẩn được hỗ trợ bởi lớp org.junit.jupiter.api.Assertions trong JUnit 5? (Chọn các đáp án đúng)",
+    "code": null,
     "options": [
-      "Lần gọi get() thứ hai trả về ngay kết quả đã lưu trong bộ đệm (cached result) mà KHÔNG thực thi lại tác vụ DownloadTask",
-      "Tác vụ DownloadTask sẽ được đưa vào pool để thực thi lại từ đầu lần thứ hai",
-      "Ném ngoại lệ IllegalStateException vì Future chỉ được get() một lần duy nhất",
-      "Lần thứ hai trả về null"
+      "assertEquals(expected, actual)",
+      "assertThrows(expectedType, executable)",
+      "assertTimeout(duration, executable)",
+      "assertVerify(condition)"
     ],
-    "correctAnswer": 0,
-    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 19: Đối tượng Future lưu giữ trạng thái kết quả của tác vụ một khi nó đã hoàn thành. Lần gọi f1.get() thứ hai nhận thấy trạng thái tác vụ đã là DONE, do đó nó trả về ngay kết quả tính toán đã có mà không cần chờ đợi và hoàn toàn không chạy lại tác vụ.",
-    "difficulty": "medium",
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "assertEquals, assertThrows, assertTimeout là các assertion chuẩn của JUnit 5. assertVerify không tồn tại trong JUnit 5.",
+    "difficulty": "easy",
     "tags": [
-      "Future",
-      "Caching",
-      "UET-Exam"
+      "JUnit5",
+      "Assertions",
+      "Multi-Select"
     ]
   },
   {
     "id": "L8_Q18",
     "lessonId": 8,
-    "title": "Hai phương thức sau trong cùng một lớp có thể được thực thi đồng thời bởi hai luồng khác nhau hay không? Vì sao?",
-    "code": "class SyncDual {\n    public synchronized void methodA() {\n        // Instance synchronized method\n    }\n    public static synchronized void methodB() {\n        // Static synchronized method\n    }\n}",
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Push Down Field' (Đẩy thuộc tính xuống) được áp dụng khi nào?",
+    "code": null,
     "options": [
-      "Có thể chạy đồng thời, vì methodA chiếm khóa trên đối tượng thực thể (this), còn methodB chiếm khóa trên đối tượng Class (SyncDual.class)",
-      "Không thể chạy đồng thời, vì từ khóa synchronized khóa toàn bộ các phương thức của lớp",
-      "Chỉ chạy đồng thời nếu hai phương thức có tham số khác nhau",
-      "Lỗi biên dịch: không thể vừa có method synchronized vừa có static synchronized"
+      "Khi một thuộc tính khai báo ở lớp cha nhưng trong thực tế CHỈ ĐƯỢC SỬ DỤNG bởi một số ít lớp con cụ thể, ta nên chuyển thuộc tính đó xuống các lớp con tương ứng",
+      "Khi thuộc tính có giá trị null",
+      "Khi đổi tên thuộc tính từ chữ hoa sang chữ thường",
+      "Khi xóa bỏ getter/setter"
     ],
     "correctAnswer": 0,
-    "explanation": "Cơ chế khóa của JVM: methodA là instance method nên khi chạy luồng chiếm monitor lock của đối tượng thực thể (this). methodB là static method nên luồng chiếm monitor lock của đối tượng Class (SyncDual.class). Vì hai khóa này là hai thực thể hoàn toàn độc lập trong bộ nhớ Heap, hai luồng có thể thực thi methodA và methodB cùng lúc mà không hề bị chặn nhau.",
-    "difficulty": "hard",
+    "explanation": "Push Down Field: Nếu một trường ở superclass chỉ có ý nghĩa đối với một vài subclass, hãy chuyển trường đó xuống các subclass sử dụng nó để giữ cho superclass gọn gàng.",
+    "difficulty": "medium",
     "tags": [
-      "Monitor-Lock",
-      "Instance-vs-Static-Lock"
+      "Refactoring",
+      "Push-Down-Field"
     ]
   },
   {
     "id": "L8_Q19",
     "lessonId": 8,
-    "title": "Phương thức join() trong đoạn mã sau điều khiển thứ tự thực thi như thế nào?",
-    "code": "public class JoinTest {\n    public static void main(String[] args) throws InterruptedException {\n        Thread t = new Thread(() -> {\n            try { Thread.sleep(100); } catch (Exception e) {}\n            System.out.print(\"ThreadDone \");\n        });\n        t.start();\n        t.join(); // Main thread cho t ket thuc\n        System.out.print(\"MainDone \");\n    }\n}",
+    "type": "single",
+    "title": "Trong kỹ thuật kiểm thử Phân hoạch tương đương (EP), nếu một hàm nhận điểm số sinh viên từ 0 đến 100, miền dữ liệu có thể chia thành các phân hoạch nào?",
+    "code": null,
     "options": [
-      "ThreadDone MainDone ",
-      "MainDone ThreadDone ",
-      "In ngẫu nhiên một trong hai thứ tự",
-      "Lỗi biên dịch"
+      "1 phân hoạch hợp lệ [0, 100] và 2 phân hoạch không hợp lệ (< 0 và > 100)",
+      "100 phân hoạch tương đương riêng biệt",
+      "Chỉ có 1 phân hoạch duy nhất",
+      "Chỉ xét các số chẵn và số lẻ"
     ],
     "correctAnswer": 0,
-    "explanation": "Lời gọi t.join() khiến cho luồng hiện tại (luồng main) chuyển sang trạng thái WAITING và tạm dừng thực thi cho tới khi luồng t hoàn thành phương thức run(). Sau khi luồng t in ra 'ThreadDone ' và kết thúc, luồng main mới được đánh thức để in tiếp 'MainDone '. Thứ tự luôn luôn được đảm bảo là: 'ThreadDone MainDone '.",
+    "explanation": "EP chuẩn: 1 phân hoạch hợp lệ: {0 <= score <= 100} và 2 phân hoạch không hợp lệ: {score < 0} và {score > 100}. Chọn đại diện mỗi lớp (ví dụ: -5, 75, 105).",
     "difficulty": "easy",
     "tags": [
-      "Thread-Join",
-      "Execution-Order"
+      "Equivalence-Partitioning",
+      "Test-Design"
     ]
   },
   {
     "id": "L8_Q20",
     "lessonId": 8,
-    "title": "Theo Đề thi mẫu UET Câu 17: Điều gì xảy ra nếu chương trình kết thúc hàm main() mà KHÔNG gọi phương thức pool.shutdown() trên ExecutorService?",
-    "code": "public static void main(String[] args) throws Exception {\n    ExecutorService pool = Executors.newFixedThreadPool(2);\n    pool.submit(() -> System.out.println(\"Running...\"));\n    // Khong co pool.shutdown();\n}",
+    "type": "single",
+    "title": "Mùi mã nguồn 'Long Parameter List' (Danh sách tham số quá dài) nên được tái cấu trúc bằng kỹ thuật nào?",
+    "code": null,
     "options": [
-      "Tiến trình JVM vẫn tiếp tục chạy ngầm và không thể kết thúc, vì các worker threads trong pool mặc định là Non-Daemon threads",
-      "JVM tự động giải phóng pool và thoát ngay lập tức",
-      "JVM ném ngoại lệ ThreadPoolLeakException khi hàm main return",
-      "Hệ điều hành sẽ tự động gửi tín hiệu kill process sau 5 giây"
+      "Introduce Parameter Object hoặc Preserve Whole Object (đóng gói các tham số thành một đối tượng DTO)",
+      "Chuyển tất cả các tham số thành biến toàn cục static",
+      "Xóa bỏ các tham số và gán giá trị mặc định bên trong hàm",
+      "Chia hàm thành 10 hàm nhỏ mỗi hàm nhận 1 tham số"
     ],
     "correctAnswer": 0,
-    "explanation": "Trích Đề thi mẫu UET Bài 1 Câu 17: JVM chỉ tự động chấm dứt khi tất cả các luồng còn sống đều là Daemon threads. Mặc định, các luồng thợ (worker threads) do Executors.newFixedThreadPool tạo ra là Non-Daemon threads và luôn chờ công việc mới trong hàng đợi. Nếu không gọi pool.shutdown(), các luồng này không bao giờ kết thúc, khiến tiến trình JVM tiếp tục chạy mãi mãi.",
-    "difficulty": "hard",
+    "explanation": "Khi phương thức có quá nhiều tham số (> 4), nên áp dụng 'Introduce Parameter Object' để nhóm các tham số liên quan thành một đối tượng đóng gói duy nhất.",
+    "difficulty": "easy",
     "tags": [
-      "ExecutorService",
-      "Shutdown",
-      "Non-Daemon-Thread",
-      "UET-Exam"
+      "Code-Smells",
+      "Introduce-Parameter-Object"
+    ]
+  },
+  {
+    "id": "L8_Q21",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Đoạn mã sau sử dụng annotation @ParameterizedTest trong JUnit 5. Kết quả là ca kiểm thử được chạy bao nhiêu lần?",
+    "code": "import org.junit.jupiter.params.ParameterizedTest;\nimport org.junit.jupiter.params.provider.ValueSource;\nimport org.junit.jupiter.api.Assertions;\npublic class ParamTest {\n    @ParameterizedTest\n    @ValueSource(ints = { 2, 4, 6, 8, 10 })\n    void testEven(int number) {\n        Assertions.assertEquals(0, number % 2);\n    }\n}",
+    "options": [
+      "5 lần (với các giá trị lần lượt là 2, 4, 6, 8, 10)",
+      "1 lần duy nhất với mảng cả 5 số",
+      "10 lần",
+      "Lỗi biên dịch do thiếu @Test"
+    ],
+    "correctAnswer": 0,
+    "explanation": "@ParameterizedTest kết hợp với @ValueSource(ints = {2, 4, 6, 8, 10}) sẽ tự động chạy ca kiểm thử testEven 5 lần độc lập, mỗi lần truyền vào 1 giá trị tương ứng trong mảng.",
+    "difficulty": "medium",
+    "tags": [
+      "JUnit5",
+      "ParameterizedTest"
+    ]
+  },
+  {
+    "id": "L8_Q22",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Mùi mã nguồn 'Inappropriate Intimacy' (Thân mật thái quá) xảy ra khi nào?",
+    "code": null,
+    "options": [
+      "Hai lớp quá gắn kết với nhau, liên tục tìm hiểu và can thiệp sâu vào các trường dữ liệu riêng tư của nhau",
+      "Hai lớp có quá nhiều phương thức công khai (public)",
+      "Một lớp kế thừa từ Object",
+      "Một lớp không có constructor"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Inappropriate Intimacy xảy ra khi hai class biết quá nhiều về cấu trúc nội bộ của nhau, phá vỡ tính đóng gói (Encapsulation). Giải pháp là Move Method/Move Field hoặc Extract Class.",
+    "difficulty": "medium",
+    "tags": [
+      "Code-Smells",
+      "Inappropriate-Intimacy"
+    ]
+  },
+  {
+    "id": "L8_Q23",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Inline Method' (Nội suy phương thức) được áp dụng khi nào?",
+    "code": null,
+    "options": [
+      "Khi thân phương thức quá rõ ràng và đơn giản tương đương với chính tên phương thức (sự phân tách không mang lại giá trị nào)",
+      "Khi phương thức dài hơn 100 dòng mã",
+      "Khi phương thức có chứa câu lệnh vòng lặp",
+      "Khi phương thức được gọi từ nhiều lớp khác nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Inline Method là kỹ thuật ngược lại với Extract Method: khi thân phương thức quá đơn giản và tên hàm không mang lại thông tin bổ sung, ta thay thế lời gọi hàm trực tiếp bằng thân phương thức đó.",
+    "difficulty": "easy",
+    "tags": [
+      "Refactoring",
+      "Inline-Method"
+    ]
+  },
+  {
+    "id": "L8_Q24",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Mục tiêu cốt lõi của Tái cấu trúc mã nguồn (Refactoring) theo định nghĩa của Martin Fowler là gì?",
+    "code": null,
+    "options": [
+      "Cải thiện cấu trúc thiết kế bên trong của mã nguồn mà KHÔNG LÀM THAY ĐỔI hành vi bên ngoài (observable behavior) của phần mềm",
+      "Bổ sung thêm nhiều tính năng mới cho phần mềm",
+      "Sửa chữa các lỗi runtime bug vừa phát hiện",
+      "Tối ưu hóa để mã máy chạy nhanh gấp đôi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Định nghĩa chuẩn của Martin Fowler: Refactoring là quá trình tái cấu trúc lại mã nguồn nhằm làm cho nó dễ hiểu hơn, dễ bảo trì hơn mà giữ nguyên vẹn 100% hành vi chức năng bên ngoài của hệ thống.",
+    "difficulty": "easy",
+    "tags": [
+      "Refactoring-Definition",
+      "Martin-Fowler"
+    ]
+  },
+  {
+    "id": "L8_Q25",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Mùi mã nguồn 'Duplicated Code' (Mã nguồn bị trùng lặp) gây ra tác hại nghiêm trọng nhất là gì?",
+    "code": null,
+    "options": [
+      "Khi cần sửa đổi logic nghiệp vụ, lập trình viên phải sửa ở nhiều nơi khác nhau, dễ dẫn đến sửa sót gây ra lỗi không nhất quán",
+      "Làm cho JVM không thể biên dịch mã nguồn",
+      "Gây ra lỗi tràn bộ nhớ StackOverflowError",
+      "Làm cho file .class có dung lượng tăng gấp 100 lần"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tác hại lớn nhất của trùng lặp code là chi phí bảo trì: khi có yêu cầu thay đổi nghiệp vụ, sửa ở chỗ này mà quên sửa ở chỗ khác sẽ sinh ra lỗi bug âm thầm.",
+    "difficulty": "easy",
+    "tags": [
+      "Code-Smells",
+      "Duplicated-Code"
+    ]
+  },
+  {
+    "id": "L8_Q26",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra hiện tượng gì khi chạy trong JUnit 5?",
+    "code": "import org.junit.jupiter.api.Test;\nimport org.junit.jupiter.api.Assertions;\npublic class AssertAllTest {\n    @Test\n    void testMultiple() {\n        Assertions.assertAll(\n            () -> Assertions.assertEquals(1, 1),\n            () -> Assertions.assertEquals(2, 3), // Fail 1\n            () -> Assertions.assertEquals(4, 5)  // Fail 2\n        );\n    }\n}",
+    "options": [
+      "Báo trượt và liệt kê ĐẦY ĐỦ CẢ HAI lỗi thất bại (Fail 1 và Fail 2) cùng một lúc trong báo cáo",
+      "Dừng ngay lập tức ở Fail 1 và không kiểm tra Fail 2",
+      "Pass vì có 1 assertion thành công",
+      "Lỗi biên dịch do assertAll không nhận lambda"
+    ],
+    "correctAnswer": 0,
+    "explanation": "assertAll (Grouped Assertions) trong JUnit 5 thực thi TẤT CẢ các assertions bên trong và báo cáo toàn bộ các lỗi thất bại cùng một lúc, không dừng lại ở lỗi đầu tiên.",
+    "difficulty": "medium",
+    "tags": [
+      "JUnit5",
+      "assertAll"
+    ]
+  },
+  {
+    "id": "L8_Q27",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Decompose Conditional' (Phân rã câu lệnh điều kiện) là gì?",
+    "code": null,
+    "options": [
+      "Trích xuất các biểu thức điều kiện phức tạp thành các phương thức con mang tính mô tả cao cho phần điều kiện và từng nhánh then/else",
+      "Xóa bỏ hoàn toàn câu lệnh if-else",
+      "Chuyển câu lệnh if-else thành vòng lặp while",
+      "Ghép nối nhiều câu lệnh if thành một dòng duy nhất"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Decompose Conditional: Tách biểu thức điều kiện phức tạp (if (date.before(SUMMER_START) || date.after(SUMMER_END))) thành phương thức có tên rõ nghĩa isWinter(date).",
+    "difficulty": "easy",
+    "tags": [
+      "Refactoring",
+      "Decompose-Conditional"
+    ]
+  },
+  {
+    "id": "L8_Q28",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Mùi mã nguồn 'Large Class' (Lớp quá lớn / God Class) vi phạm trực tiếp nguyên lý thiết kế nào?",
+    "code": null,
+    "options": [
+      "Single Responsibility Principle (Nguyên lý Trách nhiệm Đơn lẻ - SRP)",
+      "Liskov Substitution Principle",
+      "Open/Closed Principle",
+      "Interface Segregation Principle"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Large Class ôm đồm quá nhiều chức năng và trường dữ liệu, có nhiều lý do để thay đổi, vi phạm trực tiếp nguyên lý Single Responsibility Principle (SRP). Kỹ thuật refactoring là Extract Class.",
+    "difficulty": "easy",
+    "tags": [
+      "Code-Smells",
+      "Large-Class",
+      "SRP"
+    ]
+  },
+  {
+    "id": "L8_Q29",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Tại sao trong kiểm thử phần mềm, không thể thực hiện 'Kiểm thử toàn diện' (Exhaustive Testing - kiểm thử mọi tổ hợp đầu vào có thể)?",
+    "code": null,
+    "options": [
+      "Số lượng ca kiểm thử có thể là vô hạn hoặc khổng lồ về mặt toán học, vượt quá mọi giới hạn thời gian và chi phí của dự án",
+      "Vì máy tính không thể chạy được các vòng lặp lớn",
+      "Vì phần mềm không có lỗi",
+      "Vì JUnit cấm chạy nhiều hơn 1000 test case"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Một trong 7 nguyên lý kiểm thử phần mềm: Exhaustive testing is impossible. Miền dữ liệu đầu vào quá lớn, do đó phải dùng các kỹ thuật như EP và BVA để chọn mẫu kiểm thử tối ưu.",
+    "difficulty": "easy",
+    "tags": [
+      "Software-Testing",
+      "Exhaustive-Testing"
+    ]
+  },
+  {
+    "id": "L8_Q30",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật 'TDD' (Test-Driven Development - Phát triển hướng kiểm thử) tuân theo chu trình nào?",
+    "code": null,
+    "options": [
+      "Red (Viết test thất bại) -> Green (Viết mã tối thiểu để test pass) -> Refactor (Tái cấu trúc mã nguồn)",
+      "Code -> Test -> Deploy",
+      "Design -> Code -> Test",
+      "Refactor -> Red -> Green"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Chu trình Red-Green-Refactor của TDD: 1) Red: viết unit test cho tính năng mới và thấy test chạy trượt; 2) Green: viết code đơn giản nhất để test vượt qua; 3) Refactor: dọn dẹp mã nguồn sạch đẹp.",
+    "difficulty": "easy",
+    "tags": [
+      "TDD",
+      "Red-Green-Refactor"
     ]
   }
 ]

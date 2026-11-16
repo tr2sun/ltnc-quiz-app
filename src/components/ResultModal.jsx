@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Trophy, CheckCircle, XCircle, Clock, RotateCcw, Eye, ArrowRight, BookOpen } from 'lucide-react';
 import { LESSONS_METADATA } from '../data/lessonsMetadata';
+import { isAnswerCorrect } from './QuestionCard';
 
 export default function ResultModal({
   isOpen,
@@ -47,7 +48,7 @@ export default function ResultModal({
       lessonStats[lId] = { correct: 0, total: 0 };
     }
     lessonStats[lId].total += 1;
-    if (answers[idx] === q.correctAnswer) {
+    if (isAnswerCorrect(q, answers[idx])) {
       lessonStats[lId].correct += 1;
     }
   });

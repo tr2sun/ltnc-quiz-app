@@ -2,394 +2,618 @@
   {
     "id": "L6_Q01",
     "lessonId": 6,
-    "title": "Trong cây phân cấp ngoại lệ của Java, phát biểu nào sau đây phân biệt chính xác giữa Error và Exception?",
+    "type": "single",
+    "title": "Nguyên lý Trách nhiệm Đơn lẻ (Single Responsibility Principle - SRP) và Đóng/Mở (Open/Closed Principle - OCP) trong SOLID quy định điều gì?",
     "code": null,
     "options": [
-      "Error đại diện cho các sự cố nghiêm trọng của hệ thống/JVM (như OutOfMemoryError, StackOverflowError) mà ứng dụng không nên và thường không thể phục hồi; Exception đại diện cho các điều kiện bất thường mà ứng dụng có thể bắt và xử lý",
-      "Error là ngoại lệ kiểm tra (Checked Exception); Exception là ngoại lệ không kiểm tra (Unchecked Exception)",
-      "Error chỉ xảy ra trong thời gian biên dịch; Exception chỉ xảy ra khi chạy chương trình",
-      "Lớp Exception kế thừa trực tiếp từ Error"
+      "SRP: Một lớp chỉ nên có một lý do duy nhất để thay đổi; OCP: Phần mềm nên mở cho việc mở rộng (Open for extension) nhưng đóng cho việc sửa đổi (Closed for modification)",
+      "SRP: Mỗi project chỉ có duy nhất một lớp chính; OCP: Không cho phép kế thừa lớp đã biên dịch",
+      "SRP: Mỗi phương thức chỉ có tối đa một tham số; OCP: Mọi biến phải là private",
+      "SRP: Một interface chỉ có duy nhất một phương thức; OCP: Mã nguồn phải được bảo mật mã hóa"
     ],
     "correctAnswer": 0,
-    "explanation": "Cả Error và Exception đều kế thừa từ Throwable. Error biểu thị các lỗi nghiêm trọng ở cấp độ tài nguyên phần cứng hoặc máy ảo JVM (OutOfMemoryError, StackOverflowError) mà chương trình không có khả năng khắc phục. Exception biểu thị các tình huống lỗi nghiệp vụ hoặc ngoại cảnh mà chương trình có thể bắt (catch) và phục hồi xử lý an toàn.",
+    "explanation": "SRP quy định mỗi lớp chỉ nên đảm nhận một trách nhiệm nghiệp vụ duy nhất. OCP quy định hệ thống phải dễ dàng mở rộng hành vi mới (thêm lớp mới) mà không cần phải sửa đổi mã nguồn cũ đã ổn định.",
     "difficulty": "easy",
     "tags": [
-      "Exception-Hierarchy",
-      "Error-vs-Exception"
+      "SOLID",
+      "SRP",
+      "OCP"
     ]
   },
   {
     "id": "L6_Q02",
     "lessonId": 6,
-    "title": "Ngoại lệ không kiểm tra (Unchecked Exception) trong Java bao gồm những ngoại lệ nào?",
+    "type": "multiple",
+    "title": "Những mẫu thiết kế nào sau đây thuộc nhóm Mẫu Khởi tạo (Creational Patterns) theo phân loại Gang of Four (GoF)? (Chọn các đáp án đúng)",
     "code": null,
     "options": [
-      "Bao gồm RuntimeException và tất cả các lớp con của nó (như NullPointerException, ArrayIndexOutOfBoundsException), cùng với Error",
-      "Bao gồm tất cả các lớp kế thừa trực tiếp từ Exception trừ RuntimeException",
-      "Chỉ bao gồm IOException và SQLException",
-      "Tất cả các ngoại lệ được khai báo bằng từ khóa throws"
+      "Singleton",
+      "Factory Method",
+      "Adapter",
+      "Observer"
     ],
-    "correctAnswer": 0,
-    "explanation": "Trong Java, Unchecked Exception bao gồm lớp java.lang.RuntimeException cùng các lớp con của nó (biểu thị lỗi logic lập trình như chia cho 0, trỏ null, vượt biên mảng) và các lớp Error. Trình biên dịch không bắt buộc lập trình viên phải bắt try-catch hay khai báo throws đối với Unchecked Exceptions.",
-    "difficulty": "medium",
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "Singleton và Factory Method là Creational Patterns (khởi tạo). Adapter là Structural (cấu trúc). Observer là Behavioral (hành vi).",
+    "difficulty": "easy",
     "tags": [
-      "Unchecked-Exception",
-      "RuntimeException"
+      "GoF",
+      "Creational-Patterns",
+      "Multi-Select"
     ]
   },
   {
     "id": "L6_Q03",
     "lessonId": 6,
-    "title": "Khối lệnh finally trong cấu trúc try-catch-finally được đảm bảo thực thi trong trường hợp nào?",
+    "type": "single",
+    "title": "Trong kỹ thuật Double-Checked Locking khi cài đặt Singleton, từ khóa volatile trên biến instance có vai trò quyết định gì?",
     "code": null,
     "options": [
-      "Luôn luôn thực thi dù khối try có kết thúc bình thường, ném ngoại lệ, hay có lệnh return; Chỉ bị bỏ qua khi gọi System.exit() hoặc JVM gặp sự cố sập nguồn",
-      "Chỉ thực thi khi có ngoại lệ xảy ra trong khối try",
-      "Chỉ thực thi khi không có bất kỳ lệnh return nào trong khối try hoặc catch",
-      "Không thực thi nếu khối catch đã bắt được ngoại lệ"
+      "Ngăn chặn hiện tượng sắp xếp lại lệnh (Instruction Reordering) của trình biên dịch và CPU, đảm bảo đối tượng được khởi tạo hoàn tất trước khi gán tham chiếu cho các luồng khác thấy",
+      "Đảm bảo phương thức getInstance() chạy nhanh hơn gấp 10 lần",
+      "Ngăn cản việc kế thừa lớp Singleton",
+      "Tự động giải phóng bộ nhớ khi Singleton không còn được sử dụng"
     ],
     "correctAnswer": 0,
-    "explanation": "Quy tắc JVM: Khối finally luôn được chạy ngay cả khi try/catch chứa lệnh return, break, continue hoặc ném ngoại lệ. Trường hợp duy nhất khối finally không chạy là tiến trình JVM bị chấm dứt đột ngột bằng System.exit(0), bị hệ điều hành kill process, hoặc gặp lỗi phần cứng/mất nguồn.",
-    "difficulty": "medium",
+    "explanation": "Lệnh instance = new Singleton() có thể bị CPU đảo bước gán địa chỉ lên trước khi constructor hoàn tất. volatile thiết lập Memory Barrier ngăn chặn việc đảo lệnh này, bảo vệ không cho luồng khác thấy đối tượng khởi tạo dở dang.",
+    "difficulty": "hard",
     "tags": [
-      "Finally-Block",
-      "Execution-Guarantee"
+      "Singleton",
+      "Double-Checked-Locking",
+      "Volatile"
     ]
   },
   {
     "id": "L6_Q04",
     "lessonId": 6,
-    "title": "Điều gì xảy ra nếu khối finally chứa một câu lệnh return hoặc ném một ngoại lệ mới?",
+    "type": "single",
+    "title": "Mục đích cốt lõi của mẫu thiết kế Factory Method Pattern là gì?",
     "code": null,
     "options": [
-      "Nó sẽ ghi đè và nuốt chửng (swallow/suppress) hoàn toàn bất kỳ giá trị return nào hoặc ngoại lệ nào từng được ném ra trong khối try hoặc catch",
-      "Trình biên dịch báo lỗi cú pháp cấm dùng return trong finally",
-      "Giá trị return trong finally được cộng dồn với giá trị return trong try",
-      "Cả hai ngoại lệ sẽ cùng được ném ra đồng thời tại runtime"
+      "Định nghĩa một giao diện để tạo đối tượng, nhưng để các lớp con quyết định lớp cụ thể nào sẽ được khởi tạo",
+      "Đảm bảo chỉ có một đối tượng duy nhất tồn tại trong toàn bộ ứng dụng",
+      "Chuyển đổi giao diện của một lớp thành một giao diện khác mà client mong đợi",
+      "Bọc quanh một đối tượng để bổ sung thêm các tính năng động mà không dùng kế thừa"
     ],
     "correctAnswer": 0,
-    "explanation": "Một quy tắc rất nguy hiểm trong Java: Nếu khối finally thực thi lệnh return hoặc throw exception, nó sẽ ghi đè và hủy bỏ hoàn toàn trạng thái return hoặc ngoại lệ đang chờ xử lý từ khối try/catch trước đó. Vì lý do này, các quy chuẩn Clean Code (như SonarLint) luôn cấm viết lệnh return trong khối finally.",
-    "difficulty": "hard",
+    "explanation": "Factory Method định nghĩa một phương thức trừu tượng để tạo đối tượng, cho phép lớp cha ủy quyền việc khởi tạo cho lớp con, giảm thiểu phụ thuộc cứng giữa các lớp.",
+    "difficulty": "easy",
     "tags": [
-      "Finally-Block",
-      "Return-Override",
-      "Code-Smell"
+      "Factory-Method",
+      "Creational"
     ]
   },
   {
     "id": "L6_Q05",
     "lessonId": 6,
-    "title": "Cơ chế try-with-resources (giới thiệu từ Java 7) đòi hỏi tài nguyên khai báo phải thỏa mãn điều kiện gì?",
+    "type": "single",
+    "title": "Mẫu thiết kế Chiến lược (Strategy Pattern) giúp giải quyết vấn đề thiết kế nào phổ biến nhất?",
     "code": null,
     "options": [
-      "Phải triển khai interface java.lang.AutoCloseable hoặc java.io.Closeable",
-      "Phải là một luồng (Thread) đang chạy",
-      "Bắt buộc phải có từ khóa final ở dòng khai báo",
-      "Phải kế thừa từ lớp trừu tượng java.io.InputStream"
+      "Loại bỏ các cấu trúc rẽ nhánh if-else hoặc switch-case phức tạp bằng cách đóng gói từng thuật toán vào các lớp chiến lược riêng biệt có thể tráo đổi khi đang chạy",
+      "Tạo bản sao của đối tượng mà không phụ thuộc vào lớp của chúng",
+      "Ngăn ngừa việc tạo nhiều kết nối tới cơ sở dữ liệu",
+      "Đồng bộ hóa các thao tác trên luồng vào ra"
     ],
     "correctAnswer": 0,
-    "explanation": "Cú pháp try (ResourceType res = new ResourceType()) { ... } yêu cầu đối tượng tài nguyên phải triển khai interface java.lang.AutoCloseable (hoặc Closeable). Khi kết thúc khối try, phương thức close() của tài nguyên sẽ được JVM tự động gọi theo thứ tự ngược lại với thứ tự khai báo.",
-    "difficulty": "easy",
+    "explanation": "Strategy Pattern đóng gói các thuật toán thành các lớp riêng biệt tuân theo một interface chung, loại bỏ chuỗi if-else/switch dài kiểm tra loại thuật toán.",
+    "difficulty": "medium",
     "tags": [
-      "Try-with-resources",
-      "AutoCloseable",
-      "Java7"
+      "Strategy-Pattern",
+      "OCP"
     ]
   },
   {
     "id": "L6_Q06",
     "lessonId": 6,
-    "title": "Quy tắc sắp xếp thứ tự giữa các khối catch liên tiếp trong Java là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau áp dụng Strategy Pattern. Kết quả in ra là gì?",
+    "code": "interface DiscountStrategy {\n    double applyDiscount(double amount);\n}\nclass VipDiscount implements DiscountStrategy {\n    public double applyDiscount(double amount) { return amount * 0.8; }\n}\nclass Order {\n    DiscountStrategy strategy;\n    Order(DiscountStrategy s) { this.strategy = s; }\n    double checkout(double total) { return strategy.applyDiscount(total); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Order order = new Order(new VipDiscount());\n        System.out.println((int) order.checkout(1000));\n    }\n}",
     "options": [
-      "Khối catch ngoại lệ con (cụ thể hơn) bắt buộc phải đứng trước khối catch ngoại lệ cha (tổng quát hơn); Viết ngược lại sẽ bị lỗi biên dịch (unreachable code)",
-      "Khối catch ngoại lệ cha phải đứng trước khối catch ngoại lệ con",
-      "Thứ tự sắp xếp các khối catch là hoàn toàn ngẫu nhiên không ảnh hưởng",
-      "Chỉ được phép có duy nhất một khối catch cho mỗi khối try"
+      "800",
+      "1000",
+      "200",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Cơ chế bắt ngoại lệ kiểm tra từ trên xuống dưới. Nếu khối catch ngoại lệ tổng quát (như Exception) đứng trước khối catch ngoại lệ con (như IOException), khối catch con sẽ không bao giờ có cơ hội thực thi. Trình biên dịch Java phát hiện điều này và báo lỗi: 'exception IOException has already been caught' (unreachable catch block).",
-    "difficulty": "medium",
+    "explanation": "Order ủy quyền tính toán cho VipDiscount: 1000 * 0.8 = 800. In ra: 800.",
+    "difficulty": "easy",
     "tags": [
-      "Catch-Order",
-      "Compile-Error",
-      "Unreachable-Code"
+      "Strategy-Pattern",
+      "Polymorphism"
     ]
   },
   {
     "id": "L6_Q07",
     "lessonId": 6,
-    "title": "Sự khác biệt căn bản giữa Luồng Byte (Byte Streams) và Luồng Ký tự (Character Streams) trong Java I/O là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau sử dụng Decorator Pattern để tính tiền đồ uống. Kết quả in ra là gì?",
+    "code": "interface Coffee { int cost(); }\nclass SimpleCoffee implements Coffee {\n    public int cost() { return 10; }\n}\nabstract class CoffeeDecorator implements Coffee {\n    protected Coffee coffee;\n    CoffeeDecorator(Coffee c) { this.coffee = c; }\n}\nclass Milk extends CoffeeDecorator {\n    Milk(Coffee c) { super(c); }\n    public int cost() { return coffee.cost() + 5; }\n}\nclass Sugar extends CoffeeDecorator {\n    Sugar(Coffee c) { super(c); }\n    public int cost() { return coffee.cost() + 2; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Coffee c = new Sugar(new Milk(new SimpleCoffee()));\n        System.out.println(c.cost());\n    }\n}",
     "options": [
-      "Byte Streams (InputStream/OutputStream) xử lý dữ liệu nhị phân thô theo từng byte 8-bit; Character Streams (Reader/Writer) xử lý văn bản theo từng ký tự Unicode 16-bit và tự động ánh xạ bảng mã (encoding)",
-      "Byte Streams chỉ đọc được file văn bản; Character Streams chỉ đọc được ảnh và video",
-      "Character Streams nhanh hơn Byte Streams gấp 10 lần",
-      "Byte Streams không hỗ trợ cơ chế đệm bộ nhớ (Buffering)"
+      "17",
+      "15",
+      "12",
+      "10"
     ],
     "correctAnswer": 0,
-    "explanation": "Byte Streams (gốc là InputStream và OutputStream) đọc/ghi dữ liệu nhị phân thô (raw 8-bit bytes), thích hợp cho file ảnh, video, file thực thi. Character Streams (gốc là Reader và Writer) được thiết kế chuyên biệt cho văn bản (Unicode 16-bit characters), tự động chuyển đổi giữa byte và ký tự theo charset mã hóa (như UTF-8).",
-    "difficulty": "easy",
+    "explanation": "SimpleCoffee (10) -> Milk (+5 = 15) -> Sugar (+2 = 17). Kết quả: 17.",
+    "difficulty": "medium",
     "tags": [
-      "Java-IO",
-      "Byte-Stream",
-      "Character-Stream"
+      "Decorator-Pattern",
+      "Calculation"
     ]
   },
   {
     "id": "L6_Q08",
     "lessonId": 6,
-    "title": "Mục đích của việc khai báo hằng số 'private static final long serialVersionUID' trong lớp triển khai java.io.Serializable là gì?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau cài đặt Observer Pattern. Kết quả in ra màn hình là gì?",
+    "code": "import java.util.*;\ninterface Observer { void update(String msg); }\nclass Subject {\n    private List<Observer> list = new ArrayList<>();\n    void attach(Observer o) { list.add(o); }\n    void notifyAllObservers(String msg) {\n        for (Observer o : list) o.update(msg);\n    }\n}\npublic class ObserverTest {\n    public static void main(String[] args) {\n        Subject s = new Subject();\n        s.attach(msg -> System.out.print(\"O1:\" + msg + \" \"));\n        s.attach(msg -> System.out.print(\"O2:\" + msg + \" \"));\n        s.notifyAllObservers(\"News\");\n    }\n}",
     "options": [
-      "Kiểm soát phiên bản của lớp trong quá trình tuần tự hóa (Serialization) và giải tuần tự hóa (Deserialization), đảm bảo tính tương thích của đối tượng giữa người gửi và người nhận",
-      "Tăng tốc độ ghi dữ liệu của đối tượng vào đĩa cứng",
-      "Mã hóa bảo mật các trường dữ liệu mật khẩu",
-      "Bắt buộc JVM phải cấp phát dung lượng bộ nhớ cố định cho đối tượng"
+      "O1:News O2:News ",
+      "O2:News O1:News ",
+      "O1:News ",
+      "Lỗi biên dịch do dùng biểu thức Lambda"
     ],
     "correctAnswer": 0,
-    "explanation": "serialVersionUID đóng vai trò là mã nhận dạng phiên bản cho lớp Serializable. Khi giải tuần tự hóa, JVM so sánh serialVersionUID trong luồng dữ liệu với serialVersionUID của lớp hiện tại trong máy. Nếu không trùng khớp, JVM ném InvalidClassException. Nếu không khai báo tường minh, JVM tự tính toán hash từ cấu trúc lớp, rất dễ gãy tương thích khi lớp bị sửa đổi nhẹ.",
-    "difficulty": "medium",
+    "explanation": "Subject duyệt observers theo thứ tự đăng ký: observer 1 in 'O1:News ', observer 2 in 'O2:News '. Kết quả: 'O1:News O2:News '.",
+    "difficulty": "easy",
     "tags": [
-      "Serialization",
-      "serialVersionUID",
-      "Versioning"
+      "Observer-Pattern",
+      "Lambda"
     ]
   },
   {
     "id": "L6_Q09",
     "lessonId": 6,
-    "title": "Từ khóa transient khi áp dụng cho một trường dữ liệu (field) trong Java có ý nghĩa gì?",
-    "code": null,
+    "type": "single",
+    "title": "Đoạn mã sau áp dụng Adapter Pattern để tương thích giao diện. Kết quả in ra là gì?",
+    "code": "interface ModernPrinter { void printDocument(String text); }\nclass LegacyPrinter {\n    void printOldFormat(String text) { System.out.print(\"Legacy: \" + text); }\n}\nclass PrinterAdapter implements ModernPrinter {\n    private LegacyPrinter legacy;\n    PrinterAdapter(LegacyPrinter l) { this.legacy = l; }\n    public void printDocument(String text) { legacy.printOldFormat(text); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        ModernPrinter printer = new PrinterAdapter(new LegacyPrinter());\n        printer.printDocument(\"Hello\");\n    }\n}",
     "options": [
-      "Loại trừ trường dữ liệu đó khỏi quá trình tuần tự hóa (Serialization); Khi giải tuần tự hóa, trường này sẽ nhận giá trị mặc định (0, null, false)",
-      "Biến trường đó thành biến chỉ đọc giống như final",
-      "Lưu trường dữ liệu đó vào bộ nhớ vĩnh viễn trên ổ cứng",
-      "Cho phép trường đó được truy cập bởi nhiều luồng mà không cần đồng bộ"
+      "Legacy: Hello",
+      "Hello",
+      "Modern: Hello",
+      "Lỗi biên dịch"
     ],
     "correctAnswer": 0,
-    "explanation": "Từ khóa transient thông báo cho cơ chế tuần tự hóa mặc định của Java bỏ qua trường dữ liệu này (thường dùng cho thông tin nhạy cảm như password, hoặc các tài nguyên phụ thuộc môi trường như database connection, thread). Khi deserialize lại, trường transient sẽ nhận giá trị mặc định của kiểu dữ liệu (null cho object, 0 cho số).",
+    "explanation": "PrinterAdapter bọc đối tượng LegacyPrinter và chuyển tiếp printDocument(\"Hello\") sang printOldFormat(\"Hello\"). In ra: 'Legacy: Hello'.",
     "difficulty": "easy",
     "tags": [
-      "Transient",
-      "Serialization"
+      "Adapter-Pattern"
     ]
   },
   {
     "id": "L6_Q10",
     "lessonId": 6,
-    "title": "Biến tĩnh (static field) có được lưu trữ trong quá trình tuần tự hóa (Serialization) của đối tượng hay không? Vì sao?",
+    "type": "single",
+    "title": "Mẫu thiết kế Composite giải quyết 'Mùi mã nguồn' (Code Smell) nào thường gặp trong cấu trúc cây phân cấp?",
     "code": null,
     "options": [
-      "Không được lưu, vì biến static thuộc về phạm vi lớp (Class) chứ không phải là một phần trạng thái của thể hiện đối tượng (Instance State)",
-      "Có được lưu bình thường như các trường instance khác",
-      "Chỉ được lưu nếu biến static đó có từ khóa final",
-      "Làm cho quá trình tuần tự hóa bị ném NotSerializableException"
+      "Mùi mã nguồn phải dùng if-else kiểm tra kiểu (instanceof) để phân biệt giữa phần tử lá (Leaf) và phần tử chứa (Container/Composite)",
+      "Mùi mã nguồn phương thức quá dài (Long Method)",
+      "Mùi mã nguồn danh sách tham số quá dài (Long Parameter List)",
+      "Mùi mã nguồn trùng lặp chuỗi ký tự (Duplicate String)"
     ],
     "correctAnswer": 0,
-    "explanation": "Tuần tự hóa đối tượng (Object Serialization) chỉ lưu trữ trạng thái của thể hiện (instance state). Biến static thuộc về lớp (class state) và được chia sẻ giữa mọi đối tượng. Vì vậy cơ chế Serialization mặc định của Java không bao giờ lưu biến static vào luồng ObjectOutputStream.",
-    "difficulty": "medium",
+    "explanation": "Slide LTNC chỉ rõ: Code Smell: Distinguishing Between Leaves and Containers. Composite Pattern định nghĩa interface Component chung để đối xử đồng nhất giữa Leaf và Composite.",
+    "difficulty": "hard",
     "tags": [
-      "Serialization",
-      "Static-Field"
+      "Composite-Pattern",
+      "Code-Smell"
     ]
   },
   {
     "id": "L6_Q11",
     "lessonId": 6,
-    "title": "Đoạn mã sau cho kết quả trả về là gì khi thực thi phương thức test()?",
-    "code": "public class FinallyReturn {\n    public static int test() {\n        try {\n            return 10;\n        } finally {\n            return 20;\n        }\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau áp dụng Composite Pattern để tính dung lượng cây thư mục. Kết quả in ra là gì?",
+    "code": "import java.util.*;\ninterface Component { int getSize(); }\nclass FileLeaf implements Component {\n    int size;\n    FileLeaf(int s) { this.size = s; }\n    public int getSize() { return size; }\n}\nclass FolderComposite implements Component {\n    List<Component> children = new ArrayList<>();\n    void add(Component c) { children.add(c); }\n    public int getSize() {\n        int total = 0;\n        for (Component c : children) total += c.getSize();\n        return total;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        FolderComposite root = new FolderComposite();\n        root.add(new FileLeaf(10));\n        FolderComposite sub = new FolderComposite();\n        sub.add(new FileLeaf(20));\n        sub.add(new FileLeaf(30));\n        root.add(sub);\n        System.out.println(root.getSize());\n    }\n}",
     "options": [
-      "20",
+      "60",
+      "50",
       "10",
-      "30",
-      "Lỗi biên dịch do có hai lệnh return"
+      "Lỗi biên dịch do đệ quy"
     ],
     "correctAnswer": 0,
-    "explanation": "Khi khối try gặp lệnh return 10, JVM lưu tạm giá trị 10 vào vùng nhớ stack nhưng chưa hoàn tất phương thức mà chuyển sang thực thi khối finally. Bên trong finally có lệnh return 20, lệnh này lập tức ghi đè lên giá trị trả về trước đó và kết thúc hàm ngay lập tức. Do đó hàm test() trả về 20.",
+    "explanation": "root chứa FileLeaf(10) và sub. sub chứa FileLeaf(20) và FileLeaf(30) -> sub.getSize() = 50. Tổng root.getSize() = 10 + 50 = 60.",
     "difficulty": "medium",
     "tags": [
-      "Finally-Block",
-      "Return-Value",
-      "JVM-Stack"
+      "Composite-Pattern",
+      "Recursion"
     ]
   },
   {
     "id": "L6_Q12",
     "lessonId": 6,
-    "title": "Hiện tượng gì xảy ra khi khối finally ném ra một ngoại lệ mới trong đoạn mã sau?",
-    "code": "public class ExceptionMasking {\n    public static void main(String[] args) {\n        try {\n            throw new NullPointerException(\"Loi o Try\");\n        } finally {\n            throw new IllegalArgumentException(\"Loi o Finally\");\n        }\n    }\n}",
+    "type": "single",
+    "title": "Cơ chế khởi tạo Singleton của Bill Pugh (Holder Idiom) hoạt động như thế nào trong đoạn mã sau?",
+    "code": "public class BillPughSingleton {\n    private BillPughSingleton() { System.out.print(\"Init \"); }\n    private static class Holder {\n        private static final BillPughSingleton INSTANCE = new BillPughSingleton();\n    }\n    public static BillPughSingleton getInstance() {\n        return Holder.INSTANCE;\n    }\n    public static void dummy() { System.out.print(\"Dummy \"); }\n    public static void main(String[] args) {\n        BillPughSingleton.dummy();\n        BillPughSingleton.getInstance();\n    }\n}",
     "options": [
-      "Ném ra IllegalArgumentException (\"Loi o Finally\"), ngoại lệ NullPointerException bị che giấu hoàn toàn",
-      "Ném ra NullPointerException (\"Loi o Try\")",
-      "Cả hai ngoại lệ được in ra màn hình cùng lúc",
-      "Lỗi biên dịch tại khối finally"
+      "Dummy Init ",
+      "Init Dummy ",
+      "Init Init ",
+      "Dummy "
     ],
     "correctAnswer": 0,
-    "explanation": "Khi một ngoại lệ được ném ra từ khối try, JVM bắt đầu tìm catch hoặc finally. Khi nhảy vào khối finally, nếu khối finally ném ra một ngoại lệ mới (IllegalArgumentException), ngoại lệ mới này sẽ thay thế và nuốt chửng (mask/suppress) ngoại lệ ban đầu của try. Ngoại lệ NullPointerException bị thất lạc hoàn toàn.",
+    "explanation": "Lớp nội tĩnh Holder CHỈ được nạp khi gọi getInstance(). Gọi dummy() chỉ nạp lớp cha in 'Dummy '. Gọi getInstance() nạp Holder khởi tạo INSTANCE in 'Init '. Kết quả: 'Dummy Init '.",
     "difficulty": "hard",
     "tags": [
-      "Exception-Masking",
-      "Finally-Block"
+      "Bill-Pugh",
+      "Singleton",
+      "Class-Loading"
     ]
   },
   {
     "id": "L6_Q13",
     "lessonId": 6,
-    "title": "Đoạn mã sau xảy ra hiện tượng gì khi biên dịch?",
-    "code": "import java.io.*;\npublic class CatchOrderTest {\n    public static void main(String[] args) {\n        try {\n            FileInputStream fis = new FileInputStream(\"file.txt\");\n        } catch (Exception e) {\n            System.out.println(\"Exception caught\");\n        } catch (FileNotFoundException e) { // Dong nay\n            System.out.println(\"File not found\");\n        }\n    }\n}",
+    "type": "single",
+    "title": "Cho đoạn mã Logger trích từ Đề thi mẫu UET Bài 4. Thiết kế này vi phạm nghiêm trọng nguyên lý nào trong SOLID?",
+    "code": "class Logger {\n    void log(String level, String message) {\n        if (level.equals(\"INFO\")) {\n            System.out.println(\"INFO: \" + message);\n        } else if (level.equals(\"ERROR\")) {\n            System.out.println(\"ERROR: \" + message);\n        } else if (level.equals(\"DEBUG\")) {\n            System.out.println(\"DEBUG: \" + message);\n        }\n    }\n}",
     "options": [
-      "Lỗi biên dịch: FileNotFoundException đã được bắt bởi khối catch (Exception) ở trước (unreachable catch block)",
-      "Biên dịch thành công và in ra 'File not found'",
-      "Biên dịch thành công và in ra 'Exception caught'",
-      "Chương trình chạy bình thường không có lỗi"
+      "Vi phạm Open/Closed Principle (OCP): Mỗi khi bổ sung một loại log mới, ta buộc phải sửa đổi mã nguồn phương thức log() cũ bằng cách chèn thêm else-if",
+      "Vi phạm Liskov Substitution Principle do Logger không có lớp con",
+      "Vi phạm Interface Segregation Principle do thiếu interface",
+      "Vi phạm Single Responsibility Principle do có quá nhiều tham số"
     ],
     "correctAnswer": 0,
-    "explanation": "FileNotFoundException là lớp con của IOException và Exception. Vì khối catch(Exception e) đứng ở phía trên, nó sẽ bắt mọi ngoại lệ con, khiến cho khối catch(FileNotFoundException e) phía dưới không bao giờ có thể tiếp cận được (unreachable code). Trình biên dịch Java phát hiện và báo lỗi biên dịch.",
-    "difficulty": "easy",
+    "explanation": "Đề thi mẫu UET Bài 4: Chuỗi if-else so sánh string level vi phạm OCP. Bổ sung loại log mới phải sửa code cũ. Nên tái cấu trúc bằng Polymorphism hoặc Strategy Pattern.",
+    "difficulty": "medium",
     "tags": [
-      "Catch-Order",
-      "Compile-Error",
-      "Unreachable-Catch"
+      "SOLID",
+      "OCP",
+      "Code-Smell",
+      "UET-Exam"
     ]
   },
   {
     "id": "L6_Q14",
     "lessonId": 6,
-    "title": "Thứ tự đóng các tài nguyên khi sử dụng try-with-resources trong đoạn mã sau là gì?",
-    "code": "class Res implements AutoCloseable {\n    String name;\n    Res(String name) { this.name = name; }\n    public void close() { System.out.print(\"Close \" + name + \" \"); }\n}\npublic class TryWithResourcesTest {\n    public static void main(String[] args) {\n        try (Res r1 = new Res(\"R1\"); Res r2 = new Res(\"R2\")) {\n            System.out.print(\"Work \");\n        }\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã kinh điển sau vi phạm nguyên lý SOLID nào (Liskov Substitution Principle)?",
+    "code": "class Rectangle {\n    protected int width, height;\n    public void setWidth(int w) { this.width = w; }\n    public void setHeight(int h) { this.height = h; }\n    public int getArea() { return width * height; }\n}\nclass Square extends Rectangle {\n    @Override\n    public void setWidth(int w) { this.width = w; this.height = w; }\n    @Override\n    public void setHeight(int h) { this.width = h; this.height = h; }\n}\npublic class Main {\n    static void resize(Rectangle r) {\n        r.setWidth(5);\n        r.setHeight(4);\n        System.out.println(r.getArea()); // Ky vong: 5 * 4 = 20\n    }\n    public static void main(String[] args) {\n        resize(new Square());\n    }\n}",
     "options": [
-      "Work Close R2 Close R1 ",
-      "Work Close R1 Close R2 ",
-      "Close R1 Close R2 Work ",
-      "Work Close R1 "
+      "In ra 16, vi phạm Liskov Substitution Principle (LSP) vì Square không thể thay thế cho Rectangle mà vẫn giữ đúng hành vi kỳ vọng",
+      "In ra 20, tuân thủ hoàn hảo LSP",
+      "Lỗi biên dịch do không thể override setWidth",
+      "Ném ClassCastException tại hàm resize"
     ],
     "correctAnswer": 0,
-    "explanation": "Quy tắc của try-with-resources: Các tài nguyên AutoCloseable được đóng tự động khi thoát khỏi khối try theo thứ tự NGƯỢC LẠI với thứ tự khai báo (nguyên lý LIFO - Last-In, First-Out, tương tự đóng ngăn xếp). Đầu tiên thân try in 'Work ', sau đó r2 được đóng in 'Close R2 ', rồi r1 được đóng in 'Close R1 '. Kết quả: 'Work Close R2 Close R1 '.",
-    "difficulty": "medium",
+    "explanation": "Hàm resize kỳ vọng diện tích 20. Khi truyền Square vào, setHeight(4) đổi cả width thành 4 -> getArea() = 16. Square vi phạm hợp đồng hành vi của Rectangle (vi phạm LSP).",
+    "difficulty": "hard",
     "tags": [
-      "Try-with-resources",
-      "Closing-Order",
-      "LIFO"
+      "SOLID",
+      "LSP"
     ]
   },
   {
     "id": "L6_Q15",
     "lessonId": 6,
-    "title": "Đoạn mã sau kiểm tra quá trình tuần tự hóa đối tượng chứa trường transient. Kết quả in ra là gì?",
-    "code": "import java.io.*;\nclass User implements Serializable {\n    String username;\n    transient int pin;\n    User(String u, int p) { this.username = u; this.pin = p; }\n}\npublic class SerializeTest {\n    public static void main(String[] args) throws Exception {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        ObjectOutputStream oos = new ObjectOutputStream(baos);\n        oos.writeObject(new User(\"vietanh\", 1234));\n\n        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));\n        User u = (User) ois.readObject();\n        System.out.println(u.username + \" \" + u.pin);\n    }\n}",
+    "type": "single",
+    "title": "Mô hình MVC (Model - View - Controller) phân chia trách nhiệm trong ứng dụng như thế nào?",
+    "code": null,
     "options": [
-      "vietanh 0",
-      "vietanh 1234",
-      "null 0",
-      "Ném NotSerializableException"
+      "Model: Quản lý dữ liệu và logic nghiệp vụ; View: Hiển thị giao diện người dùng; Controller: Tiếp nhận đầu vào, điều phối và cập nhật Model/View",
+      "Model: Giao diện; View: Database; Controller: Mạng Internet",
+      "Model: Controller; View: Logic nghiệp vụ; Controller: Giao diện",
+      "Cả 3 thành phần đều chịu trách nhiệm hiển thị giao diện"
     ],
     "correctAnswer": 0,
-    "explanation": "Trường 'pin' được đánh dấu là transient nên không được ghi vào luồng ObjectOutputStream trong quá trình tuần tự hóa. Khi giải tuần tự hóa (readObject), đối tượng được tái tạo lại và trường transient nhận giá trị mặc định của kiểu int là 0. Trường username được serialize bình thường nên giữ nguyên 'vietanh'. Kết quả in ra: 'vietanh 0'.",
-    "difficulty": "medium",
+    "explanation": "Kiến trúc MVC chuẩn: Model lưu trữ dữ liệu và quy tắc nghiệp vụ; View kết xuất giao diện trực quan; Controller xử lý sự kiện người dùng và điều phối cập nhật Model/View.",
+    "difficulty": "easy",
     "tags": [
-      "Serialization",
-      "Transient",
-      "Default-Value"
+      "MVC",
+      "Architecture"
     ]
   },
   {
     "id": "L6_Q16",
     "lessonId": 6,
-    "title": "Đoạn mã sau có khối finally chứa System.out.println. Kết quả in ra màn hình là gì?",
-    "code": "public class ExitTest {\n    public static void main(String[] args) {\n        try {\n            System.out.print(\"A \");\n            System.exit(0);\n        } finally {\n            System.out.print(\"B \");\n        }\n    }\n}",
+    "type": "single",
+    "title": "Nguyên lý Thay thế Liskov (LSP) yêu cầu điều kiện gì đối với quan hệ kế thừa?",
+    "code": null,
     "options": [
-      "A ",
-      "A B ",
-      "B ",
-      "Lỗi biên dịch"
+      "Các đối tượng của lớp con phải có thể thay thế hoàn toàn cho đối tượng của lớp cha mà không làm thay đổi tính đúng đắn của chương trình",
+      "Lớp con bắt buộc phải ghi đè toàn bộ các phương thức của lớp cha",
+      "Lớp cha phải có khả năng ép kiểu xuống lớp con mà không bị ngoại lệ",
+      "Mọi thuộc tính của lớp cha phải được chuyển thành public trong lớp con"
     ],
     "correctAnswer": 0,
-    "explanation": "Lệnh System.exit(0) gửi tín hiệu kết thúc ngay lập tức cho tiến trình máy ảo JVM. Khi JVM bị tắt đột ngột, mọi luồng thực thi bị hủy và khối finally sẽ KHÔNG ĐƯỢC CHẠY. Do đó chương trình chỉ in ra 'A '.",
-    "difficulty": "easy",
+    "explanation": "LSP phát biểu rằng nếu S là kiểu con của T, các đối tượng kiểu T có thể được thay thế bằng đối tượng kiểu S mà không làm thay đổi tính đúng đắn của chương trình.",
+    "difficulty": "medium",
     "tags": [
-      "System-exit",
-      "Finally-Block"
+      "SOLID",
+      "LSP"
     ]
   },
   {
     "id": "L6_Q17",
     "lessonId": 6,
-    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch (tính chất của Multi-catch)?",
-    "code": "import java.io.*;\nimport java.sql.*;\npublic class MultiCatchTest {\n    public static void main(String[] args) {\n        try {\n            if (args.length == 0) throw new IOException();\n            else throw new SQLException();\n        } catch (IOException | SQLException e) {\n            e = new IOException(); // Dong nay\n        }\n    }\n}",
+    "type": "multiple",
+    "title": "Những mẫu thiết kế nào sau đây thuộc nhóm Mẫu Cấu trúc (Structural Patterns) của GoF? (Chọn các đáp án đúng)",
+    "code": null,
     "options": [
-      "Lỗi biên dịch: Biến ngoại lệ 'e' trong khối multi-catch ngầm định là final, không thể gán lại",
-      "Lỗi biên dịch: Không được phép gộp IOException và SQLException trong cùng một catch",
-      "Biên dịch thành công và gán lại bình thường",
-      "Ném NullPointerException tại runtime"
+      "Adapter",
+      "Decorator",
+      "Composite",
+      "Factory Method"
     ],
-    "correctAnswer": 0,
-    "explanation": "Từ Java 7, cú pháp multi-catch (catch (TypeA | TypeB e)) quy định biến tham chiếu ngoại lệ e ngầm định mang thuộc tính final (implicitly final). Do đó, bất kỳ câu lệnh gán lại giá trị cho e bên trong khối catch đều bị trình biên dịch từ chối: 'cannot assign a value to final variable e'.",
-    "difficulty": "hard",
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Adapter, Decorator, Composite thuộc nhóm Structural (cấu trúc). Factory Method thuộc nhóm Creational (khởi tạo).",
+    "difficulty": "easy",
     "tags": [
-      "Multi-Catch",
-      "Implicitly-Final",
-      "Compile-Error"
+      "GoF",
+      "Structural-Patterns",
+      "Multi-Select"
     ]
   },
   {
     "id": "L6_Q18",
     "lessonId": 6,
-    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
-    "code": "class SuperClass {\n    void execute() {}\n}\nclass SubClass extends SuperClass {\n    @Override\n    void execute() throws Exception {} // Dong nay\n}",
+    "type": "single",
+    "title": "Cách cài đặt Singleton bằng Enum (Enum Singleton) của Joshua Bloch có ưu điểm vượt trội nào?",
+    "code": null,
     "options": [
-      "Lỗi biên dịch: Phương thức ghi đè không được khai báo ném ngoại lệ Checked mới nếu phương thức ở lớp cha không khai báo",
-      "Lỗi biên dịch: Lớp SubClass phải là abstract",
-      "Biên dịch thành công vì Exception là ngoại lệ chuẩn của Java",
-      "Chương trình chạy bình thường"
+      "Bảo đảm an toàn luồng ngầm định bởi JVM, đồng thời chống lại hoàn toàn tấn công phá vỡ Singleton bằng Reflection và Serialization",
+      "Cho phép tạo được nhiều instance khi cần thiết",
+      "Tự động giải phóng bộ nhớ khi tắt máy tính",
+      "Cho phép kế thừa từ một lớp khác"
     ],
     "correctAnswer": 0,
-    "explanation": "Quy tắc ghi đè phương thức: Phương thức ở lớp con không được phép ném ngoại lệ Checked mới (hoặc rộng hơn) so với danh sách ngoại lệ được khai báo ở phương thức lớp cha. Ở đây phương thức execute() của SuperClass không ném ngoại lệ nào, nhưng SubClass lại khai báo throws Exception (Checked Exception), vi phạm quy tắc kế thừa nên báo lỗi biên dịch.",
-    "difficulty": "medium",
+    "explanation": "Theo Joshua Bloch (Effective Java): Enum Singleton là cách cài đặt Singleton tối ưu nhất trong Java vì JVM bảo đảm enum chỉ được khởi tạo 1 lần duy nhất, chống reflection (Constructor.newInstance cấm tạo enum) và tự động hỗ trợ serialization chuẩn.",
+    "difficulty": "hard",
     "tags": [
-      "Overriding",
-      "Throws-Rule",
-      "Compile-Error"
+      "Singleton",
+      "Enum-Singleton",
+      "Effective-Java"
     ]
   },
   {
     "id": "L6_Q19",
     "lessonId": 6,
-    "title": "Cơ chế Ngoại lệ bị áp chế (Suppressed Exceptions) trong try-with-resources. Kết quả in ra là gì?",
-    "code": "class FaultyRes implements AutoCloseable {\n    public void close() throws Exception {\n        throw new Exception(\"Close Exception\");\n    }\n}\npublic class SuppressedTest {\n    public static void main(String[] args) {\n        try (FaultyRes r = new FaultyRes()) {\n            throw new Exception(\"Try Exception\");\n        } catch (Exception e) {\n            System.out.println(e.getMessage() + \" | Suppressed: \" + e.getSuppressed().length);\n        }\n    }\n}",
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi cài đặt Singleton dạng Eager Initialization?",
+    "code": "public class EagerSingleton {\n    public static EagerSingleton instance = new EagerSingleton();\n    // Thieu thanh phan gi?\n}",
     "options": [
-      "Try Exception | Suppressed: 1",
-      "Close Exception | Suppressed: 1",
-      "Try Exception | Suppressed: 0",
-      "Close Exception | Suppressed: 0"
+      "Constructor chưa được đặt là private, người ngoài vẫn có thể tự do gọi new EagerSingleton()",
+      "Thiếu từ khóa volatile trên instance",
+      "Lỗi biên dịch do thiếu phương thức getInstance()",
+      "Thiếu synchronized"
     ],
     "correctAnswer": 0,
-    "explanation": "Trong try-with-resources, nếu cả thân try và phương thức close() đều ném ngoại lệ, thì ngoại lệ từ thân try ('Try Exception') được ưu tiên ném ra làm ngoại lệ chính. Ngoại lệ phát sinh từ close() ('Close Exception') không bị nuốt chửng như khối finally truyền thống, mà được JVM tự động đính kèm vào danh sách suppressed của ngoại lệ chính. Do đó e.getMessage() là 'Try Exception' và e.getSuppressed().length là 1.",
-    "difficulty": "hard",
+    "explanation": "Một quy tắc bắt buộc của mẫu Singleton là constructor BẮT BUỘC phải là private để ngăn chặn bất kỳ mã nguồn bên ngoài nào tạo thêm instance mới bằng toán tử new.",
+    "difficulty": "easy",
     "tags": [
-      "Try-with-resources",
-      "Suppressed-Exceptions",
-      "Java7"
+      "Singleton",
+      "Private-Constructor"
     ]
   },
   {
     "id": "L6_Q20",
     "lessonId": 6,
-    "title": "Đoạn mã sau xảy ra lỗi gì khi biên dịch?",
-    "code": "class CustomCheckedException extends Exception {}\npublic class TestCustom {\n    static void doWork() {\n        throw new CustomCheckedException(); // Dong nay\n    }\n    public static void main(String[] args) {\n        doWork();\n    }\n}",
+    "type": "single",
+    "title": "Nguyên lý Phân tách Giao diện (Interface Segregation Principle - ISP) khuyên lập trình viên điều gì?",
+    "code": null,
     "options": [
-      "Lỗi biên dịch: Ngoại lệ Checked CustomCheckedException chưa được bắt bằng try-catch hoặc khai báo trong mệnh đề throws của phương thức doWork()",
-      "Lỗi biên dịch do CustomCheckedException không có constructor nhận String",
-      "Biên dịch thành công và ném lỗi tại runtime",
-      "Lỗi biên dịch tại hàm main do thiếu static"
+      "Nhiều interface nhỏ, chuyên biệt tốt hơn một interface khổng lồ đa năng (không ép client phụ thuộc vào các phương thức họ không dùng)",
+      "Mỗi project chỉ nên có tối đa một interface duy nhất",
+      "Tất cả các phương thức trong interface bắt buộc phải có phần thân",
+      "Interface phải tách riêng thành từng package độc lập"
     ],
     "correctAnswer": 0,
-    "explanation": "Vì CustomCheckedException kế thừa trực tiếp từ Exception (mà không phải RuntimeException), nó là một Checked Exception. Bất kỳ phương thức nào ném ra một Checked Exception BẮT BUỘC phải xử lý bằng khối try-catch hoặc khai báo throws ở chữ ký phương thức (ví dụ: static void doWork() throws CustomCheckedException). Do không làm cả hai, trình biên dịch báo lỗi: 'unreported exception CustomCheckedException; must be caught or declared to be thrown'.",
+    "explanation": "ISP khuyên chia nhỏ các fat interface thành các interface đặc thù theo vai trò (Role Interfaces) để client chỉ cần implements những phương thức thực sự cần thiết.",
+    "difficulty": "medium",
+    "tags": [
+      "SOLID",
+      "ISP"
+    ]
+  },
+  {
+    "id": "L6_Q21",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Nguyên lý Đảo ngược Phụ thuộc (Dependency Inversion Principle - DIP) được diễn đạt chính xác qua câu nào?",
+    "code": null,
+    "options": [
+      "Các module cấp cao không nên phụ thuộc vào các module cấp thấp; Cả hai nên phụ thuộc vào Trừu tượng (Abstractions: Interfaces/Abstract Classes)",
+      "Các module cấp thấp phải quản lý các module cấp cao",
+      "Không được sử dụng từ khóa new trong toàn bộ project",
+      "Mọi thuộc tính phải được đảo ngược thứ tự khai báo"
+    ],
+    "correctAnswer": 0,
+    "explanation": "DIP: 1) High-level modules không nên phụ thuộc vào low-level modules, cả hai nên phụ thuộc vào abstractions; 2) Abstractions không nên phụ thuộc vào chi tiết, chi tiết nên phụ thuộc vào abstractions.",
+    "difficulty": "medium",
+    "tags": [
+      "SOLID",
+      "DIP"
+    ]
+  },
+  {
+    "id": "L6_Q22",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Đoạn mã sau minh họa Factory Method Pattern. Kết quả in ra là gì?",
+    "code": "interface Doc { void open(); }\nclass PdfDoc implements Doc { public void open() { System.out.print(\"Open PDF \"); } }\nabstract class App {\n    abstract Doc createDoc();\n    void openDocument() { Doc d = createDoc(); d.open(); }\n}\nclass PdfApp extends App {\n    Doc createDoc() { return new PdfDoc(); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        App app = new PdfApp();\n        app.openDocument();\n    }\n}",
+    "options": [
+      "Open PDF ",
+      "Open Document ",
+      "Lỗi biên dịch: Không thể gọi createDoc() từ App",
+      "Ném NullPointerException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "App.openDocument() gọi createDoc() được override bởi PdfApp trả về PdfDoc. d.open() in ra 'Open PDF '.",
     "difficulty": "easy",
     "tags": [
-      "Custom-Exception",
-      "Checked-Exception",
-      "Compile-Error"
+      "Factory-Method",
+      "Polymorphism"
+    ]
+  },
+  {
+    "id": "L6_Q23",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Sự khác biệt cốt lõi giữa Decorator Pattern và Adapter Pattern là gì?",
+    "code": null,
+    "options": [
+      "Adapter chuyển đổi giao diện cũ sang giao diện mới để tương thích; Decorator giữ nguyên giao diện gốc và bổ sung thêm hành vi/trách nhiệm mới cho đối tượng",
+      "Adapter dùng cho khởi tạo; Decorator dùng cho cấu trúc",
+      "Adapter bổ sung thêm chức năng; Decorator chỉ đổi tên phương thức",
+      "Cả hai mẫu là hoàn toàn giống nhau không có điểm khác biệt"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Adapter thay đổi giao diện để làm cho hai interface không tương thích có thể làm việc với nhau. Decorator giữ nguyên giao diện của đối tượng và mở rộng thêm chức năng động tại runtime.",
+    "difficulty": "medium",
+    "tags": [
+      "Adapter-vs-Decorator",
+      "Design-Patterns"
+    ]
+  },
+  {
+    "id": "L6_Q24",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Trong Java I/O, chuỗi lệnh: 'new BufferedReader(new InputStreamReader(System.in))' là ví dụ điển hình áp dụng mẫu thiết kế nào?",
+    "code": null,
+    "options": [
+      "Decorator Pattern (và Adapter Pattern)",
+      "Singleton Pattern",
+      "Observer Pattern",
+      "Factory Method Pattern"
+    ],
+    "correctAnswer": 0,
+    "explanation": "InputStreamReader đóng vai trò là Adapter (chuyển byte stream InputStream sang char stream Reader). BufferedReader đóng vai trò là Decorator (bọc quanh Reader để bổ sung tính năng đệm bộ nhớ buffer và hàm readLine()).",
+    "difficulty": "hard",
+    "tags": [
+      "Decorator-Pattern",
+      "Adapter-Pattern",
+      "Java-IO"
+    ]
+  },
+  {
+    "id": "L6_Q25",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Ưu điểm của việc sử dụng mẫu thiết kế Observer trong kiến trúc hướng sự kiện (Event-driven Architecture) là gì?",
+    "code": null,
+    "options": [
+      "Subject không cần biết chi tiết về các lớp Observer cụ thể (Loose Coupling), dễ dàng thêm/bớt Observer tại runtime mà không ảnh hưởng Subject",
+      "Giúp chương trình chạy nhanh hơn gấp đôi",
+      "Tự động lưu dữ liệu xuống cơ sở dữ liệu",
+      "Ngăn chặn mọi ngoại lệ NullPointerException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Observer Pattern tạo liên kết lỏng lẻo (loose coupling): Subject chỉ tương tác qua interface Observer, cho phép đăng ký hoặc hủy đăng ký quan sát linh hoạt tại runtime.",
+    "difficulty": "easy",
+    "tags": [
+      "Observer-Pattern",
+      "Loose-Coupling"
+    ]
+  },
+  {
+    "id": "L6_Q26",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Đoạn mã sau xảy ra lỗi gì khi cài đặt Double-Checked Locking?",
+    "code": "public class BrokenSingleton {\n    private static BrokenSingleton instance;\n    private BrokenSingleton() {}\n    public static BrokenSingleton getInstance() {\n        if (instance == null) {\n            synchronized (BrokenSingleton.class) {\n                if (instance == null) {\n                    instance = new BrokenSingleton();\n                }\n            }\n        }\n        return instance;\n    }\n}",
+    "options": [
+      "Thiếu từ khóa volatile trên biến instance, có thể khiến luồng khác đọc phải đối tượng khởi tạo dở dang do Instruction Reordering",
+      "Lỗi biên dịch do constructor private",
+      "Lỗi do từ khóa synchronized",
+      "Ném IllegalMonitorStateException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Không có volatile, CPU có thể đảo bước gán địa chỉ trước khi constructor chạy xong, dẫn tới việc luồng khác kiểm tra vòng ngoài thấy instance != null và dùng đối tượng lỗi.",
+    "difficulty": "hard",
+    "tags": [
+      "Singleton",
+      "Volatile",
+      "Instruction-Reordering"
+    ]
+  },
+  {
+    "id": "L6_Q27",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Trong mẫu thiết kế Composite, vai trò của lớp Leaf (Lá) là gì?",
+    "code": null,
+    "options": [
+      "Đại diện cho phần tử đơn lẻ ở tận cùng của cây, không có phần tử con (children), thực thi trực tiếp các hành vi cơ sở",
+      "Chứa danh sách các phần tử con và điều phối việc tính toán",
+      "Quản lý vòng đời của toàn bộ ứng dụng",
+      "Tự động chuyển đổi cây thành danh sách liên kết"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Composite Pattern: Leaf là phần tử cơ sở không có con, thực hiện hành vi nghiệp vụ trực tiếp (ví dụ File trong hệ thống tệp).",
+    "difficulty": "easy",
+    "tags": [
+      "Composite-Pattern",
+      "Leaf"
+    ]
+  },
+  {
+    "id": "L6_Q28",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế nào sau đây thuộc nhóm Mẫu Hành vi (Behavioral Patterns)?",
+    "code": null,
+    "options": [
+      "Strategy Pattern",
+      "Singleton Pattern",
+      "Decorator Pattern",
+      "Composite Pattern"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Strategy Pattern là Behavioral Pattern. Singleton là Creational. Decorator và Composite là Structural.",
+    "difficulty": "easy",
+    "tags": [
+      "GoF",
+      "Behavioral-Patterns"
+    ]
+  },
+  {
+    "id": "L6_Q29",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Đoạn mã sau áp dụng nguyên lý Liskov Substitution Principle (LSP) đúng cách bằng cách nào?",
+    "code": "interface Shape { int getArea(); }\nclass Rectangle implements Shape {\n    int w, h;\n    Rectangle(int w, int h) { this.w = w; this.h = h; }\n    public int getArea() { return w * h; }\n}\nclass Square implements Shape {\n    int side;\n    Square(int s) { this.side = s; }\n    public int getArea() { return side * side; }\n}",
+    "options": [
+      "Cho cả Rectangle và Square cùng triển khai interface Shape độc lập, không để Square kế thừa Rectangle để tránh phá vỡ giả thiết hình học",
+      "Khai báo tất cả các trường là public",
+      "Thêm phương thức setSide vào Rectangle",
+      "Biến Shape thành lớp final"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cách giải quyết vi phạm LSP của Square-Rectangle là tách biệt chúng thành 2 lớp độc lập cùng implements interface chung Shape (getArea()), tránh việc ép Square kế thừa hành vi đổi kích thước không phù hợp của Rectangle.",
+    "difficulty": "medium",
+    "tags": [
+      "SOLID",
+      "LSP",
+      "Refactoring"
+    ]
+  },
+  {
+    "id": "L6_Q30",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Tại sao việc lạm dụng quá nhiều Decorator Pattern có thể gây khó khăn cho việc gỡ lỗi (Debugging)?",
+    "code": null,
+    "options": [
+      "Tạo ra nhiều lớp vỏ bọc nhỏ lồng nhau, khiến dấu vết ngăn xếp (Stack Trace) trở nên rất sâu và khó xác định chính xác đối tượng lõi nằm ở đâu",
+      "Làm giảm tốc độ CPU xuống 90%",
+      "Gây ra lỗi rò rỉ bộ nhớ bắt buộc",
+      "Không thể chạy được trên môi trường đa luồng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nhược điểm của Decorator Pattern: Thiết kế hệ thống xuất hiện rất nhiều đối tượng nhỏ bọc lồng nhau. Khi xảy ra ngoại lệ, stack trace đi qua hàng loạt tầng wrapper khiến việc debug và kiểm tra kiểu đối tượng lõi trở nên phức tạp.",
+    "difficulty": "medium",
+    "tags": [
+      "Decorator-Pattern",
+      "Trade-Offs"
     ]
   }
 ]

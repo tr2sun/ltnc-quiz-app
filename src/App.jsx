@@ -11,24 +11,38 @@ import { GraduationCap, Heart, Github, Sparkles } from 'lucide-react';
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedPracticeLesson, setSelectedPracticeLesson] = useState(1);
+  const [examParams, setExamParams] = useState(null);
 
   const handleSelectLessonFromHome = (lessonId) => {
     setSelectedPracticeLesson(lessonId);
     setActiveTab('practice');
   };
 
+  const handleStartSectionExamFromHome = (params) => {
+    setExamParams(params);
+    setActiveTab('exam');
+  };
+
+  const handleNavigateTab = (tab) => {
+    if (tab !== 'exam') {
+      setExamParams(null);
+    }
+    setActiveTab(tab);
+  };
+
   return (
     <QuizProvider>
       <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
         {/* Navigation Bar */}
-        <Navbar activeTab={activeTab} onSelectTab={setActiveTab} />
+        <Navbar activeTab={activeTab} onSelectTab={handleNavigateTab} />
 
         {/* Main Content Area */}
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
           {activeTab === 'home' && (
             <HomePage
-              onNavigate={setActiveTab}
+              onNavigate={handleNavigateTab}
               onSelectLesson={handleSelectLessonFromHome}
+              onStartSectionExam={handleStartSectionExamFromHome}
             />
           )}
 
@@ -37,11 +51,14 @@ export default function App() {
           )}
 
           {activeTab === 'exam' && (
-            <ExamPage onNavigate={setActiveTab} />
+            <ExamPage 
+              onNavigate={handleNavigateTab} 
+              examParams={examParams}
+            />
           )}
 
           {activeTab === 'mistakes' && (
-            <MistakesPage onNavigate={setActiveTab} />
+            <MistakesPage onNavigate={handleNavigateTab} />
           )}
 
           {activeTab === 'cheatsheet' && (

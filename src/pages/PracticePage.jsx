@@ -15,14 +15,15 @@ import {
 } from 'lucide-react';
 import { LESSONS_METADATA, getQuestionsByLesson, getAllQuestions } from '../data';
 import { useQuiz } from '../context/QuizContext';
-import QuestionCard from '../components/QuestionCard';
+import QuestionCard, { isAnswerCorrect } from '../components/QuestionCard';
 
 export default function PracticePage({ initialLessonId = 1 }) {
   const [selectedLessonId, setSelectedLessonId] = useState(initialLessonId);
   const [difficultyFilter, setDifficultyFilter] = useState('all'); // all, easy, medium, hard
+  const [typeFilter, setTypeFilter] = useState('all'); // all, single, multiple
   const [searchQuery, setSearchQuery] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState({}); // { [questionId]: chosenOptionIndex }
+  const [userAnswers, setUserAnswers] = useState({}); // { [questionId]: chosenOptionIndex or [indices] }
   const [instantExplanation, setInstantExplanation] = useState(true);
 
   const { 
@@ -40,11 +41,16 @@ export default function PracticePage({ initialLessonId = 1 }) {
     return getQuestionsByLesson(selectedLessonId);
   }, [selectedLessonId]);
 
-  // Filter by difficulty and search term
+  // Filter by difficulty, question type, and search term
   const filteredQuestions = useMemo(() => {
     return rawQuestions.filter(q => {
       if (difficultyFilter !== 'all' && q.difficulty !== difficultyFilter) {
         return false;
+      }
+      if (typeFilter !== 'all') {
+        const isMulti = q.type === 'multiple' || Array.isArray(q.correctAnswer);
+        if (typeFilter === 'multiple' && !isMulti) return false;
+        if (typeFilter === 'single' && isMulti) return false;
       }
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
@@ -55,16 +61,16 @@ export default function PracticePage({ initialLessonId = 1 }) {
       }
       return true;
     });
-  }, [rawQuestions, difficultyFilter, searchQuery]);
+  }, [rawQuestions, difficultyFilter, typeFilter, searchQuery]);
 
   // Ensure current index is within bounds
   const currentQIndex = Math.min(currentIndex, Math.max(0, filteredQuestions.length - 1));
   const currentQuestion = filteredQuestions[currentQIndex];
 
-  const handleSelectAnswer = (q, optionIndex) => {
-    const isCorrect = optionIndex === q.correctAnswer;
-    setUserAnswers(prev => ({ ...prev, [q.id]: optionIndex }));
-    recordAnswerResult(q.id, q.lessonId, isCorrect, optionIndex);
+  const handleSelectAnswer = (q, selection) => {
+    const isCorrect = isAnswerCorrect(q, selection);
+    setUserAnswers(prev => ({ ...prev, [q.id]: selection }));
+    recordAnswerResult(q.id, q.lessonId, isCorrect, selection);
   };
 
   const handleResetSession = () => {
@@ -73,10 +79,16 @@ export default function PracticePage({ initialLessonId = 1 }) {
   };
 
   // Stats for the active session
-  const answeredCount = Object.keys(userAnswers).length;
+  const answeredCount = Object.keys(userAnswers).filter(k => {
+    const val = userAnswers[k];
+    if (val === undefined || val === null) return false;
+    if (Array.isArray(val)) return val.length > 0;
+    return true;
+  }).length;
+
   let correctCount = 0;
   filteredQuestions.forEach(q => {
-    if (userAnswers[q.id] === q.correctAnswer) correctCount++;
+    if (isAnswerCorrect(q, userAnswers[q.id])) correctCount++;
   });
 
   const selectedLessonMeta = LESSONS_METADATA.find(l => l.id === Number(selectedLessonId));
@@ -95,7 +107,7 @@ export default function PracticePage({ initialLessonId = 1 }) {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Học lý thuyết song hành thực hành bẫy code Java có giải thích JVM chi tiết
+            Học lý thuyết song hành thực hành bẫy code Java • Hỗ trợ cả câu hỏi chọn 1 và chọn nhiều đáp án
           </p>
         </div>
 
@@ -110,7 +122,7 @@ export default function PracticePage({ initialLessonId = 1 }) {
             }`}
           >
             {instantExplanation ? <Eye size={15} /> : <EyeOff size={15} />}
-            <span>Giải thích ngay khi chọn: {instantExplanation ? 'BẬT' : 'TẮT'}</span>
+            <span>Giải thích ngay: {instantExplanation ? 'BẬT' : 'TẮT'}</span>
           </button>
 
           <button
@@ -159,12 +171,12 @@ export default function PracticePage({ initialLessonId = 1 }) {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
         <div className="relative col-span-2">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Tìm kiếm theo từ khóa (static, PECS, override, exception...)..."
+            placeholder="Tìm kiếm từ khóa (static, PECS, override, exception...)..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -190,6 +202,21 @@ export default function PracticePage({ initialLessonId = 1 }) {
             <option value="hard">Nâng cao</option>
           </select>
         </div>
+
+        <div>
+          <select
+            value={typeFilter}
+            onChange={(e) => {
+              setTypeFilter(e.target.value);
+              setCurrentIndex(0);
+            }}
+            className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="all">Tất cả dạng câu</option>
+            <option value="single">Chọn 1 đáp án</option>
+            <option value="multiple">Chọn nhiều đáp án</option>
+          </select>
+        </div>
       </div>
 
       {/* Active Lesson Header Info */}
@@ -205,7 +232,7 @@ export default function PracticePage({ initialLessonId = 1 }) {
           </div>
           <div className="hidden sm:block text-right">
             <span className="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400">
-              {filteredQuestions.length} câu hỏi
+              {filteredQuestions.length} câu hỏi phù hợp
             </span>
           </div>
         </div>
@@ -219,7 +246,7 @@ export default function PracticePage({ initialLessonId = 1 }) {
             Không tìm thấy câu hỏi phù hợp
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Hãy thử thay đổi độ khó hoặc từ khóa tìm kiếm.
+            Hãy thử thay đổi độ khó, dạng câu hoặc từ khóa tìm kiếm.
           </p>
         </div>
       ) : (
@@ -280,7 +307,7 @@ export default function PracticePage({ initialLessonId = 1 }) {
               question={currentQuestion}
               questionIndex={currentQIndex}
               selectedAnswer={userAnswers[currentQuestion.id]}
-              onSelectAnswer={(optIdx) => handleSelectAnswer(currentQuestion, optIdx)}
+              onSelectAnswer={(selection) => handleSelectAnswer(currentQuestion, selection)}
               mode="practice"
               showInstantFeedback={instantExplanation}
               isBookmarked={isBookmarked(currentQuestion.id)}

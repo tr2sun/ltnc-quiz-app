@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   GraduationCap, 
   BookOpen, 
@@ -18,9 +18,16 @@ import {
   Boxes,
   Zap,
   CheckCircle,
-  LayoutGrid
+  LayoutGrid,
+  X,
+  Play
 } from 'lucide-react';
-import { LESSONS_METADATA, getAllQuestions, getQuestionsByLesson } from '../data';
+import { 
+  LESSONS_METADATA, 
+  getAllQuestions, 
+  getQuestionsByLesson,
+  getPresetsForLesson 
+} from '../data';
 import { useQuiz } from '../context/QuizContext';
 
 // Map icon string to Lucide component
@@ -36,8 +43,9 @@ const ICON_MAP = {
   CheckCircle: CheckCircle
 };
 
-export default function HomePage({ onNavigate, onSelectLesson }) {
+export default function HomePage({ onNavigate, onSelectLesson, onStartSectionExam }) {
   const { mistakes, bookmarks, quizHistory, lessonProgress } = useQuiz();
+  const [activeLessonModal, setActiveLessonModal] = useState(null);
 
   const allQuestions = getAllQuestions();
   const totalQuestionsInBank = allQuestions.length;
@@ -54,6 +62,30 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
   const mistakeCount = Object.keys(mistakes).length;
   const examCount = quizHistory.filter(h => h.type === 'exam').length;
 
+  const handleOpenLessonModal = (lesson) => {
+    setActiveLessonModal(lesson);
+  };
+
+  const handleLaunchPreset = (lessonId, presetId) => {
+    setActiveLessonModal(null);
+    if (onStartSectionExam) {
+      onStartSectionExam({
+        category: 'section',
+        lessonId,
+        presetId,
+        autoStart: true
+      });
+    } else {
+      onNavigate('exam');
+    }
+  };
+
+  const handleLaunchPractice = (lessonId) => {
+    setActiveLessonModal(null);
+    if (onSelectLesson) onSelectLesson(lessonId);
+    onNavigate('practice');
+  };
+
   return (
     <div className="space-y-8 pb-12">
       {/* Hero Section */}
@@ -66,7 +98,7 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/30 border border-indigo-400/30 text-indigo-200 text-xs font-semibold mb-4 backdrop-blur-sm">
             <Sparkles size={14} className="text-amber-300" />
-            <span>Khoá học CS2043 • Đại học Công nghệ (UET)</span>
+            <span>Khoá học CS2043 • Đại học Công nghệ (UET - ĐHQGHN)</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-4">
@@ -79,6 +111,7 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
           <p className="text-indigo-100 text-sm sm:text-base leading-relaxed mb-6 font-normal">
             Ngân hàng câu hỏi trắc nghiệm chuyên sâu bám sát đề cương giảng dạy và đề thi cuối kỳ:
             JVM, Đa hình, Generics & PECS, Collections, Ngoại lệ, Đa luồng, Mẫu thiết kế và JUnit.
+            Hỗ trợ đề tổng hợp 30 câu và các mã đề chuyên đề 15 câu chuẩn hóa.
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -168,10 +201,10 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-slate-100">
-              Chuyên Đề Luyện Tập
+              Chuyên Đề Luyện Tập & Mã Đề 15 Câu
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Phân loại 9 bài học theo tiến trình học tập chuẩn UET (CS2043)
+              Bấm vào bài học để chọn mã đề chuyên đề (Đề A, Đề B, Đề C...) hoặc luyện tập tự do
             </p>
           </div>
           <button
@@ -191,6 +224,7 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
             const progressPct = lessonQuestions.length > 0 
               ? Math.min(100, Math.round((progress.answered / lessonQuestions.length) * 100))
               : 0;
+            const presets = getPresetsForLesson(lesson.id);
 
             return (
               <div
@@ -203,13 +237,23 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${lesson.color} text-white flex items-center justify-center shadow-sm`}>
                       <IconComponent size={20} />
                     </div>
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                      {lesson.badge}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {presets.length > 0 && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
+                          {presets.length} mã đề
+                        </span>
+                      )}
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        {lesson.badge}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Title & Subtitle */}
-                  <h3 className="font-bold text-base text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-1">
+                  <h3 
+                    onClick={() => handleOpenLessonModal(lesson)}
+                    className="font-bold text-base text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-1 cursor-pointer"
+                  >
                     {lesson.title}
                   </h3>
                   <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
@@ -236,7 +280,7 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
                   {/* Progress bar */}
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
-                      <span>Đã làm: {progress.answered}/{lessonQuestions.length}</span>
+                      <span>Đã làm: {progress.answered}/{lessonQuestions.length} câu</span>
                       <span className="font-semibold">{progressPct}%</span>
                     </div>
                     <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -247,17 +291,24 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
                     </div>
                   </div>
 
-                  {/* Action button */}
-                  <button
-                    onClick={() => {
-                      if (onSelectLesson) onSelectLesson(lesson.id);
-                      onNavigate('practice');
-                    }}
-                    className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 transition cursor-pointer"
-                  >
-                    <span>Luyện tập ngay</span>
-                    <ArrowRight size={13} />
-                  </button>
+                  {/* 2 Action Buttons: Làm mã đề 15 câu & Luyện tập */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => handleOpenLessonModal(lesson)}
+                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition cursor-pointer"
+                    >
+                      <Zap size={13} />
+                      <span>Làm mã đề</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleLaunchPractice(lesson.id)}
+                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition cursor-pointer"
+                    >
+                      <BookOpen size={13} />
+                      <span>Luyện tập</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -288,6 +339,107 @@ export default function HomePage({ onNavigate, onSelectLesson }) {
             Mở sổ tay câu sai &rarr;
           </button>
         </section>
+      )}
+
+      {/* Modal Popup: Danh sách mã đề chuyên đề 15 câu của bài học */}
+      {activeLessonModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 max-w-lg w-full p-6 shadow-2xl space-y-4">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                  {activeLessonModal.title}
+                </span>
+                <h3 className="font-extrabold text-base sm:text-lg text-slate-800 dark:text-slate-100 mt-1">
+                  Chọn Mã Đề Thi 15 Câu
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveLessonModal(null)}
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Mỗi mã đề cố định gồm 15 câu chọn lọc độc lập, không trùng lặp câu hỏi, thời gian chuẩn 20 phút.
+            </p>
+
+            {/* Presets List */}
+            <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+              {getPresetsForLesson(activeLessonModal.id).map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => handleLaunchPreset(activeLessonModal.id, p.id)}
+                  className="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 hover:bg-indigo-50/40 dark:hover:bg-indigo-950/30 transition flex items-center justify-between cursor-pointer group"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-sm text-indigo-600 dark:text-indigo-400">
+                        {p.code}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                        {p.title}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-slate-400">
+                      15 câu trắc nghiệm • 20 phút
+                    </span>
+                  </div>
+                  <button className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 group-hover:bg-indigo-600 group-hover:text-white text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 transition">
+                    <Play size={12} />
+                    <span>Làm ngay</span>
+                  </button>
+                </div>
+              ))}
+
+              {/* Random 15-question preset */}
+              <div
+                onClick={() => handleLaunchPreset(activeLessonModal.id, 'random')}
+                className="p-3.5 rounded-2xl border border-purple-200 dark:border-purple-900/60 bg-purple-50/30 dark:bg-purple-950/20 hover:border-purple-500 transition flex items-center justify-between cursor-pointer group"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-sm text-purple-600 dark:text-purple-400">
+                      Đề Ngẫu Nhiên
+                    </span>
+                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                      15 câu xáo trộn
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-slate-400">
+                    Chọn ngẫu nhiên 15 câu trong ngân hàng bài này
+                  </span>
+                </div>
+                <button className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-purple-100 group-hover:bg-purple-600 group-hover:text-white text-purple-700 dark:bg-purple-950 dark:text-purple-300 transition">
+                  <Play size={12} />
+                  <span>Làm ngay</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Bottom Modal Actions */}
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+              <button
+                onClick={() => handleLaunchPractice(activeLessonModal.id)}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <BookOpen size={14} />
+                <span>Hoặc Luyện tập tự do bài này &rarr;</span>
+              </button>
+
+              <button
+                onClick={() => setActiveLessonModal(null)}
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition cursor-pointer"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

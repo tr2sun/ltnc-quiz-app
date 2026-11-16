@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { getAllQuestions, getQuestionById } from '../data';
 import { useQuiz } from '../context/QuizContext';
-import QuestionCard from '../components/QuestionCard';
+import QuestionCard, { isAnswerCorrect } from '../components/QuestionCard';
 
 export default function MistakesPage({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('mistakes'); // 'mistakes' | 'bookmarks'
@@ -57,7 +57,7 @@ export default function MistakesPage({ onNavigate }) {
 
   // Handle re-answering in retake mode
   const handleSelectRetakeAnswer = (q, optIndex) => {
-    const isCorrect = optIndex === q.correctAnswer;
+    const isCorrect = isAnswerCorrect(q, optIndex);
     setRetakeAnswers(prev => ({ ...prev, [q.id]: optIndex }));
     recordAnswerResult(q.id, q.lessonId, isCorrect, optIndex);
 

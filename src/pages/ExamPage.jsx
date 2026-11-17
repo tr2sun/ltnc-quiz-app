@@ -305,23 +305,32 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                     1. Chọn bài học chuyên đề
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                    {LESSONS_METADATA.map((l) => (
-                      <button
-                        key={l.id}
-                        onClick={() => {
-                          setSelectedLessonId(l.id);
-                          setSelectedSectionPresetId('random');
-                        }}
-                        className={`p-2.5 rounded-xl border text-xs font-bold transition text-left cursor-pointer ${
-                          selectedLessonId === l.id
-                            ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm'
-                            : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300 bg-slate-50 dark:bg-slate-850 text-slate-700 dark:text-slate-300'
-                        }`}
-                      >
-                        <div className="text-[10px] opacity-80">Bài {l.id}</div>
-                        <div className="truncate text-xs">{l.title.split(':')[1]?.trim() || l.title}</div>
-                      </button>
-                    ))}
+                    {LESSONS_METADATA.map((l) => {
+                      const isSelected = selectedLessonId === l.id;
+                      return (
+                        <button
+                          key={l.id}
+                          onClick={() => {
+                            setSelectedLessonId(l.id);
+                            setSelectedSectionPresetId('random');
+                          }}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition text-left cursor-pointer ${
+                            isSelected
+                              ? 'border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                              : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-slate-700'
+                          }`}
+                        >
+                          <div className={`text-[10px] font-semibold mb-0.5 ${
+                            isSelected ? 'text-indigo-100' : 'text-slate-400 dark:text-slate-400'
+                          }`}>
+                            Bài {l.id}
+                          </div>
+                          <div className="truncate text-xs font-bold">
+                            {l.title.split(':')[1]?.trim() || l.title}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -339,8 +348,8 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                           onClick={() => setSelectedSectionPresetId(p.id)}
                           className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer text-left ${
                             isSelected
-                              ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-200'
-                              : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300'
+                              ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-200 shadow-sm'
+                              : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-indigo-300 dark:hover:border-slate-700'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
@@ -366,8 +375,8 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                       onClick={() => setSelectedSectionPresetId('random')}
                       className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer text-left ${
                         selectedSectionPresetId === 'random'
-                          ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-200'
-                          : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300'
+                          ? 'border-purple-600 bg-purple-50/60 dark:bg-purple-950/40 text-purple-950 dark:text-purple-200 shadow-sm'
+                          : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-purple-300 dark:hover:border-slate-700'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
@@ -406,8 +415,8 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                     onClick={() => setTimerDuration(opt.value)}
                     className={`py-2.5 px-3 rounded-xl border text-xs font-bold transition cursor-pointer text-center ${
                       timerDuration === opt.value
-                        ? 'border-indigo-600 bg-indigo-600 text-white'
-                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        ? 'border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
+                        : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200'
                     }`}
                   >
                     {opt.label}
@@ -426,8 +435,8 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                   onClick={() => setViewMode('card')}
                   className={`flex items-center justify-center gap-2 py-3 px-3 rounded-xl border text-xs font-bold transition cursor-pointer ${
                     viewMode === 'card'
-                      ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
-                      : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
+                      ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   <Layers size={16} />
@@ -437,8 +446,8 @@ export default function ExamPage({ onNavigate, examParams = null }) {
                   onClick={() => setViewMode('continuous')}
                   className={`flex items-center justify-center gap-2 py-3 px-3 rounded-xl border text-xs font-bold transition cursor-pointer ${
                     viewMode === 'continuous'
-                      ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
-                      : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
+                      ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   <ListOrdered size={16} />

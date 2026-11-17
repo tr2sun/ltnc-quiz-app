@@ -924,5 +924,673 @@
       "Abstract-Class",
       "Inheritance-Contract"
     ]
+  },
+  {
+    "id": "L4_Q46",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Mục tiêu quan trọng nhất của việc Java 8 bổ sung phương thức 'default' vào Interface là gì?",
+    "code": null,
+    "options": [
+      "Cho phép mở rộng thêm phương thức mới vào interface có sẵn mà không làm phá vỡ (breaking changes) mã nguồn của các lớp đã thực thi interface đó trước đây",
+      "Để dần thay thế hoàn toàn lớp trừu tượng (Abstract class) trong mọi thiết kế",
+      "Để biến tất cả các phương thức trong interface thành phương thức tĩnh",
+      "Để tăng tốc độ biên dịch của trình biên dịch javac"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trước Java 8, thêm một method mới vào interface sẽ làm mọi class đang implement interface đó bị lỗi biên dịch. Nhằm bổ sung Stream API và lambda vào Collections Framework (như List.sort(), Collection.stream()) mà không phá vỡ mã nguồn cũ, Java 8 đưa ra 'default method' để cung cấp sẵn phần thân cài đặt mặc định.",
+    "difficulty": "medium",
+    "tags": [
+      "DefaultMethod",
+      "BackwardCompatibility",
+      "Interface"
+    ]
+  },
+  {
+    "id": "L4_Q47",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Điều gì xảy ra khi một lớp implement cả hai Interface cùng có default method với chữ ký giống hệt nhau (The Diamond Problem)?",
+    "code": "interface A {\n    default void msg() { System.out.println(\"A\"); }\n}\ninterface B {\n    default void msg() { System.out.println(\"B\"); }\n}\nclass C implements A, B {}\n",
+    "options": [
+      "Lỗi biên dịch tại class C: inherits unrelated defaults for msg() from types A and B",
+      "Biên dịch thành công và ưu tiên thực thi phương thức của interface A vì khai báo trước",
+      "Ném ngoại lệ AmbiguousMethodException tại runtime",
+      "Biên dịch thành công và in ra cả hai chuỗi 'A' và 'B'"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi có xung đột giữa hai default method cùng cấp từ 2 interface, Java từ chối tự phán đoán và báo lỗi biên dịch ngay lập tức. Lớp C bắt buộc phải ghi đè lại phương thức msg() để giải quyết nhập nhằng.",
+    "difficulty": "medium",
+    "tags": [
+      "DiamondProblem",
+      "DefaultMethod",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q48",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Để giải quyết xung đột default method giữa hai interface A và B trong lớp C, cú pháp nào sau đây là CHÍNH XÁC?",
+    "code": "class C implements A, B {\n    @Override\n    public void msg() {\n        // Goi cai dat cua interface A\n    }\n}",
+    "options": [
+      "A.super.msg();",
+      "super.A.msg();",
+      "A.this.msg();",
+      "super(A).msg();"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cú pháp chuẩn của Java để chỉ định gọi default method của một interface cụ thể là: InterfaceName.super.methodName(). Ví dụ: A.super.msg();",
+    "difficulty": "easy",
+    "tags": [
+      "InterfaceSuper",
+      "Syntax",
+      "Resolution"
+    ]
+  },
+  {
+    "id": "L4_Q49",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Theo các quy tắc giải quyết xung đột phương thức mặc định (Default Method Resolution Rules) trong Java 8, những quy tắc nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Quy tắc 1 (Class always wins): Phương thức được cài đặt trong lớp cha (superclass) luôn được ưu tiên cao hơn bất kỳ default method nào từ interface",
+      "Quy tắc 2 (Sub-interface wins): Interface con cụ thể hơn kế thừa từ interface cha sẽ được ưu tiên hơn interface cha",
+      "Quy tắc 3: Nếu có xung đột giữa hai interface ngang hàng không có quan hệ kế thừa, lớp thực thi bắt buộc phải override tường minh",
+      "Quy tắc 4: Interface nào có tên đứng trước theo thứ tự bảng chữ cái sẽ luôn được ưu tiên thực thi"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "3 quy tắc giải quyết xung đột default methods của Java là: 1. Lớp cha luôn thắng interface, 2. Interface con thắng interface cha, 3. Nếu vẫn xung đột ngang hàng thì class phải override. Thứ tự bảng chữ cái không có bất kỳ ý nghĩa nào trong JVM.",
+    "difficulty": "hard",
+    "tags": [
+      "DefaultMethodRules",
+      "JLS",
+      "Resolution"
+    ]
+  },
+  {
+    "id": "L4_Q50",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Xác định output của chương trình sau áp dụng quy tắc 'Class always wins':",
+    "code": "interface Greeting {\n    default void hello() {\n        System.out.println(\"Interface Hello\");\n    }\n}\nclass Parent {\n    public void hello() {\n        System.out.println(\"Class Hello\");\n    }\n}\nclass Child extends Parent implements Greeting {}\npublic class Main {\n    public static void main(String[] args) {\n        new Child().hello();\n    }\n}",
+    "options": [
+      "Class Hello",
+      "Interface Hello",
+      "Lỗi biên dịch do xung đột phương thức",
+      "In ra cả hai dòng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo quy tắc 'Class always wins', cài đặt phương thức public void hello() từ lớp cha Parent luôn luôn chiếm ưu thế tuyệt đối so với default method cùng chữ ký của interface Greeting. Do đó in ra 'Class Hello' mà không có lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
+      "ClassWins",
+      "DefaultMethod",
+      "Resolution"
+    ]
+  },
+  {
+    "id": "L4_Q51",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Những khẳng định nào sau đây về phương thức 'static' trong Interface (từ Java 8) là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Phương thức static trong interface KHÔNG ĐƯỢC kế thừa bởi các lớp implement interface đó",
+      "Chỉ có thể gọi phương thức static thông qua tên của chính Interface đó (ví dụ MyInterface.myStaticMethod())",
+      "Không thể gọi phương thức static của interface thông qua tên lớp con hoặc thể hiện của lớp con (ví dụ MyClass.myStaticMethod() hoặc instance.myStaticMethod() đều gây lỗi biên dịch)",
+      "Phương thức static trong interface có thể được ghi đè bằng annotation @Override ở lớp con"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Phương thức static trong interface thuộc về riêng interface đó và không được kế thừa xuống các class implement. Lớp con không thể gọi hay override phương thức static này. Muốn gọi bắt buộc phải dùng cú pháp InterfaceName.methodName().",
+    "difficulty": "hard",
+    "tags": [
+      "InterfaceStatic",
+      "StaticMethod",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L4_Q52",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Điều gì xảy ra khi biên dịch đoạn mã sau?",
+    "code": "interface Calculable {\n    static int add(int a, int b) {\n        return a + b;\n    }\n}\nclass Calculator implements Calculable {}\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(Calculator.add(2, 3));\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Cannot find symbol method add(int,int) in class Calculator",
+      "In ra: 5",
+      "Ném ngoại lệ UnsupportedOperationException",
+      "Lỗi biên dịch vì interface không thể có phương thức static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức static trong interface Calculable không được kế thừa sang class Calculator. Do đó lệnh gọi Calculator.add(...) gây lỗi biên dịch vì trong Calculator không có phương thức static nào như vậy. Cách viết đúng duy nhất là Calculable.add(2, 3).",
+    "difficulty": "medium",
+    "tags": [
+      "InterfaceStatic",
+      "CompileError",
+      "Inheritance"
+    ]
+  },
+  {
+    "id": "L4_Q53",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Từ Java 9, phương thức 'private' (và private static) được phép xuất hiện trong Interface với mục đích chính là gì?",
+    "code": null,
+    "options": [
+      "Cho phép tái sử dụng mã nguồn và chia sẻ logic chung giữa các default method hoặc static method bên trong interface mà không để lộ phương thức ra bên ngoài public API",
+      "Để ngăn chặn việc ghi đè phương thức bởi các lớp con",
+      "Để lưu trữ dữ liệu trạng thái nhạy cảm của interface",
+      "Để mã hóa bytecode của interface chống dịch ngược"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Java 9 bổ sung private methods cho interface để cải thiện việc đóng gói và tái sử dụng mã nguồn bên trong interface. Khi nhiều default method hoặc static method có chung một đoạn logic xử lý phức tạp, ta có thể trích xuất ra một private method phụ trợ (helper method) mà không làm ô nhiễm giao diện công khai của interface.",
+    "difficulty": "medium",
+    "tags": [
+      "PrivateInterfaceMethod",
+      "Java9",
+      "Encapsulation"
+    ]
+  },
+  {
+    "id": "L4_Q54",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Mọi trường dữ liệu (fields / variables) được khai báo trong một Interface ngầm định sở hữu những từ khóa bổ nghĩa nào sau đây?",
+    "code": null,
+    "options": [
+      "public",
+      "static",
+      "final",
+      "transient"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Trong Interface, bất kỳ biến nào được khai báo (dù có viết từ khóa hay không) đều ngầm định và bắt buộc phải là 'public static final' (tức là hằng số). Chúng không thể là private, protected hay non-static/non-final.",
+    "difficulty": "easy",
+    "tags": [
+      "InterfaceFields",
+      "Constants",
+      "Modifiers"
+    ]
+  },
+  {
+    "id": "L4_Q55",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Điều gì xảy ra khi cố tình gán lại giá trị cho trường của một Interface?",
+    "code": "interface Config {\n    int TIMEOUT = 5000;\n}\npublic class Main {\n    public static void main(String[] args) {\n        Config.TIMEOUT = 10000;\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: cannot assign a value to final variable TIMEOUT",
+      "Biên dịch thành công và thay đổi giá trị cấu hình thành 10000",
+      "Chỉ có warning cảnh báo",
+      "Ném IllegalAccessException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì trường 'int TIMEOUT = 5000' trong interface Config ngầm định là 'public static final', nó là một hằng số. Mọi hành vi cố tình gán lại giá trị đều bị trình biên dịch từ chối với lỗi 'cannot assign a value to final variable'.",
+    "difficulty": "easy",
+    "tags": [
+      "InterfaceConstants",
+      "Final",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q56",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Lớp trừu tượng B kế thừa lớp trừu tượng A có bắt buộc phải cài đặt lại các phương thức trừu tượng của A hay không?",
+    "code": "abstract class A {\n    abstract void execute();\n}\nabstract class B extends A {\n    // Khong override execute()\n}",
+    "options": [
+      "Không bắt buộc; lớp con trừu tượng có thể kế thừa và chuyển tiếp các phương thức trừu tượng cho các lớp con cụ thể (concrete class) phía sau cài đặt",
+      "Bắt buộc; mọi lớp con kế thừa abstract class đều phải override toàn bộ phương thức trừu tượng ngay lập tức",
+      "Lỗi biên dịch nếu không ghi đè execute()",
+      "Chỉ bắt buộc nếu execute() là phương thức public"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Một abstract class kế thừa một abstract class khác không bắt buộc phải override các abstract method của lớp cha. Trách nhiệm cài đặt cụ thể chỉ bắt buộc khi có một lớp cụ thể (concrete class, non-abstract) đầu tiên kế thừa chuỗi này.",
+    "difficulty": "easy",
+    "tags": [
+      "AbstractClass",
+      "Inheritance",
+      "Rules"
+    ]
+  },
+  {
+    "id": "L4_Q57",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Những khai báo nào sau đây là BẤT HỢP LỆ trong cú pháp ngôn ngữ Java?",
+    "code": null,
+    "options": [
+      "final abstract class MyClass {}",
+      "abstract static void doWork(); (trong interface)",
+      "private interface MyInterface {} (ở cấp độ top-level file)",
+      "abstract class MyClass { void concreteMethod() {} }"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1. final abstract: mâu thuẫn (abstract bắt kế thừa, final cấm kế thừa). 2. abstract static: mâu thuẫn (static không thể bị override, abstract bắt buộc override). 3. private interface ở top-level: không hợp lệ (chỉ được public hoặc default). Lựa chọn 4 là hoàn toàn hợp lệ (abstract class được phép có phương thức cụ thể).",
+    "difficulty": "medium",
+    "tags": [
+      "InvalidModifiers",
+      "Syntax",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q58",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Trong Java, một Interface có thể kế thừa (extends) bao nhiêu Interface khác?",
+    "code": null,
+    "options": [
+      "Có thể kế thừa nhiều Interface khác cùng lúc (Đa thừa kế interface, ví dụ: interface C extends A, B)",
+      "Chỉ được kế thừa tối đa một Interface duy nhất (Đơn thừa kế)",
+      "Interface không thể kế thừa bất kỳ Interface nào khác",
+      "Chỉ được kế thừa nếu dùng từ khóa implements"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mặc dù Java không hỗ trợ đa thừa kế lớp (Multiple inheritance of classes), nhưng Java CHO PHÉP ĐA THỪA KẾ INTERFACE. Một interface có thể extends nhiều interface khác cùng lúc bằng cách dùng dấu phẩy: interface C extends A, B.",
+    "difficulty": "easy",
+    "tags": [
+      "MultipleInheritance",
+      "InterfaceExtends",
+      "Syntax"
+    ]
+  },
+  {
+    "id": "L4_Q59",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Khái niệm Giao diện hàm (Functional Interface) trong Java được định nghĩa bởi những tiêu chuẩn nào?",
+    "code": null,
+    "options": [
+      "Chứa đúng MỘT phương thức trừu tượng (Single Abstract Method - SAM)",
+      "Có thể chứa thêm nhiều phương thức default hoặc phương thức static",
+      "Có thể khai báo thêm các phương thức trừu tượng của lớp Object (như equals, hashCode, toString) mà không làm mất tính SAM",
+      "Có thể được chú thích bằng annotation @FunctionalInterface để trình biên dịch kiểm tra tính hợp lệ"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Tất cả 4 đặc điểm trên đều đúng với Functional Interface (được dùng làm mục tiêu cho biểu thức Lambda). Nó chỉ có 1 abstract method duy nhất (SAM), nhưng được phép có default/static methods và các method kế thừa từ java.lang.Object.",
+    "difficulty": "medium",
+    "tags": [
+      "FunctionalInterface",
+      "Lambda",
+      "Java8"
+    ]
+  },
+  {
+    "id": "L4_Q60",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Xác định output của đoạn mã tích hợp Interface default method và static method sau:",
+    "code": "interface Printable {\n    default void print() {\n        System.out.print(\"Default \");\n    }\n    static void info() {\n        System.out.print(\"Info \");\n    }\n}\nclass Doc implements Printable {}\npublic class Main {\n    public static void main(String[] args) {\n        Doc d = new Doc();\n        d.print();\n        Printable.info();\n    }\n}",
+    "options": [
+      "Default Info ",
+      "Info Default ",
+      "Lỗi biên dịch tại Printable.info()",
+      "Lỗi biên dịch tại d.print()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp Doc implement Printable nên kế thừa default method print(), gọi d.print() in ra 'Default '. Phương thức static info() được gọi chuẩn xác qua tên interface Printable.info() in ra 'Info '. Kết quả là 'Default Info '.",
+    "difficulty": "easy",
+    "tags": [
+      "DefaultMethod",
+      "StaticMethod",
+      "Output"
+    ]
+  },
+  {
+    "id": "L4_Q61",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Nguyên tắc PECS (Producer Extends, Consumer Super) trong thiết kế Java Generics hướng dẫn điều gì?",
+    "code": null,
+    "options": [
+      "Dùng '? extends T' khi tham số chỉ cung cấp/sản xuất (read/produce) dữ liệu cho phương thức; dùng '? super T' khi tham số chỉ tiêu thụ/ghi nạp (write/consume) dữ liệu vào",
+      "Dùng '? extends T' để thêm phần tử vào danh sách, dùng '? super T' để lấy phần tử ra khỏi danh sách",
+      "Dùng '? extends T' cho kiểu trả về của phương thức, dùng '? super T' cho tham số truyền vào",
+      "Dùng '? extends T' cho các lớp con và '? super T' cho các lớp cha"
+    ],
+    "correctAnswer": 0,
+    "explanation": "PECS là nguyên tắc vàng trong Generics: 'Producer Extends, Consumer Super'. Nếu cấu trúc dữ liệu đóng vai trò là nhà sản xuất dữ liệu (bạn đọc get() phần tử ra khỏi nó), dùng '? extends T'. Nếu đóng vai trò người tiêu thụ (bạn ghi add() phần tử vào nó), dùng '? super T'.",
+    "difficulty": "medium",
+    "tags": [
+      "PECS",
+      "Generics",
+      "Wildcards"
+    ]
+  },
+  {
+    "id": "L4_Q62",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Cho khai báo danh sách với Upper Bounded Wildcard sau. Thao tác nào sẽ gây LỖI BIÊN DỊCH?",
+    "code": "List<? extends Number> list = new ArrayList<Integer>();\n// Xet cac thao tac:\n// D1: Number n = list.get(0);\n// D2: list.add(10);\n// D3: list.add(null);\n// D4: Object obj = list.get(0);",
+    "options": [
+      "D2 gây lỗi biên dịch: không thể thêm bất kỳ giá trị cụ thể nào (kể cả số 10) vào List<? extends Number>",
+      "D1 gây lỗi biên dịch",
+      "D3 gây lỗi biên dịch",
+      "Cả D2 và D3 đều gây lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Với '? extends Number', trình biên dịch không thể biết chính xác danh sách thực tế là List<Integer>, List<Double> hay List<Float>. Để đảm bảo an toàn kiểu (Type Safety), Java cấm thêm bất kỳ phần tử nào vào danh sách này (D2 lỗi biên dịch), ngoại trừ hằng số null (D3 hợp lệ). Việc đọc phần tử (D1, D4) hoàn toàn an toàn.",
+    "difficulty": "hard",
+    "tags": [
+      "UpperBoundedWildcard",
+      "PECS",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q63",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Cho khai báo danh sách với Lower Bounded Wildcard sau. Thao tác nào là HỢP LỆ?",
+    "code": "List<? super Integer> list = new ArrayList<Number>();",
+    "options": [
+      "list.add(42); (có thể thêm đối tượng kiểu Integer hoặc con của Integer vào danh sách)",
+      "Integer val = list.get(0); (có thể đọc trực tiếp ra kiểu Integer mà không cần ép kiểu)",
+      "list.add(3.14); (có thể thêm kiểu Double vào danh sách)",
+      "list.add(new Object()); (có thể thêm đối tượng kiểu Object vào danh sách)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Với '? super Integer', danh sách là của Integer hoặc cha của Integer (như Number, Object). Do đó, chắc chắn an toàn khi ghi thêm (consume) Integer vào danh sách (list.add(42) hợp lệ). Tuy nhiên, khi đọc get(0), JVM chỉ đảm bảo phần tử trả về có kiểu Object (muốn lấy Integer phải ép kiểu tường minh).",
+    "difficulty": "hard",
+    "tags": [
+      "LowerBoundedWildcard",
+      "PECS",
+      "TypeSafety"
+    ]
+  },
+  {
+    "id": "L4_Q64",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Những phát biểu nào sau đây là ĐÚNG về cơ chế Xóa kiểu (Type Erasure) trong Java Generics?",
+    "code": null,
+    "options": [
+      "Tất cả thông tin tham số kiểu generic (<T>) bị trình biên dịch loại bỏ khỏi mã bytecode tại thời điểm biên dịch, tại runtime JVM không lưu giữ kiểu cụ thể này",
+      "Kiểu không bị chặn <T> được thay thế bằng kiểu Object trong bytecode",
+      "Kiểu có chặn <T extends Number> được thay thế bằng kiểu cận trên là Number trong bytecode",
+      "Trình biên dịch tự động chèn các lệnh ép kiểu tường minh (casts) và phương thức cầu nối (bridge methods) vào bytecode để duy trì tính đa hình"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Cả 4 phát biểu trên đều mô tả chính xác bản chất cơ chế Type Erasure của Java. Cơ chế này được áp dụng từ Java 5 để đảm bảo tính tương thích nhị phân ngược (binary backward compatibility) với các thư viện viết trên Java 1.4 trở về trước.",
+    "difficulty": "hard",
+    "tags": [
+      "TypeErasure",
+      "Bytecode",
+      "JVMInternals"
+    ]
+  },
+  {
+    "id": "L4_Q65",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Xác định output của phép so sánh lớp tại thời điểm runtime do ảnh hưởng của Type Erasure:",
+    "code": "List<String> list1 = new ArrayList<>();\nList<Integer> list2 = new ArrayList<>();\nSystem.out.println(list1.getClass() == list2.getClass());",
+    "options": [
+      "true (cả hai đều có kiểu runtime là java.util.ArrayList.class)",
+      "false (một bên là ArrayList<String>, một bên là ArrayList<Integer>)",
+      "Lỗi biên dịch tại phép so sánh ==",
+      "Ném ClassCastException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Do cơ chế Type Erasure, thông tin <String> và <Integer> bị xóa sạch tại runtime. Cả list1 và list2 đều chỉ là thể hiện của lớp thô java.util.ArrayList. Do đó list1.getClass() và list2.getClass() trả về cùng một đối tượng Class duy nhất, kết quả là true.",
+    "difficulty": "medium",
+    "tags": [
+      "TypeErasure",
+      "GetClass",
+      "Generics"
+    ]
+  },
+  {
+    "id": "L4_Q66",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Những dòng mã nào sau đây GÂY LỖI BIÊN DỊCH do các giới hạn của cơ chế Type Erasure trong Java?",
+    "code": null,
+    "options": [
+      "T obj = new T(); (không thể khởi tạo trực tiếp instance của kiểu tham số generic)",
+      "T[] arr = new T[10]; (không thể tạo mảng của kiểu tham số generic)",
+      "if (list instanceof List<String>) {} (không thể kiểm tra instanceof với generic có tham số cụ thể)",
+      "private static T instanceVar; (không thể khai báo biến static có kiểu là type parameter của lớp)"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Do Type Erasure xóa mất kiểu tại runtime, JVM không biết T là kiểu gì để cấp phát bộ nhớ cho 'new T()' hoặc 'new T[10]'. Cũng không thể phân biệt List<String> với List<Integer> khi kiểm tra instanceof (chỉ được kiểm tra list instanceof List<?>). Biến static thuộc về class nên không thể phụ thuộc vào kiểu T của từng đối tượng. Cả 4 trường hợp đều lỗi biên dịch.",
+    "difficulty": "hard",
+    "tags": [
+      "GenericsRestrictions",
+      "TypeErasure",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q67",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Khi khai báo ràng buộc kép (Multiple Bounds) cho tham số kiểu: '<T extends ClassA & InterfaceB & InterfaceC>', quy tắc bắt buộc về cú pháp là gì?",
+    "code": null,
+    "options": [
+      "Nếu có một lớp (Class) tham gia ràng buộc, lớp đó BẮT BUỘC phải được viết đầu tiên trước tất cả các Interface",
+      "Các Interface phải được viết trước, Class viết sau cùng",
+      "Có thể khai báo nhiều hơn một Class bằng cách nối thêm dấu '&'",
+      "Thứ tự giữa Class và Interface là tùy ý không bị ràng buộc"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo quy tắc JLS: Nếu một tham số kiểu generic có nhiều ràng buộc (Multiple bounds), tối đa chỉ được có 1 Class và Class đó bắt buộc phải đứng đầu tiên danh sách. Các interface đi sau được nối bằng dấu '&'. Java không cho phép đa kế thừa class.",
+    "difficulty": "medium",
+    "tags": [
+      "MultipleBounds",
+      "GenericsSyntax",
+      "JLS"
+    ]
+  },
+  {
+    "id": "L4_Q68",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Trong Java, Integer là lớp con của Number. Điều gì xảy ra với dòng mã khai báo danh sách sau?",
+    "code": "List<Number> list = new ArrayList<Integer>();",
+    "options": [
+      "Lỗi biên dịch: Type mismatch: cannot convert from ArrayList<Integer> to List<Number>",
+      "Biên dịch thành công vì Integer kế thừa từ Number (tính đa hình)",
+      "Chỉ có cảnh báo warning Unchecked conversion",
+      "Ném ngoại lệ ClassCastException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Các kiểu generic trong Java là BẤT BIẾN (INVARIANT). Dù Integer là con của Number, List<Integer> KHÔNG PHẢI là con của List<Number>. Nếu cho phép gán, ta có thể viết list.add(new Double(3.14)) và phá hỏng tính an toàn của danh sách Integer ban đầu. Để gán được, phải dùng wildcard: List<? extends Number> list = new ArrayList<Integer>().",
+    "difficulty": "medium",
+    "tags": [
+      "Invariance",
+      "Generics",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L4_Q69",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "So sánh sự khác nhau cốt lõi giữa Mảng (Array) và Danh sách Tổng quát (Generics) trong Java:",
+    "code": null,
+    "options": [
+      "Mảng là Covariant (Đồng biến, Integer[] là con của Number[]), còn Generics là Invariant (Bất biến, List<Integer> không phải con của List<Number>)",
+      "Mảng là Reifiable (Giữ nguyên thông tin kiểu tại runtime), còn Generics bị Type Erasure (Xóa kiểu tại runtime)",
+      "Mảng phát hiện lỗi sai kiểu đối tượng tại Runtime (ném ArrayStoreException), còn Generics phát hiện lỗi tại Compile-time",
+      "Mảng không bao giờ bị ném lỗi OutOfMemoryError"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "3 phát biểu đầu phân tích chính xác sự đối lập giữa Array (Covariant & Reifiable) và Generics (Invariant & Type-Erased). Mảng vẫn có thể gây OutOfMemoryError nếu cấp phát kích thước quá lớn vượt bộ nhớ Heap.",
+    "difficulty": "hard",
+    "tags": [
+      "ArrayVsGenerics",
+      "Covariant",
+      "TypeSafety"
+    ]
+  },
+  {
+    "id": "L4_Q70",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Điều gì xảy ra khi thực thi đoạn mã minh họa bẫy Covariant của Mảng sau?",
+    "code": "Number[] numbers = new Integer[3];\nnumbers[0] = 3.14; // Gan so thuc Double",
+    "options": [
+      "Biên dịch thành công nhưng ném java.lang.ArrayStoreException tại thời điểm runtime",
+      "Lỗi biên dịch ngay tại dòng numbers[0] = 3.14;",
+      "Số 3.14 tự động ép kiểu thành số nguyên 3 và lưu vào mảng",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì mảng là Covariant, trình biên dịch cho phép gán 'new Integer[3]' cho 'Number[] numbers'. Ở dòng tiếp theo, 3.14 là Double (vốn là một Number) nên vượt qua kiểm tra compile-time. Nhưng tại runtime, mảng biết kiểu thực tế của nó là Integer[] và từ chối lưu phần tử Double, ném ngoại lệ java.lang.ArrayStoreException.",
+    "difficulty": "medium",
+    "tags": [
+      "ArrayStoreException",
+      "CovariantArray",
+      "RuntimeTrap"
+    ]
+  },
+  {
+    "id": "L4_Q71",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Vị trí đặt tham số kiểu generic <T> trong cú pháp khai báo một Generic Method độc lập là gì?",
+    "code": null,
+    "options": [
+      "Nằm trước kiểu dữ liệu trả về của phương thức (ví dụ: public static <T> T getFirst(List<T> list))",
+      "Nằm sau danh sách tham số của phương thức",
+      "Nằm ngay sau tên phương thức",
+      "Nằm bên trong ngoặc đơn của danh sách tham số"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cú pháp chuẩn của Generic Method trong Java: các tham số kiểu (type parameters) phải được đặt trong cặp ngoặc nhọn '<...>' nằm TRƯỚC kiểu trả về của phương thức (ví dụ: public static <T> T getFirst(List<T> list)).",
+    "difficulty": "easy",
+    "tags": [
+      "GenericMethod",
+      "Syntax",
+      "TypeParameter"
+    ]
+  },
+  {
+    "id": "L4_Q72",
+    "lessonId": 4,
+    "type": "multiple",
+    "title": "Phương thức sao chép dữ liệu từ danh sách nguồn (src) sang danh sách đích (dest) nào sau đây tuân thủ hoàn hảo nguyên lý PECS?",
+    "code": null,
+    "options": [
+      "public static <T> void copy(List<? super T> dest, List<? extends T> src) { for (T item : src) dest.add(item); }",
+      "public static <T> void copy(List<T> dest, List<T> src) { ... } (chỉ nhận đúng hai danh sách cùng kiểu chính xác)",
+      "public static <T> void copy(List<? extends T> dest, List<? super T> src) { ... } (đảo ngược sai vai trò Producer và Consumer)",
+      "Cài đặt phương thức Collections.copy() trong thư viện chuẩn Java JDK sử dụng cú pháp: (List<? super T> dest, List<? extends T> src)"
+    ],
+    "correctAnswer": [
+      0,
+      3
+    ],
+    "explanation": "Nguồn (src) sản xuất dữ liệu ra -> dùng '? extends T' (Producer Extends). Đích (dest) tiêu thụ và lưu trữ dữ liệu vào -> dùng '? super T' (Consumer Super). Đây chính là định nghĩa chuẩn của phương thức Collections.copy() trong thư viện chuẩn java.util.Collections.",
+    "difficulty": "hard",
+    "tags": [
+      "PECS",
+      "CollectionsCopy",
+      "BestPractice"
+    ]
+  },
+  {
+    "id": "L4_Q73",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Khi sử dụng Unbounded Wildcard 'List<?>', phát biểu nào sau đây là ĐÚNG?",
+    "code": "List<?> list = new ArrayList<String>();",
+    "options": [
+      "Khi đọc phần tử từ list.get(0), kết quả trả về luôn có kiểu an toàn là Object; và không thể add bất kỳ phần tử nào vào list ngoại trừ giá trị null",
+      "Có thể add thêm các đối tượng kiểu String vào list bình thường",
+      "Không thể gọi bất kỳ phương thức nào của List như size(), clear(), isEmpty()",
+      "List<?> tương đương hoàn toàn 100% với List<Object>"
+    ],
+    "correctAnswer": 0,
+    "explanation": "List<?> đại diện cho danh sách của một kiểu chưa biết (list of an unknown type). Ta có thể đọc an toàn kiểu Object từ nó, gọi các hàm không phụ thuộc kiểu như size(), clear(). Nhưng không thể add bất kỳ giá trị cụ thể nào vào list (trừ null) vì không biết kiểu thực tế là gì.",
+    "difficulty": "medium",
+    "tags": [
+      "UnboundedWildcard",
+      "Generics",
+      "Object"
+    ]
+  },
+  {
+    "id": "L4_Q74",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Phương thức cầu nối (Bridge Method) được trình biên dịch Java tự động sinh ra trong trường hợp nào sau đây?",
+    "code": "class Node<T> {\n    public void setData(T data) {}\n}\nclass MyNode extends Node<Integer> {\n    @Override\n    public void setData(Integer data) {}\n}",
+    "options": [
+      "Khi lớp con ghi đè một phương thức generic của lớp cha với kiểu cụ thể, compiler sinh ra phương thức cầu nối setData(Object) gọi tới setData(Integer) để đảm bảo tính đa hình vtable trong JVM",
+      "Khi hai thread cùng truy cập vào một lớp generic",
+      "Khi lớp implement cùng lúc Serializable và Cloneable",
+      "Khi chuyển đổi kiểu từ ArrayList sang LinkedList"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Do Type Erasure, trong class Node phương thức là setData(Object). Nhưng trong MyNode phương thức là setData(Integer). Để đảm bảo cơ chế đa hình ảo (polymorphic dynamic dispatch), compiler tự động sinh ra một synthetic method: 'public void setData(Object data) { setData((Integer) data); }' gọi là Bridge Method.",
+    "difficulty": "hard",
+    "tags": [
+      "BridgeMethod",
+      "TypeErasure",
+      "Compiler"
+    ]
+  },
+  {
+    "id": "L4_Q75",
+    "lessonId": 4,
+    "type": "single",
+    "title": "Xác định output của đoạn mã Generic Bounded Type sau:",
+    "code": "class Box<T extends Number> {\n    private T val;\n    Box(T val) { this.val = val; }\n    double getDoubleVal() { return val.doubleValue(); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Box<Integer> b1 = new Box<>(10);\n        Box<Double> b2 = new Box<>(20.5);\n        System.out.println((b1.getDoubleVal() + b2.getDoubleVal()));\n    }\n}",
+    "options": [
+      "30.5",
+      "30",
+      "Lỗi biên dịch do không thể tạo Box<Double>",
+      "Lỗi ClassCastException tại hàm getDoubleVal()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cả Integer và Double đều kế thừa lớp Number, do đó thỏa mãn ràng buộc 'T extends Number'. Lớp Number có phương thức doubleValue(), nên phương thức getDoubleVal() gọi hợp lệ. 10.0 + 20.5 = 30.5.",
+    "difficulty": "easy",
+    "tags": [
+      "BoundedType",
+      "Generics",
+      "Output"
+    ]
   }
 ]

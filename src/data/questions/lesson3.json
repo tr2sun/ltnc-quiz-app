@@ -919,5 +919,677 @@
       "Object-equals",
       "Reference-Comparison"
     ]
+  },
+  {
+    "id": "L3_Q46",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Khái niệm Kiểu trả về đồng biến (Covariant Return Types) được giới thiệu từ Java 5 cho phép điều gì khi ghi đè phương thức (@Override)?",
+    "code": null,
+    "options": [
+      "Phương thức ghi đè ở lớp con có thể khai báo kiểu trả về là một kiểu con (subtype) của kiểu trả về ở phương thức của lớp cha",
+      "Phương thức ở lớp con có thể trả về bất kỳ kiểu dữ liệu nào kể cả kiểu nguyên thủy khác hoàn toàn",
+      "Cho phép thay đổi kiểu trả về nhưng bắt buộc phải thay đổi cả danh sách tham số truyền vào",
+      "Bắt buộc kiểu trả về ở lớp con phải rộng hơn kiểu trả về ở lớp cha"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trước Java 5, phương thức ghi đè bắt buộc phải có kiểu trả về giống hệt lớp cha. Từ Java 5, Java hỗ trợ Covariant Return Type: phương thức ở lớp con được phép trả về kiểu con của kiểu ở lớp cha (ví dụ cha trả về Object, con có thể ghi đè trả về String; cha trả về Number, con trả về Integer).",
+    "difficulty": "medium",
+    "tags": [
+      "Covariant",
+      "Overriding",
+      "Polymorphism"
+    ]
+  },
+  {
+    "id": "L3_Q47",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xem xét đoạn mã sau sử dụng Covariant Return Type. Đoạn mã có hợp lệ không và output là gì?",
+    "code": "class SuperClass {\n    public Number getNum() {\n        return 10;\n    }\n}\nclass SubClass extends SuperClass {\n    @Override\n    public Integer getNum() {\n        return 20;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        SubClass sub = new SubClass();\n        Integer result = sub.getNum();\n        System.out.println(result);\n    }\n}",
+    "options": [
+      "Hợp lệ hoàn toàn và in ra: 20",
+      "Lỗi biên dịch vì phương thức ghi đè có kiểu trả về Integer khác với Number",
+      "Lỗi biên dịch tại dòng gán result vì bắt buộc phải ép kiểu (Integer) sub.getNum()",
+      "Ném ClassCastException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì Integer là lớp con của Number, SubClass ghi đè getNum() và khai báo kiểu trả về Integer là hoàn toàn hợp lệ theo quy tắc Covariant Return Type. Khi gọi qua tham chiếu SubClass, trình biên dịch nhận biết phương thức trả về Integer nên có thể gán trực tiếp vào biến Integer result mà không cần ép kiểu.",
+    "difficulty": "medium",
+    "tags": [
+      "Covariant",
+      "Integer",
+      "Inheritance"
+    ]
+  },
+  {
+    "id": "L3_Q48",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Khi một phương thức ở lớp con ghi đè một phương thức có mệnh đề 'throws CheckedException' từ lớp cha, phương thức ở lớp con ĐƯỢC PHÉP làm những điều nào sau đây?",
+    "code": null,
+    "options": [
+      "Không khai báo ném bất kỳ ngoại lệ nào trong mệnh đề throws",
+      "Khai báo ném cùng loại CheckedException hoặc một ngoại lệ con (subclass) của CheckedException đó",
+      "Khai báo ném thêm bất kỳ Unchecked Exception nào (ví dụ NullPointerException, IllegalArgumentException)",
+      "Khai báo ném một CheckedException mới hoàn toàn hoặc rộng hơn ngoại lệ của lớp cha (ví dụ cha ném IOException, con ném Exception)"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Quy tắc ghi đè ngoại lệ (Exception Overriding Rule): Phương thức con không bao giờ được ném Checked Exception rộng hơn hoặc mới hơn cha, vì điều này sẽ phá vỡ tính đa hình khi gọi qua tham chiếu cha. Phương thức con được phép: 1. Không ném gì, 2. Ném ngoại lệ con, 3. Ném bất kỳ RuntimeException (Unchecked Exception) nào.",
+    "difficulty": "hard",
+    "tags": [
+      "ExceptionRules",
+      "Overriding",
+      "CheckedException"
+    ]
+  },
+  {
+    "id": "L3_Q49",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra khi biên dịch đoạn mã sau?",
+    "code": "import java.io.IOException;\nclass A {\n    void readData() throws IOException {}\n}\nclass B extends A {\n    @Override\n    void readData() throws Exception {}\n}",
+    "options": [
+      "Lỗi biên dịch tại class B: readData() in B cannot override readData() in A; overridden method does not throw Exception",
+      "Biên dịch thành công vì Exception là lớp cha của IOException",
+      "Lỗi biên dịch vì bắt buộc phải khai báo try-catch bên trong hàm readData() của B",
+      "Chỉ có cảnh báo warning khi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức lớp cha A ném IOException (một Checked Exception). Lớp con B cố tình khai báo throws Exception (là lớp cha rộng hơn IOException). Điều này vi phạm nghiêm trọng quy tắc ghi đè trong Java và gây lỗi biên dịch ngay lập tức.",
+    "difficulty": "medium",
+    "tags": [
+      "ExceptionOverriding",
+      "CompileError",
+      "CheckedException"
+    ]
+  },
+  {
+    "id": "L3_Q50",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định output của chương trình sau khi xảy ra hiện tượng Che giấu thuộc tính (Field Hiding):",
+    "code": "class Parent {\n    int val = 10;\n}\nclass Child extends Parent {\n    int val = 20;\n}\npublic class Main {\n    public static void main(String[] args) {\n        Parent p = new Child();\n        System.out.println(p.val + \" \" + ((Child) p).val);\n    }\n}",
+    "options": [
+      "10 20",
+      "20 20",
+      "10 10",
+      "20 10"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, các trường dữ liệu (fields) KHÔNG CÓ TÍNH ĐA HÌNH ĐỘNG (Fields are not polymorphic). Thuộc tính ở lớp con sẽ che giấu (hide) thuộc tính cùng tên ở lớp cha. Việc truy cập trường phụ thuộc hoàn toàn vào KIỂU CỦA BIẾN THAM CHIẾU tại thời điểm biên dịch. Vì biến 'p' có kiểu khai báo là Parent nên 'p.val' trỏ tới trường val của Parent (10). Khi ép kiểu '((Child) p).val' thì truy cập trường val của Child (20).",
+    "difficulty": "hard",
+    "tags": [
+      "FieldHiding",
+      "Polymorphism",
+      "Binding"
+    ]
+  },
+  {
+    "id": "L3_Q51",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Những thành phần nào sau đây trong một class Java KHÔNG THỂ bị ghi đè (@Override)?",
+    "code": null,
+    "options": [
+      "Phương thức tĩnh (static methods) - vì chúng liên kết tĩnh tại compile-time và bị hiding",
+      "Phương thức riêng tư (private methods) - vì không được kế thừa và không nhìn thấy ở lớp con",
+      "Phương thức final (final methods) - vì từ khóa final tường minh ngăn cấm việc ghi đè",
+      "Hàm khởi tạo (Constructors) - vì constructor không được kế thừa giữa các lớp"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Tất cả 4 thành phần trên đều không thể bị ghi đè: static methods (bị hiding), private methods (không được kế thừa), final methods (ngăn cấm ghi đè), constructors (không phải phương thức và không được kế thừa).",
+    "difficulty": "medium",
+    "tags": [
+      "OverridingRules",
+      "Static",
+      "Final",
+      "Private"
+    ]
+  },
+  {
+    "id": "L3_Q52",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra khi lớp cha chỉ có constructor nhận tham số và lớp con không gọi super(args)?",
+    "code": "class Parent {\n    Parent(String name) {}\n}\nclass Child extends Parent {\n    Child() {}\n}",
+    "options": [
+      "Lỗi biên dịch: Implicit super constructor Parent() is undefined for default constructor",
+      "Biên dịch thành công và JVM tự động truyền null vào constructor của Parent",
+      "Lớp Child tự động tạo một constructor không tham số cho Parent",
+      "Lỗi runtime khi khởi tạo đối tượng Child"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi một lớp con không gọi tường minh super(...) trong constructor của nó, trình biên dịch sẽ tự động chèn lời gọi super() không tham số. Nhưng lớp Parent đã định nghĩa một constructor nhận String, nên compiler không sinh constructor mặc định rỗng cho Parent nữa. Vì Parent() không tồn tại nên lệnh gọi ngầm định super() gây lỗi biên dịch.",
+    "difficulty": "medium",
+    "tags": [
+      "ConstructorChaining",
+      "Super",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L3_Q53",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Khi ghi đè một phương thức, điều gì xảy ra nếu lớp con cố tình thu hẹp phạm vi truy cập (narrowing access privileges)?",
+    "code": "class Parent {\n    public void display() {}\n}\nclass Child extends Parent {\n    @Override\n    protected void display() {} // Thu hep tu public xuong protected\n}",
+    "options": [
+      "Lỗi biên dịch: Cannot reduce the visibility of the inherited method from Parent",
+      "Biên dịch thành công bình thường",
+      "Chỉ có cảnh báo bảo mật warning",
+      "Lỗi ClassCastException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc cơ bản của ghi đè trong OOP/Java là: Phạm vi truy cập của phương thức ghi đè ở lớp con không bao giờ được hẹp hơn phương thức ở lớp cha (quyền hạn chỉ có thể bằng hoặc rộng hơn: public -> public; protected -> protected hoặc public; default -> default, protected hoặc public).",
+    "difficulty": "easy",
+    "tags": [
+      "AccessModifiers",
+      "Overriding",
+      "CompileError"
+    ]
+  },
+  {
+    "id": "L3_Q54",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Chú thích '@Override' trong Java mang lại những lợi ích quan trọng nào?",
+    "code": null,
+    "options": [
+      "Yêu cầu trình biên dịch kiểm tra chặt chẽ xem phương thức đó có thực sự ghi đè phương thức nào từ lớp cha hay không; nếu gõ sai tên hoặc sai kiểu tham số thì báo lỗi ngay",
+      "Giúp người đọc mã nhận biết rõ ràng phương thức này được thiết kế để thay đổi hành vi của lớp cha",
+      "Bắt buộc JVM phải dùng thuật toán tối ưu hóa vtable riêng để tăng tốc độ thực thi",
+      "Tự động xóa bỏ hoàn toàn mã nguồn của phương thức lớp cha khỏi bộ nhớ"
+    ],
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "Annotation @Override là một compile-time check hữu hiệu giúp ngăn ngừa các lỗi đánh máy sai tên hàm hoặc sai chữ ký tham số (vô tình biến thành overloading thay vì overriding) và nâng cao tính dễ đọc của mã. Nó không can thiệp vào cơ chế tối ưu vtable hay xóa mã của JVM.",
+    "difficulty": "easy",
+    "tags": [
+      "OverrideAnnotation",
+      "BestPractice",
+      "Compiler"
+    ]
+  },
+  {
+    "id": "L3_Q55",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định output của chương trình sau khi sử dụng từ khóa super trong phương thức ghi đè:",
+    "code": "class Base {\n    void greet() {\n        System.out.print(\"Hello \");\n    }\n}\nclass Derived extends Base {\n    @Override\n    void greet() {\n        super.greet();\n        System.out.print(\"World\");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Base b = new Derived();\n        b.greet();\n    }\n}",
+    "options": [
+      "Hello World",
+      "World Hello",
+      "World",
+      "Hello "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biến b trỏ tới đối tượng Derived. Do liên kết động, b.greet() gọi Derived.greet(). Trong phương thức này, lệnh super.greet() gọi phiên bản của lớp Base in 'Hello ', sau đó in tiếp 'World'. Kết quả là 'Hello World'.",
+    "difficulty": "easy",
+    "tags": [
+      "SuperMethod",
+      "Overriding",
+      "Output"
+    ]
+  },
+  {
+    "id": "L3_Q56",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Những khẳng định nào sau đây về từ khóa 'super' trong Java là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Từ khóa 'super' dùng để gọi constructor của lớp cha trực tiếp thông qua cú pháp super(...) bên trong constructor của con",
+      "Từ khóa 'super' dùng để truy cập các phương thức hoặc thuộc tính của lớp cha bị lớp con che giấu hoặc ghi đè",
+      "Không thể sử dụng từ khóa 'super' bên trong các phương thức tĩnh (static methods) hoặc khối tĩnh",
+      "Có thể dùng cú pháp 'super.super.method()' để gọi phương thức của lớp ông nội trong cây kế thừa"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Java không cho phép cú pháp 'super.super' (tính đóng gói của OOP quy định một lớp con chỉ tương tác trực tiếp với lớp cha trực tiếp của nó). Từ khóa super là tham chiếu instance nên không thể dùng trong static context.",
+    "difficulty": "medium",
+    "tags": [
+      "Super",
+      "StaticContext",
+      "Syntax"
+    ]
+  },
+  {
+    "id": "L3_Q57",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Trong cây kế thừa 3 cấp: Class A -> Class B -> Class C. Làm thế nào để từ phương thức của Class C gọi được trực tiếp phương thức do Class A định nghĩa mà đã bị Class B ghi đè?",
+    "code": null,
+    "options": [
+      "Trong Java không có cú pháp nào (như super.super) cho phép lớp cháu gọi trực tiếp phương thức bị che bởi lớp cha trực tiếp",
+      "Sử dụng cú pháp: super.super.method()",
+      "Sử dụng cú pháp: ((A) super).method()",
+      "Sử dụng cú pháp: A.super.method()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, bạn không thể bỏ qua lớp cha trực tiếp để gọi phương thức của lớp ông nội (không hỗ trợ super.super). Điều này nhằm bảo vệ nguyên lý đóng gói (Encapsulation). Cú pháp A.super.method() chỉ dùng cho interface default methods.",
+    "difficulty": "hard",
+    "tags": [
+      "SuperSuper",
+      "Encapsulation",
+      "JavaRules"
+    ]
+  },
+  {
+    "id": "L3_Q58",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Cho lớp cha ném SQLException, lớp con ghi đè không ném ngoại lệ nào. Khi gọi phương thức qua biến tham chiếu kiểu cha, điều gì xảy ra?",
+    "code": "import java.sql.SQLException;\nclass Parent {\n    void query() throws SQLException {}\n}\nclass Child extends Parent {\n    @Override\n    void query() {} // Khong nem ngoai le\n}\npublic class Main {\n    public static void main(String[] args) {\n        Parent p = new Child();\n        p.query(); // DONG NAY\n    }\n}",
+    "options": [
+      "Dòng gọi p.query() vẫn bị lỗi biên dịch nếu không được đặt trong khối try-catch hoặc phương thức main khai báo throws SQLException",
+      "Biên dịch hoàn toàn bình thường vì đối tượng thực tế Child không ném ngoại lệ nào",
+      "Lỗi runtime khi chạy lệnh p.query()",
+      "Trình biên dịch tự động loại bỏ SQLException tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình biên dịch kiểm tra an toàn kiểu tại Compile-Time dựa trên KIỂU KHAI BÁO CỦA THAM CHIẾU (Static Type). Biến p có kiểu là Parent, mà phương thức query() của Parent khai báo throws SQLException, do đó compiler bắt buộc người gọi phải xử lý SQLException (try-catch hoặc throws) dù đối tượng thực tế tại runtime là Child không ném ngoại lệ.",
+    "difficulty": "hard",
+    "tags": [
+      "CompileTimeCheck",
+      "CheckedException",
+      "Polymorphism"
+    ]
+  },
+  {
+    "id": "L3_Q59",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Nguyên lý 'Ưu tiên kết hợp/bao hàm hơn kế thừa' (Favor Composition over Inheritance) được khuyến nghị trong OOP vì những lý do nào sau đây?",
+    "code": null,
+    "options": [
+      "Kế thừa tạo ra mối liên kết chặt chẽ (tight coupling), làm lộ chi tiết cài đặt của lớp cha cho lớp con (phá vỡ tính đóng gói)",
+      "Khi lớp cha thay đổi mã nguồn, các lớp con có nguy cơ bị lỗi ngoài dự kiến (Fragile Base Class problem)",
+      "Composition (Bao hàm) cho phép thay đổi hành vi linh hoạt tại thời điểm thực thi (Runtime) bằng cách thay thế đối tượng thành phần",
+      "Kế thừa tiêu tốn gấp 10 lần bộ nhớ Heap so với Composition trong mọi trường hợp"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Kế thừa là liên kết tĩnh chặt chẽ kiểu 'is-a' dễ dẫn tới lỗi Fragile Base Class khi lớp cha sửa đổi. Composition tạo liên kết lỏng kiểu 'has-a', bảo toàn tính đóng gói và có thể tráo đổi component linh hoạt tại runtime (như trong Strategy pattern). Tiêu tốn bộ nhớ không phải lý do chính và con số '10 lần' là vô căn cứ.",
+    "difficulty": "medium",
+    "tags": [
+      "Composition",
+      "Inheritance",
+      "DesignPrinciple"
+    ]
+  },
+  {
+    "id": "L3_Q60",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định output của chương trình kết hợp cả ghi đè phương thức và che giấu thuộc tính:",
+    "code": "class A {\n    String name = \"ClassA\";\n    String getName() { return name; }\n}\nclass B extends A {\n    String name = \"ClassB\";\n    String getName() { return name; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        A obj = new B();\n        System.out.println(obj.name + \"-\" + obj.getName());\n    }\n}",
+    "options": [
+      "ClassA-ClassB",
+      "ClassB-ClassB",
+      "ClassA-ClassA",
+      "ClassB-ClassA"
+    ],
+    "correctAnswer": 0,
+    "explanation": "obj có kiểu tham chiếu là A, đối tượng thực tế là B. 1. obj.name là truy cập thuộc tính (không đa hình) -> lấy thuộc tính name của Class A là 'ClassA'. 2. obj.getName() là gọi phương thức ảo (đa hình động) -> gọi phương thức getName() của Class B, trả về thuộc tính name của B là 'ClassB'. Kết hợp lại in ra 'ClassA-ClassB'.",
+    "difficulty": "hard",
+    "tags": [
+      "FieldHiding",
+      "MethodOverriding",
+      "TrickyOutput"
+    ]
+  },
+  {
+    "id": "L3_Q61",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Bản chất của bảng phương thức ảo (Virtual Method Table - vtable) trong JVM phục vụ cơ chế Dynamic Method Dispatch là gì?",
+    "code": null,
+    "options": [
+      "Là một mảng các con trỏ hàm/phương thức được tạo cho mỗi class tại thời điểm nạp lớp, giúp JVM tra cứu nhanh địa chỉ cài đặt thực tế của phương thức ứng với đối tượng trong Heap",
+      "Là bảng băm chứa mã nguồn bytecode chưa được thông dịch của tất cả các hàm private",
+      "Là vùng nhớ Stack lưu trữ các biến cục bộ của hàm main",
+      "Là cơ chế chỉ áp dụng cho các phương thức tĩnh (static methods)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi một class được load, JVM tạo ra một vtable cho class đó chứa địa chỉ của tất cả các virtual methods (instance methods có thể override). Khi gọi invokevirtual, JVM dùng offset cố định trong vtable của đối tượng runtime thực tế để nhảy đến mã thực thi, giúp thực hiện đa hình động cực nhanh O(1).",
+    "difficulty": "hard",
+    "tags": [
+      "vtable",
+      "DynamicDispatch",
+      "JVMInternals"
+    ]
+  },
+  {
+    "id": "L3_Q62",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định output của đoạn mã Static Method Hiding sau:",
+    "code": "class Writer {\n    public static void write() {\n        System.out.print(\"Writing...\");\n    }\n}\nclass Author extends Writer {\n    public static void write() {\n        System.out.print(\"Authoring...\");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Writer w = new Author();\n        w.write();\n        ((Author) w).write();\n    }\n}",
+    "options": [
+      "Writing...Authoring...",
+      "Authoring...Authoring...",
+      "Writing...Writing...",
+      "Authoring...Writing..."
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức static không được ghi đè mà bị che giấu (method hiding). Việc gọi phương thức static qua tham chiếu biến phụ thuộc vào KIỂU CỦA BIẾN THAM CHIẾU: 1. Biến w có kiểu Writer nên w.write() gọi Writer.write() in 'Writing...'. 2. Biến ép kiểu ((Author) w) có kiểu Author nên gọi Author.write() in 'Authoring...'.",
+    "difficulty": "medium",
+    "tags": [
+      "StaticHiding",
+      "StaticMethod",
+      "Binding"
+    ]
+  },
+  {
+    "id": "L3_Q63",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Những nhận định nào sau đây về cơ chế Ép kiểu đối tượng (Reference Type Casting) trong Java là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Upcasting (ép kiểu lên lớp cha) luôn an toàn và được JVM thực hiện tự động ngầm định",
+      "Downcasting (ép kiểu xuống lớp con) bắt buộc phải viết cú pháp ép kiểu tường minh và tiềm ẩn nguy cơ ném ngoại lệ ClassCastException tại runtime",
+      "Trình biên dịch chỉ cho phép ép kiểu giữa hai kiểu tham chiếu nếu chúng thuộc cùng một cây phân cấp kế thừa",
+      "Ép kiểu trong Java làm thay đổi kiểu thực tế của đối tượng nằm trong vùng nhớ Heap"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Ép kiểu chỉ thay đổi góc nhìn (kiểu tham chiếu) của biến trỏ tới đối tượng, hoàn toàn KHÔNG THAY ĐỔI kiểu đối tượng thực sự trong Heap (đối tượng sinh ra bằng 'new X()' thì bản chất mãi mãi là X). 3 ý kiến đầu đều hoàn toàn chính xác theo đặc tả Java.",
+    "difficulty": "medium",
+    "tags": [
+      "Casting",
+      "Upcasting",
+      "Downcasting"
+    ]
+  },
+  {
+    "id": "L3_Q64",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra khi chạy đoạn mã Downcasting sai đối tượng sau?",
+    "code": "class Animal {}\nclass Dog extends Animal {}\nclass Cat extends Animal {}\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        Cat c = (Cat) a;\n    }\n}",
+    "options": [
+      "Biên dịch thành công nhưng ném ngoại lệ ClassCastException tại thời điểm runtime",
+      "Lỗi biên dịch ngay tại dòng Cat c = (Cat) a;",
+      "Biến c sẽ nhận giá trị null mà không có lỗi",
+      "Chương trình chạy bình thường không có lỗi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì Animal và Cat cùng nằm trong một cây kế thừa, trình biên dịch cho phép phép ép kiểu (Cat) a qua cửa compile-time. Tuy nhiên, tại runtime, JVM kiểm tra thấy đối tượng thực tế trong Heap là Dog, không thể chuyển thành Cat, do đó ném ngoại lệ java.lang.ClassCastException.",
+    "difficulty": "easy",
+    "tags": [
+      "ClassCastException",
+      "Downcasting",
+      "RuntimeError"
+    ]
+  },
+  {
+    "id": "L3_Q65",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra khi cố gắng ép kiểu giữa hai lớp không có quan hệ kế thừa:",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        String str = \"Hello\";\n        Integer num = (Integer) str;\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Cannot cast 'java.lang.String' to 'java.lang.Integer'",
+      "Ném ClassCastException khi chạy",
+      "Biến num nhận giá trị null",
+      "Chuyển đổi chuỗi thành số nguyên 0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "String và Integer không cùng một nhánh kế thừa (String không kế thừa Integer và ngược lại, cả hai đều là lớp con trực tiếp của Object và đều là final). Trình biên dịch Java phát hiện điều này và báo lỗi biên dịch ngay lập tức (Inconvertible types).",
+    "difficulty": "easy",
+    "tags": [
+      "CompileError",
+      "Casting",
+      "TypeHierarchy"
+    ]
+  },
+  {
+    "id": "L3_Q66",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Cho phân cấp: Grandparent -> Parent -> Child. Với khai báo: Parent p = new Child(); Những biểu thức ép kiểu nào sau đây là HỢP LỆ và KHÔNG gây lỗi ClassCastException khi chạy?",
+    "code": null,
+    "options": [
+      "Grandparent gp = (Grandparent) p;",
+      "Child c = (Child) p;",
+      "Object obj = (Object) p;",
+      "String s = (String) p;"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Đối tượng thực tế trong Heap là Child. 1. Upcast lên Grandparent: an toàn. 2. Downcast xuống Child: an toàn vì đối tượng thực sự là Child. 3. Upcast lên Object: luôn an toàn. 4. Ép kiểu sang String: gây lỗi biên dịch ngay lập tức vì không cùng phân cấp.",
+    "difficulty": "medium",
+    "tags": [
+      "Casting",
+      "Hierarchy",
+      "Upcasting"
+    ]
+  },
+  {
+    "id": "L3_Q67",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định kết quả của biểu thức 'null instanceof AnyClass' trong Java:",
+    "code": "String s = null;\nSystem.out.println(s instanceof String);",
+    "options": [
+      "false",
+      "true",
+      "Ném NullPointerException",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo đặc tả JLS, toán tử instanceof luôn trả về false nếu toán hạng bên trái có giá trị là null, bất kể kiểu kiểm tra bên phải là lớp hay interface nào, và không bao giờ ném NullPointerException.",
+    "difficulty": "easy",
+    "tags": [
+      "Instanceof",
+      "Null",
+      "Safety"
+    ]
+  },
+  {
+    "id": "L3_Q68",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Toán tử 'instanceof' trong Java trả về 'true' khi biểu thức kiểm tra 'obj instanceof TargetType' thỏa mãn những điều kiện nào sau đây?",
+    "code": null,
+    "options": [
+      "obj khác null",
+      "Đối tượng thực tế trong Heap là thể hiện của lớp TargetType hoặc bất kỳ lớp con nào của TargetType",
+      "TargetType là một Interface và lớp của obj có thực thi interface đó (hoặc kế thừa lớp thực thi interface đó)",
+      "Chỉ cần biến tham chiếu obj được khai báo với kiểu TargetType ở compile-time"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "instanceof kiểm tra kiểu thực tế của đối tượng tại runtime. Nó trả về true nếu obj khác null và đối tượng là instance của TargetType hoặc con/thực thi của TargetType. Nó không phụ thuộc vào kiểu khai báo compile-time của biến.",
+    "difficulty": "medium",
+    "tags": [
+      "Instanceof",
+      "RuntimeCheck",
+      "TypeRules"
+    ]
+  },
+  {
+    "id": "L3_Q69",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Từ Java 16, tính năng 'Pattern Matching for instanceof' cho phép viết code như sau. Lợi ích lớn nhất là gì?",
+    "code": "if (obj instanceof String s) {\n    System.out.println(s.length());\n}",
+    "options": [
+      "Tự động khai báo biến 's' và ép kiểu sang String an toàn nếu điều kiện đúng, loại bỏ hoàn toàn dòng ép kiểu thủ công '(String) obj'",
+      "Làm cho toán tử instanceof có thể kiểm tra được cả các kiểu dữ liệu nguyên thủy như int, double",
+      "Cho phép biến 's' tồn tại và sử dụng ở toàn bộ phạm vi bên ngoài câu lệnh if",
+      "Chuyển đổi kiểu dữ liệu của biến obj từ Object sang String vĩnh viễn"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Pattern matching for instanceof kết hợp kiểm tra kiểu và ép kiểu trong một câu lệnh duy nhất. Nếu obj là String, biến 's' được tự động khởi tạo với kiểu String trong phạm vi của khối if, giúp code ngắn gọn, rõ ràng và tránh lỗi ép kiểu.",
+    "difficulty": "easy",
+    "tags": [
+      "PatternMatching",
+      "ModernJava",
+      "CleanCode"
+    ]
+  },
+  {
+    "id": "L3_Q70",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xem xét đoạn mã sau với Interface và Downcasting. Điều gì xảy ra khi chạy?",
+    "code": "import java.io.Serializable;\nimport java.util.*;\npublic class InterfaceCastTest {\n    public static void main(String[] args) {\n        List<String> list = new ArrayList<>();\n        Serializable s = (Serializable) list;\n        System.out.println(\"Success\");\n    }\n}",
+    "options": [
+      "Biên dịch và chạy thành công, in ra: Success (vì ArrayList có implements Serializable)",
+      "Lỗi biên dịch vì List không kế thừa Serializable",
+      "Ném ClassCastException tại runtime",
+      "Lỗi biên dịch vì không thể ép kiểu sang Interface"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, ArrayList có implements Serializable. Mặc dù biến tham chiếu 'list' có kiểu là List (interface này không extends Serializable), nhưng đối tượng thực tế là ArrayList. Trình biên dịch cho phép ép kiểu sang một interface bất kỳ nếu lớp của tham chiếu không phải là final class. Tại runtime, ArrayList thực sự implements Serializable nên phép cast thành công 100%.",
+    "difficulty": "hard",
+    "tags": [
+      "InterfaceCast",
+      "ArrayList",
+      "Serializable"
+    ]
+  },
+  {
+    "id": "L3_Q71",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Việc lạm dụng toán tử 'instanceof' và ép kiểu thủ công Downcasting trong thiết kế phần mềm thường phản ánh vấn đề gì và nên thay thế bằng giải pháp nào?",
+    "code": null,
+    "options": [
+      "Vi phạm nguyên tắc Mở/Đóng (Open/Closed Principle) vì mỗi khi thêm lớp mới, phải sửa đổi chuỗi if-else instanceof",
+      "Nên thay thế bằng tính Đa hình (Polymorphism): định nghĩa phương thức trừu tượng ở lớp cha/interface để mỗi lớp con tự cài đặt hành vi riêng",
+      "Có thể áp dụng mẫu thiết kế Visitor Pattern để mở rộng xử lý trên tập hợp các lớp có phân cấp",
+      "Việc dùng instanceof là phương pháp được khuyến khích hàng đầu trong mọi trường hợp xử lý kế thừa"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Chuỗi 'if (a instanceof Dog) ... else if (a instanceof Cat) ...' là một 'Code Smell' điển hình vi phạm OCP. Khi có thêm lớp mới, toàn bộ khối if-else phải sửa lại. Giải pháp hướng đối tượng chuẩn mực là dùng tính Đa hình hoặc Visitor pattern.",
+    "difficulty": "medium",
+    "tags": [
+      "CodeSmell",
+      "Polymorphism",
+      "Refactoring",
+      "OCP"
+    ]
+  },
+  {
+    "id": "L3_Q72",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Cho phân cấp lớp: Class A, Class B extends A, Class C extends B. Dòng mã nào sau đây gây ra lỗi ném ClassCastException?",
+    "code": "A a = new B();\n// Xet cac dong:\n// D1: B b = (B) a;\n// D2: C c = (C) a;\n// D3: A a2 = (A) a;",
+    "options": [
+      "D2 gây ClassCastException vì đối tượng thực tế là B, không thể ép kiểu xuống lớp con C",
+      "D1 gây ClassCastException",
+      "D3 gây ClassCastException",
+      "Không có dòng nào gây lỗi, cả 3 dòng đều chạy bình thường"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đối tượng trong Heap là thể hiện của lớp B. D1: ép sang B (hợp lệ). D3: ép sang A (upcast, hợp lệ). D2: cố downcast đối tượng B xuống C (trong khi B không phải là instance của C), do đó JVM ném ClassCastException.",
+    "difficulty": "medium",
+    "tags": [
+      "Downcasting",
+      "ClassCastException",
+      "Hierarchy"
+    ]
+  },
+  {
+    "id": "L3_Q73",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Điều gì xảy ra khi cố gắng gọi phương thức private của lớp cha thông qua biến tham chiếu của lớp cha trỏ tới lớp con?",
+    "code": "class Parent {\n    private void secret() {\n        System.out.println(\"Parent Secret\");\n    }\n}\nclass Child extends Parent {\n    public void secret() {\n        System.out.println(\"Child Secret\");\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Parent p = new Child();\n        p.secret(); // DONG NAY\n    }\n}",
+    "options": [
+      "Lỗi biên dịch: Phương thức secret() có mức truy cập private trong Parent nên không thể gọi từ bên ngoài",
+      "In ra: Child Secret (do tính đa hình động)",
+      "In ra: Parent Secret",
+      "Ném ngoại lệ IllegalAccessException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức private trong lớp Parent không được kế thừa và chỉ có thể truy cập nội bộ trong Parent. Khi gọi p.secret() từ class Main, trình biên dịch kiểm tra kiểu của biến p là Parent và thấy phương thức là private, do đó báo lỗi biên dịch ngay tại dòng này. Không có đa hình đối với phương thức private.",
+    "difficulty": "medium",
+    "tags": [
+      "PrivateMethods",
+      "CompileError",
+      "Encapsulation"
+    ]
+  },
+  {
+    "id": "L3_Q74",
+    "lessonId": 3,
+    "type": "multiple",
+    "title": "Những dòng mã nào sau đây thực hiện Upcasting hợp lệ trong Java?",
+    "code": null,
+    "options": [
+      "Object obj = \"Java Programming\";",
+      "Number num = Integer.valueOf(42);",
+      "CharSequence cs = new StringBuilder(\"Test\");",
+      "Integer val = (Integer) new Object();"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Upcasting là gán đối tượng của lớp con cho biến tham chiếu của lớp cha hoặc interface mà nó thực thi: String là Object, Integer là Number, StringBuilder implements CharSequence. Dòng 4 là Downcasting đối tượng Object xuống Integer và sẽ ném ClassCastException tại runtime.",
+    "difficulty": "easy",
+    "tags": [
+      "Upcasting",
+      "Reference",
+      "TypeSafety"
+    ]
+  },
+  {
+    "id": "L3_Q75",
+    "lessonId": 3,
+    "type": "single",
+    "title": "Xác định output của chương trình tổng hợp phân cấp và đa hình sau:",
+    "code": "class Vehicle {\n    String getType() { return \"Vehicle\"; }\n}\nclass Car extends Vehicle {\n    String getType() { return \"Car\"; }\n}\nclass SportsCar extends Car {\n    String getType() { return \"SportsCar\"; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Vehicle v = new SportsCar();\n        Car c = (Car) v;\n        System.out.println(v.getType() + \"-\" + c.getType());\n    }\n}",
+    "options": [
+      "SportsCar-SportsCar",
+      "Vehicle-Car",
+      "Vehicle-SportsCar",
+      "Car-SportsCar"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đối tượng thực sự duy nhất trong Heap là SportsCar. Cả v và c đều đang trỏ tới đối tượng này. Vì phương thức getType() là phương thức ảo được ghi đè, việc gọi phương thức luôn được liên kết động tới cài đặt của đối tượng thực tế trong Heap (SportsCar), bất kể biến tham chiếu là Vehicle hay Car. Do đó cả hai lời gọi đều trả về 'SportsCar', output là 'SportsCar-SportsCar'.",
+    "difficulty": "medium",
+    "tags": [
+      "DynamicBinding",
+      "Polymorphism",
+      "Output"
+    ]
   }
 ]

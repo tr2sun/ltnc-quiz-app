@@ -48,6 +48,50 @@ export const SECTION_PRESETS = [
           "L1_Q29",
           "L1_Q30"
         ]
+      },
+      {
+        "id": "sec-1C",
+        "code": "Đề 1C",
+        "title": "Bài 1 & 2 - Đề 1C (Memory Model, String Pool, Immutability & GC)",
+        "questionIds": [
+          "L1_Q31",
+          "L1_Q32",
+          "L1_Q33",
+          "L1_Q34",
+          "L1_Q35",
+          "L1_Q36",
+          "L1_Q37",
+          "L1_Q38",
+          "L1_Q39",
+          "L1_Q40",
+          "L1_Q41",
+          "L1_Q42",
+          "L1_Q43",
+          "L1_Q44",
+          "L1_Q45"
+        ]
+      },
+      {
+        "id": "sec-1D",
+        "code": "Đề 1D",
+        "title": "Bài 1 & 2 - Đề 1D (Access Modifiers, Overloading & Constructor)",
+        "questionIds": [
+          "L1_Q46",
+          "L1_Q47",
+          "L1_Q48",
+          "L1_Q49",
+          "L1_Q50",
+          "L1_Q51",
+          "L1_Q52",
+          "L1_Q53",
+          "L1_Q54",
+          "L1_Q55",
+          "L1_Q56",
+          "L1_Q57",
+          "L1_Q58",
+          "L1_Q59",
+          "L1_Q60"
+        ]
       }
     ]
   },
@@ -120,6 +164,50 @@ export const SECTION_PRESETS = [
           "L3_Q44",
           "L3_Q45"
         ]
+      },
+      {
+        "id": "sec-3D",
+        "code": "Đề 3D",
+        "title": "Bài 3 - Đề 3D (Covariant Returns, Overriding Exceptions & Super)",
+        "questionIds": [
+          "L3_Q46",
+          "L3_Q47",
+          "L3_Q48",
+          "L3_Q49",
+          "L3_Q50",
+          "L3_Q51",
+          "L3_Q52",
+          "L3_Q53",
+          "L3_Q54",
+          "L3_Q55",
+          "L3_Q56",
+          "L3_Q57",
+          "L3_Q58",
+          "L3_Q59",
+          "L3_Q60"
+        ]
+      },
+      {
+        "id": "sec-3E",
+        "code": "Đề 3E",
+        "title": "Bài 3 - Đề 3E (Dynamic Method Dispatch, Downcasting & Instanceof)",
+        "questionIds": [
+          "L3_Q61",
+          "L3_Q62",
+          "L3_Q63",
+          "L3_Q64",
+          "L3_Q65",
+          "L3_Q66",
+          "L3_Q67",
+          "L3_Q68",
+          "L3_Q69",
+          "L3_Q70",
+          "L3_Q71",
+          "L3_Q72",
+          "L3_Q73",
+          "L3_Q74",
+          "L3_Q75"
+        ]
       }
     ]
   },
@@ -191,6 +279,50 @@ export const SECTION_PRESETS = [
           "L4_Q43",
           "L4_Q44",
           "L4_Q45"
+        ]
+      },
+      {
+        "id": "sec-4D",
+        "code": "Đề 4D",
+        "title": "Bài 4 - Đề 4D (Interface Default/Static/Private Methods & Conflicts)",
+        "questionIds": [
+          "L4_Q46",
+          "L4_Q47",
+          "L4_Q48",
+          "L4_Q49",
+          "L4_Q50",
+          "L4_Q51",
+          "L4_Q52",
+          "L4_Q53",
+          "L4_Q54",
+          "L4_Q55",
+          "L4_Q56",
+          "L4_Q57",
+          "L4_Q58",
+          "L4_Q59",
+          "L4_Q60"
+        ]
+      },
+      {
+        "id": "sec-4E",
+        "code": "Đề 4E",
+        "title": "Bài 4 - Đề 4E (Advanced Generics, PECS & Type Erasure Traps)",
+        "questionIds": [
+          "L4_Q61",
+          "L4_Q62",
+          "L4_Q63",
+          "L4_Q64",
+          "L4_Q65",
+          "L4_Q66",
+          "L4_Q67",
+          "L4_Q68",
+          "L4_Q69",
+          "L4_Q70",
+          "L4_Q71",
+          "L4_Q72",
+          "L4_Q73",
+          "L4_Q74",
+          "L4_Q75"
         ]
       }
     ]

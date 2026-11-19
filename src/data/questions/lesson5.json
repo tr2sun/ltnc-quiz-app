@@ -913,5 +913,663 @@
       "String-Sort",
       "Lexicographical"
     ]
+  },
+  {
+    "id": "L5_Q46",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Theo hợp đồng (Contract) giữa phương thức equals() và hashCode() trong lớp java.lang.Object, khẳng định nào sau đây là BẮT BUỘC?",
+    "code": null,
+    "options": [
+      "Nếu hai đối tượng bằng nhau theo equals() (o1.equals(o2) == true), thì giá trị hashCode() của chúng BẮT BUỘC phải bằng nhau",
+      "Nếu hai đối tượng có hashCode() bằng nhau, thì phép so sánh o1.equals(o2) bắt buộc phải trả về true",
+      "Hai đối tượng khác nhau (o1.equals(o2) == false) bắt buộc phải có giá trị hashCode() khác nhau",
+      "Mỗi lần gọi hashCode() trên cùng một đối tượng trong các lần chạy khác nhau của ứng dụng bắt buộc phải trả về cùng một số nguyên duy nhất"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc cốt lõi của hợp đồng equals-hashCode: Nếu hai đối tượng equals bằng nhau thì hashCode của chúng bắt buộc phải bằng nhau. Ngược lại, hai đối tượng có cùng hashCode có thể không equals nhau (hiện tượng va chạm băm - Hash Collision). Hai đối tượng không equals nhau không bắt buộc phải có hashCode khác nhau.",
+    "difficulty": "medium",
+    "tags": [
+      "equals",
+      "hashCode",
+      "Contract"
+    ]
+  },
+  {
+    "id": "L5_Q47",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Xem xét lớp Person ghi đè equals() nhưng QUÊN ghi đè hashCode(). Đoạn mã sau in ra kết quả gì?",
+    "code": "class Person {\n    String id;\n    Person(String id) { this.id = id; }\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) return true;\n        if (!(o instanceof Person)) return false;\n        return this.id.equals(((Person) o).id);\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Map<Person, String> map = new HashMap<>();\n        map.put(new Person(\"P01\"), \"Alice\");\n        System.out.println(map.get(new Person(\"P01\")));\n    }\n}",
+    "options": [
+      "null",
+      "Alice",
+      "Lỗi biên dịch vì Person chưa cài đặt Comparable",
+      "Ném ngoại lệ NullPointerException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vì không ghi đè hashCode(), lớp Person kế thừa hashCode() mặc định từ Object (dựa trên địa chỉ bộ nhớ). Hai đối tượng 'new Person(\"P01\")' có địa chỉ khác nhau nên hầu như chắc chắn sinh ra hai giá trị hashCode khác nhau và rơi vào hai bucket khác nhau trong HashMap. Do đó map.get() không tìm thấy và trả về null, phá vỡ logic tra cứu của Map.",
+    "difficulty": "hard",
+    "tags": [
+      "HashMap",
+      "hashCode",
+      "EqualsTrap"
+    ]
+  },
+  {
+    "id": "L5_Q48",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Điều gì xảy ra khi bạn thay đổi thuộc tính của một đối tượng Mutable (có thể sửa đổi) sau khi đã thêm nó làm Key vào HashSet hoặc HashMap?",
+    "code": "class Key {\n    int val;\n    Key(int val) { this.val = val; }\n    public boolean equals(Object o) { return o instanceof Key && this.val == ((Key)o).val; }\n    public int hashCode() { return val; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Set<Key> set = new HashSet<>();\n        Key k = new Key(10);\n        set.add(k);\n        k.val = 20; // Sua doi sau khi da them\n        System.out.println(set.contains(new Key(10)) + \" \" + set.contains(k));\n    }\n}",
+    "options": [
+      "false false",
+      "false true",
+      "true true",
+      "true false"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khi add k với val=10, nó được đặt vào bucket tương ứng hashCode 10. Khi sửa k.val = 20, hashCode của k biến thành 20. Khi gọi set.contains(new Key(10)): tìm ở bucket 10, thấy đối tượng tại đó có k.val=20 không equals với 10 -> false. Khi gọi set.contains(k): tìm ở bucket 20, nhưng bucket 20 đang rỗng (đối tượng thực tế vẫn nằm ở bucket 10) -> false! Đối tượng bị kẹt lại và gây rò rỉ bộ nhớ (Memory Leak). Vì vậy Key trong Map/Set luôn phải là Immutable.",
+    "difficulty": "hard",
+    "tags": [
+      "MutableKey",
+      "HashSet",
+      "MemoryLeak"
+    ]
+  },
+  {
+    "id": "L5_Q49",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Về cơ chế Fail-Fast của Iterator trong Java Collections (như ArrayList, HashMap), những khẳng định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Khi một luồng đang duyệt qua Collection bằng Iterator mà Collection đó bị sửa đổi cấu trúc (thêm/xóa phần tử) không thông qua chính phương thức của Iterator, Iterator sẽ ném ConcurrentModificationException ngay lập tức",
+      "Cơ chế Fail-Fast hoạt động dựa trên việc so sánh biến đếm số lần sửa đổi 'modCount' của Collection với 'expectedModCount' của Iterator",
+      "Để xóa phần tử an toàn trong khi duyệt vòng lặp, ta phải dùng phương thức iterator.remove() thay vì list.remove()",
+      "Fail-Fast đảm bảo 100% ngăn chặn hoàn toàn mọi lỗi tương tranh trong môi trường đa luồng mà không cần dùng cơ chế đồng bộ hóa"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Fail-Fast chỉ là cơ chế 'best-effort' phát hiện lỗi sớm qua modCount, không bảo đảm tuyệt đối trong môi trường đa luồng không đồng bộ. Muốn xóa an toàn khi lặp phải dùng iterator.remove().",
+    "difficulty": "medium",
+    "tags": [
+      "FailFast",
+      "Iterator",
+      "ConcurrentModificationException"
+    ]
+  },
+  {
+    "id": "L5_Q50",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Xác định output của đoạn mã sau khi xóa phần tử trong vòng lặp for-each của List:",
+    "code": "List<String> list = new ArrayList<>(Arrays.asList(\"A\", \"B\", \"C\"));\nfor (String s : list) {\n    if (s.equals(\"A\")) {\n        list.remove(s);\n    }\n}",
+    "options": [
+      "Ném ngoại lệ java.util.ConcurrentModificationException khi sang lần lặp kế tiếp",
+      "Chương trình chạy bình thường và danh sách còn lại [\"B\", \"C\"]",
+      "Lỗi biên dịch tại lệnh list.remove(s)",
+      "Vòng lặp chạy vô hạn không dừng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Vòng lặp for-each trong Java ngầm định sử dụng Iterator. Khi gọi list.remove(s) trực tiếp trên List, modCount tăng lên nhưng expectedModCount của Iterator không đổi. Ở lần gọi iterator.next() kế tiếp, sự bất đồng bộ giữa modCount và expectedModCount làm ném ngay java.util.ConcurrentModificationException.",
+    "difficulty": "medium",
+    "tags": [
+      "ForEachTrap",
+      "ConcurrentModificationException",
+      "ArrayList"
+    ]
+  },
+  {
+    "id": "L5_Q51",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Lớp LinkedHashMap có tính năng độc đáo nào so với HashMap thông thường?",
+    "code": null,
+    "options": [
+      "Duy trì một danh sách liên kết kép (doubly-linked list) xuyên qua các entry, cho phép duyệt theo thứ tự chèn (Insertion Order) hoặc theo thứ tự truy cập (Access Order để làm LRU Cache)",
+      "Luôn tự động sắp xếp các phần tử tăng dần theo giá trị của Key giống TreeMap",
+      "Chỉ cho phép lưu trữ tối đa 16 phần tử và không bao giờ xảy ra va chạm băm",
+      "Tự động đồng bộ hóa tất cả các phương thức get() và put() giống như Hashtable"
+    ],
+    "correctAnswer": 0,
+    "explanation": "LinkedHashMap mở rộng từ HashMap và bổ sung danh sách liên kết kép giữa các node. Constructor của nó cho phép bật cờ accessOrder=true: mỗi khi một entry được get() hoặc put(), nó được chuyển về cuối danh sách liên kết, rất lý tưởng để xây dựng bộ nhớ đệm Least Recently Used (LRU Cache) bằng cách override removeEldestEntry().",
+    "difficulty": "medium",
+    "tags": [
+      "LinkedHashMap",
+      "LRUCache",
+      "Collections"
+    ]
+  },
+  {
+    "id": "L5_Q52",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Điều gì xảy ra khi đưa một đối tượng của lớp KHÔNG cài đặt Comparable vào một TreeSet không có Comparator?",
+    "code": "class Item {\n    int price;\n    Item(int p) { this.price = p; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Set<Item> set = new TreeSet<>();\n        set.add(new Item(100));\n    }\n}",
+    "options": [
+      "Ném ngoại lệ java.lang.ClassCastException: Item cannot be cast to java.lang.Comparable khi chạy lệnh add()",
+      "Biên dịch thành công và phần tử được thêm vào bình thường",
+      "Lỗi biên dịch ngay tại dòng 'new TreeSet<>()'",
+      "Tự động sắp xếp theo hashCode của đối tượng Item"
+    ],
+    "correctAnswer": 0,
+    "explanation": "TreeSet hoạt động dựa trên cây đỏ-đen (Red-Black Tree) và bắt buộc các phần tử phải có khả năng so sánh được để xác định vị trí trong cây. Nếu không truyền Comparator vào constructor của TreeSet, khi add() phần tử, nó sẽ ép kiểu sang Comparable. Vì Item không implements Comparable nên ném java.lang.ClassCastException tại runtime.",
+    "difficulty": "easy",
+    "tags": [
+      "TreeSet",
+      "Comparable",
+      "ClassCastException"
+    ]
+  },
+  {
+    "id": "L5_Q53",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "So sánh giữa ConcurrentHashMap và Hashtable trong Java, những khẳng định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Hashtable khóa toàn bộ bảng (khóa toàn phần trên chính đối tượng Hashtable) cho mọi thao tác đọc/ghi, gây nút thắt cổ chai về hiệu năng khi nhiều luồng truy cập",
+      "ConcurrentHashMap sử dụng kỹ thuật khóa phân đoạn (Segment Locking / Lock striping) hoặc CAS (Compare-And-Swap) kết hợp synchronized trên từng bucket riêng lẻ, cho phép nhiều luồng đọc/ghi đồng thời",
+      "ConcurrentHashMap không cho phép lưu trữ null cho cả Key và Value",
+      "Hashtable cho phép Key là null nhưng cấm Value là null"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1 và 2 mô tả chính xác sự khác biệt về cơ chế concurrency: Hashtable khóa toàn bộ, ConcurrentHashMap khóa theo từng bucket/node. 3 đúng: ConcurrentHashMap cấm hoàn toàn null key và null value để tránh nhập nhằng trong môi trường đa luồng. 4 sai: Hashtable cấm cả null key và null value.",
+    "difficulty": "hard",
+    "tags": [
+      "ConcurrentHashMap",
+      "Hashtable",
+      "Concurrency"
+    ]
+  },
+  {
+    "id": "L5_Q54",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Xác định output của đoạn mã sau sử dụng IdentityHashMap:",
+    "code": "Map<String, String> map = new IdentityHashMap<>();\nString s1 = new String(\"key\");\nString s2 = new String(\"key\");\nmap.put(s1, \"Value 1\");\nmap.put(s2, \"Value 2\");\nSystem.out.println(map.size());",
+    "options": [
+      "2",
+      "1",
+      "Lỗi biên dịch",
+      "Ném ngoại lệ DuplicateKeyException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khác với HashMap thông thường so sánh key bằng phương thức equals(), IdentityHashMap so sánh key bằng TOÁN TỬ SO SÁNH THAM CHIẾU '==' (Reference Equality). Vì s1 và s2 là 2 đối tượng String độc lập trong Heap (s1 == s2 là false), chúng được coi là 2 key khác nhau hoàn toàn trong IdentityHashMap, do đó map.size() bằng 2.",
+    "difficulty": "hard",
+    "tags": [
+      "IdentityHashMap",
+      "ReferenceEquality",
+      "Map"
+    ]
+  },
+  {
+    "id": "L5_Q55",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Những Collection nào sau đây trong gói java.util là cấu trúc dữ liệu duy trì thứ tự chèn (Insertion Order) của các phần tử?",
+    "code": null,
+    "options": [
+      "ArrayList",
+      "LinkedList",
+      "LinkedHashSet",
+      "TreeSet"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "ArrayList, LinkedList và LinkedHashSet đều duy trì thứ tự chèn (phần tử thêm trước đứng trước, thêm sau đứng sau). TreeSet không duy trì thứ tự chèn mà sắp xếp các phần tử theo thứ tự tự nhiên (Natural Order) hoặc theo Comparator.",
+    "difficulty": "easy",
+    "tags": [
+      "InsertionOrder",
+      "Collections",
+      "Set"
+    ]
+  },
+  {
+    "id": "L5_Q56",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Lớp CopyOnWriteArrayList giải quyết bài toán lặp đa luồng theo cơ chế nào?",
+    "code": null,
+    "options": [
+      "Mỗi khi có thao tác sửa đổi (add, set, remove), nó tạo ra một bản sao mới (cloned copy) của toàn bộ mảng bên dưới, các Iterator đang duyệt tiếp tục duyệt trên bản chụp (snapshot) cũ mà không bị ConcurrentModificationException",
+      "Khóa toàn bộ danh sách bằng từ khóa synchronized mỗi khi đọc phần tử",
+      "Chuyển đổi danh sách thành mảng nguyên thủy tại thời điểm compile-time",
+      "Tự động loại bỏ các phần tử trùng lặp khi có nhiều luồng cùng ghi"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đúng như tên gọi 'Copy-On-Write', mỗi thao tác ghi (write/modify) sẽ nhân bản một mảng mới. Iterator được tạo ra tại một thời điểm chỉ duyệt trên bản chụp (snapshot) không đổi của mảng tại thời điểm đó, nên không bao giờ ném ConcurrentModificationException và các luồng đọc không cần lock, rất thích hợp khi số lần đọc áp đảo số lần ghi.",
+    "difficulty": "medium",
+    "tags": [
+      "CopyOnWriteArrayList",
+      "Snapshot",
+      "ThreadSafeCollections"
+    ]
+  },
+  {
+    "id": "L5_Q57",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Cho đoạn mã sau với PriorityQueue. Output khi lấy lần lượt các phần tử ra là gì?",
+    "code": "Queue<Integer> pq = new PriorityQueue<>();\npq.offer(30);\npq.offer(10);\npq.offer(20);\nwhile (!pq.isEmpty()) {\n    System.out.print(pq.poll() + \" \");\n}",
+    "options": [
+      "10 20 30 ",
+      "30 10 20 ",
+      "30 20 10 ",
+      "10 30 20 "
+    ],
+    "correctAnswer": 0,
+    "explanation": "PriorityQueue trong Java mặc định là một Min-Heap (phần tử nhỏ nhất có độ ưu tiên cao nhất). Mỗi lần gọi pq.poll(), nó luôn lấy ra phần tử nhỏ nhất hiện có. Do đó thứ tự lấy ra là 10 20 30.",
+    "difficulty": "easy",
+    "tags": [
+      "PriorityQueue",
+      "MinHeap",
+      "Queue"
+    ]
+  },
+  {
+    "id": "L5_Q58",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Trong HashMap của Java 8, khi số lượng phần tử trong một bucket (thùng) vượt quá ngưỡng TREEIFY_THRESHOLD (mặc định là 8) và dung lượng mảng đạt tối thiểu 64, danh sách liên kết đơn trong bucket đó được chuyển đổi thành cấu trúc gì?",
+    "code": null,
+    "options": [
+      "Cây Đỏ-Đen (Red-Black Tree) giúp cải thiện độ phức tạp tìm kiếm trong bucket từ O(n) thành O(log n)",
+      "Cây nhị phân tìm kiếm thông thường (BST) không cân bằng",
+      "Mảng động ArrayList",
+      "Bảng băm lồng nhau (Nested HashTable)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ Java 8, nhằm chống lại các cuộc tấn công từ chối dịch vụ (Hash DoS attack) do cố tình tạo va chạm băm, khi số phần tử trong 1 bucket >= 8 và tổng capacity >= 64, LinkedList đơn sẽ biến thành Red-Black Tree (TreeNode), giảm thời gian tra cứu từ O(n) xuống O(log n).",
+    "difficulty": "medium",
+    "tags": [
+      "HashMapInternals",
+      "RedBlackTree",
+      "Java8Optimization"
+    ]
+  },
+  {
+    "id": "L5_Q59",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Để đảm bảo an toàn tuyệt đối khi sử dụng đối tượng làm Key trong HashMap, các thuộc tính cấu thành hashCode() và equals() nên được thiết kế như thế nào?",
+    "code": null,
+    "options": [
+      "Nên thiết kế lớp của Key là Immutable (các trường là private final và không có setter)",
+      "Không bao giờ thay đổi trạng thái của đối tượng Key sau khi đã đưa vào Map",
+      "Chỉ nên sử dụng các kiểu dữ liệu đã được chứng minh bất biến như String, Integer, UUID làm Key",
+      "Nên cho các trường của Key là public để HashMap có thể sửa đổi trực tiếp"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Nếu Key bị thay đổi sau khi put vào Map, hashCode sẽ thay đổi và entry sẽ bị thất lạc vĩnh viễn (không thể get ra được). Do đó, Key bất biến (Immutable) như String, Integer hoặc lớp tự viết có trường private final là best practice hàng đầu.",
+    "difficulty": "easy",
+    "tags": [
+      "HashMapBestPractice",
+      "ImmutableKey",
+      "Design"
+    ]
+  },
+  {
+    "id": "L5_Q60",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Xác định output của đoạn mã so sánh hai danh sách sau:",
+    "code": "List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));\nList<Integer> list2 = new LinkedList<>(Arrays.asList(1, 2, 3));\nSystem.out.println(list1.equals(list2));",
+    "options": [
+      "true (theo đặc tả List.equals(), hai List bằng nhau nếu cùng kích thước và các phần tử tại từng vị trí tương ứng equals bằng nhau, không phụ thuộc vào lớp triển khai cụ thể)",
+      "false (vì ArrayList và LinkedList là hai lớp triển khai khác nhau)",
+      "Lỗi biên dịch tại phép so sánh",
+      "Ném ClassCastException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hợp đồng List.equals() trong Java quy định: hai danh sách được coi là bằng nhau nếu chúng chứa cùng số phần tử và các phần tử tương ứng ở từng chỉ số đều bằng nhau (e1 == null ? e2 == null : e1.equals(e2)). Việc một bên là ArrayList và bên kia là LinkedList không ảnh hưởng đến kết quả, kết quả in ra true.",
+    "difficulty": "medium",
+    "tags": [
+      "ListEquals",
+      "CollectionsContract",
+      "ArrayListVsLinkedList"
+    ]
+  },
+  {
+    "id": "L5_Q61",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Hiện tượng 'Exception Masking' (Nuốt ngoại lệ) xảy ra trong trường hợp nào sau đây?",
+    "code": "public class MaskingTest {\n    static int test() {\n        try {\n            throw new RuntimeException(\"Lỗi từ try\");\n        } finally {\n            return 42; // Lệnh return trong finally\n        }\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "options": [
+      "In ra: 42 (RuntimeException bị khối finally nuốt trọn và biến mất hoàn toàn)",
+      "Ném ngoại lệ RuntimeException: Lỗi từ try",
+      "Lỗi biên dịch vì không thể return trong khối finally",
+      "In ra 42 sau đó ném RuntimeException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lệnh 'return' hoặc ném ngoại lệ mới bên trong khối 'finally' sẽ ghi đè và hủy bỏ hoàn toàn bất kỳ ngoại lệ nào chưa được xử lý phát sinh từ khối 'try' hoặc 'catch'. Đây là một 'anti-pattern' rất nguy hiểm trong Java vì nó làm mất dấu vết lỗi nghiêm trọng.",
+    "difficulty": "hard",
+    "tags": [
+      "ExceptionMasking",
+      "FinallyReturn",
+      "Trap"
+    ]
+  },
+  {
+    "id": "L5_Q62",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Trong cấu trúc try-with-resources, thứ tự đóng các tài nguyên (AutoCloseable resources) diễn ra như thế nào?",
+    "code": "class Res implements AutoCloseable {\n    String name;\n    Res(String name) { this.name = name; }\n    public void close() { System.out.print(name + \" \"); }\n}\npublic class Main {\n    public static void main(String[] args) {\n        try (Res r1 = new Res(\"R1\"); Res r2 = new Res(\"R2\")) {\n            System.out.print(\"WORK \");\n        }\n    }\n}",
+    "options": [
+      "WORK R2 R1 ",
+      "WORK R1 R2 ",
+      "R1 R2 WORK ",
+      "R2 R1 WORK "
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong khối try-with-resources, các tài nguyên được khởi tạo theo thứ tự từ trái sang phải (R1 rồi đến R2), nhưng KHI ĐÓNG TÀI NGUYÊN (close()), CHÚNG ĐƯỢC ĐÓNG THEO THỨ TỰ NGƯỢC LẠI (Reverse Order: R2 đóng trước, sau đó mới đến R1). Điều này tương tự như cơ chế giải phóng stack và đóng luồng bọc ngoài trước luồng bên trong.",
+    "difficulty": "medium",
+    "tags": [
+      "TryWithResources",
+      "AutoCloseable",
+      "CloseOrder"
+    ]
+  },
+  {
+    "id": "L5_Q63",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Khi khối try ném ngoại lệ Ex1, và phương thức close() của tài nguyên trong try-with-resources cũng ném ngoại lệ Ex2, JVM xử lý hai ngoại lệ này như thế nào?",
+    "code": null,
+    "options": [
+      "Ex1 (ngoại lệ ban đầu trong try) được ném ra ngoài làm ngoại lệ chính, còn Ex2 được gắn kèm vào Ex1 dưới dạng một Ngoại lệ bị ức chế (Suppressed Exception) và có thể lấy qua phương thức ex1.getSuppressed()",
+      "Ex2 ghi đè hoàn toàn Ex1 giống như trong khối finally thông thường",
+      "JVM ném ngoại lệ kép DoubleException",
+      "Cả hai ngoại lệ đều bị hủy và chương trình dừng đột ngột"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đây là cải tiến vượt trội của try-with-resources (Java 7) so với try-finally truyền thống. Thay vì để ngoại lệ ở close() nuốt mất ngoại lệ gốc trong try, JVM bảo toàn ngoại lệ gốc và gắn ngoại lệ sinh ra lúc đóng tài nguyên vào danh sách 'Suppressed Exceptions' (truy xuất qua Throwable.getSuppressed()).",
+    "difficulty": "hard",
+    "tags": [
+      "SuppressedExceptions",
+      "TryWithResources",
+      "JVM"
+    ]
+  },
+  {
+    "id": "L5_Q64",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Điều gì xảy ra khi sắp xếp sai thứ tự các khối catch ngoại lệ:",
+    "code": "try {\n    int x = 10 / 0;\n} catch (Exception e) {\n    System.out.println(\"Exception\");\n} catch (ArithmeticException e) {\n    System.out.println(\"Arithmetic\");\n}",
+    "options": [
+      "Lỗi biên dịch: Unreachable catch block for ArithmeticException (khối catch con không thể với tới vì đã bị bắt bởi Exception)",
+      "Biên dịch thành công và in ra: Arithmetic",
+      "Biên dịch thành công và in ra: Exception",
+      "Cả hai khối catch đều được thực thi lần lượt"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, các khối catch được đánh giá tuần tự từ trên xuống dưới. Nếu một khối catch cha (Exception) đứng trước khối catch con (ArithmeticException), khối catch con sẽ trở thành 'mã chết' (unreachable code) vì mọi ngoại lệ con đều đã bị cha tóm trước. Trình biên dịch báo lỗi ngay tại thời điểm biên dịch.",
+    "difficulty": "easy",
+    "tags": [
+      "CatchOrder",
+      "CompileError",
+      "UnreachableCode"
+    ]
+  },
+  {
+    "id": "L5_Q65",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Về tính năng Multi-Catch Block (cho phép bắt nhiều loại ngoại lệ trong một khối catch duy nhất, ví dụ: catch (IOException | SQLException e)), những phát biểu nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Biến tham chiếu ngoại lệ 'e' trong khối multi-catch ngầm định là 'final', không thể gán lại giá trị mới cho 'e'",
+      "Không được phép khai báo các ngoại lệ có quan hệ cha-con kế thừa trong cùng một mệnh đề multi-catch (ví dụ: catch (IOException | FileNotFoundException e) gây lỗi biên dịch)",
+      "Giúp giảm bớt việc lặp mã nguồn (boilerplate code) khi nhiều ngoại lệ có cùng một logic xử lý lỗi",
+      "Mỗi khối multi-catch có thể bắt tối đa đúng 2 loại ngoại lệ"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1 đúng: e là implicitly final. 2 đúng: nếu có quan hệ cha con thì dư thừa và compiler báo lỗi. 3 đúng: đây là mục đích chính của tính năng đưa vào từ Java 7. 4 sai: có thể nối bao nhiêu ngoại lệ tùy ý bằng dấu gạch đứng '|'.",
+    "difficulty": "medium",
+    "tags": [
+      "MultiCatch",
+      "Java7",
+      "ExceptionRules"
+    ]
+  },
+  {
+    "id": "L5_Q66",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Vai trò của thuộc tính 'private static final long serialVersionUID' trong một lớp implements Serializable là gì?",
+    "code": null,
+    "options": [
+      "Đóng vai trò là mã định danh phiên bản của lớp trong quá trình tuần tự hóa và giải tuần tự hóa; nếu mã nguồn thay đổi làm lệch serialVersionUID, JVM sẽ ném InvalidClassException để bảo vệ tính toàn vẹn dữ liệu",
+      "Xác định kích thước tối đa của file nhị phân được ghi ra đĩa",
+      "Bắt buộc JVM phải mã hóa dữ liệu đối tượng bằng thuật toán AES",
+      "Dùng để đánh số thứ tự số lượng đối tượng đã được tạo trong bộ nhớ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "serialVersionUID là con số định danh phiên bản của cấu trúc class khi ghi và đọc stream. Nếu bạn không khai báo tường minh, JVM tự động tính toán băm theo cấu trúc class. Khi sửa đổi class (thêm field, đổi method), giá trị tự tính thay đổi, dẫn đến khi đọc lại dữ liệu cũ sẽ bị ném java.io.InvalidClassException.",
+    "difficulty": "medium",
+    "tags": [
+      "serialVersionUID",
+      "Serialization",
+      "Compatibility"
+    ]
+  },
+  {
+    "id": "L5_Q67",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Khi một đối tượng được tuần tự hóa (Serialization), từ khóa 'transient' đặt trước một trường dữ liệu (field) có tác dụng gì?",
+    "code": "class Account implements Serializable {\n    String username;\n    transient String password;\n}",
+    "options": [
+      "Yêu cầu JVM bỏ qua trường đó, không ghi giá trị của nó vào luồng tuần tự hóa; khi giải tuần tự hóa (deserialization), trường đó sẽ mang giá trị mặc định (null với đối tượng, 0 với số)",
+      "Mã hóa trường đó bằng mật khẩu trước khi ghi ra file",
+      "Biến trường đó thành biến tĩnh (static)",
+      "Tự động chuyển đổi chuỗi thành mảng byte"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ khóa 'transient' dùng để đánh dấu các trường nhạy cảm (như password, credit card) hoặc dữ liệu tạm thời không cần lưu trữ trạng thái. Khi deserialization, trường transient không được khôi phục từ stream mà nhận giá trị mặc định của kiểu dữ liệu (null, 0, false).",
+    "difficulty": "easy",
+    "tags": [
+      "Transient",
+      "Serialization",
+      "Security"
+    ]
+  },
+  {
+    "id": "L5_Q68",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Những thành phần nào sau đây trong một class KHÔNG BAO GIỜ được lưu trữ vào luồng dữ liệu khi thực hiện Java Serialization tiêu chuẩn?",
+    "code": null,
+    "options": [
+      "Các trường được khai báo với từ khóa 'static' (vì biến static thuộc về Class chứ không thuộc về trạng thái của đối tượng)",
+      "Các trường được khai báo với từ khóa 'transient'",
+      "Các phương thức của lớp (chỉ có dữ liệu trạng thái được tuần tự hóa, mã bytecode của phương thức không được ghi vào file stream)",
+      "Tất cả các trường kiểu String"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Serialization chỉ ghi lại TRẠNG THÁI (state) của đối tượng cụ thể (các instance fields non-transient). Các trường static (thuộc về class), trường transient (bị đánh dấu bỏ qua) và code phương thức không nằm trong luồng tuần tự hóa. Trường String nếu không transient vẫn được tuần tự hóa bình thường.",
+    "difficulty": "medium",
+    "tags": [
+      "SerializationRules",
+      "Static",
+      "Transient"
+    ]
+  },
+  {
+    "id": "L5_Q69",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Điều gì xảy ra khi lớp con thực thi Serializable nhưng lớp cha KHÔNG thực thi Serializable?",
+    "code": "class Parent {\n    int parentVal = 10;\n    Parent() { System.out.print(\"ParentCons \"); }\n}\nclass Child extends Parent implements Serializable {\n    int childVal = 20;\n    Child() { System.out.print(\"ChildCons \"); }\n}",
+    "options": [
+      "Lớp con vẫn tuần tự hóa bình thường, nhưng khi giải tuần tự hóa (Deserialization), constructor không tham số của lớp cha (Parent()) BẮT BUỘC phải được gọi để khởi tạo lại các trường của cha",
+      "Lỗi biên dịch ngay tại dòng khai báo class Child",
+      "Ném ngoại lệ NotSerializableException ngay khi chạy lệnh serialize",
+      "Toàn bộ các trường của lớp cha tự động biến mất và không thể truy cập được"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nếu lớp con Serializable kế thừa lớp cha Non-Serializable: Khi deserialization, JVM không khôi phục trường của cha từ stream mà bắt buộc phải gọi Constructor không tham số của lớp cha đầu tiên không Serializable để khởi tạo trạng thái của cha. Nếu lớp cha không có no-arg constructor, JVM sẽ ném InvalidClassException tại runtime.",
+    "difficulty": "hard",
+    "tags": [
+      "SerializationInheritance",
+      "ConstructorInDeserialization",
+      "JVM"
+    ]
+  },
+  {
+    "id": "L5_Q70",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Sự khác biệt căn bản giữa interface 'Serializable' và 'Externalizable' trong Java là gì?",
+    "code": null,
+    "options": [
+      "Serializable là Marker Interface (không có phương thức nào, JVM tự động thực hiện hoàn toàn); còn Externalizable có 2 phương thức writeExternal() và readExternal() bắt buộc lập trình viên phải tự viết mã lưu/đọc từng trường thủ công",
+      "Externalizable chỉ dùng cho mạng Socket, Serializable dùng cho file đĩa",
+      "Serializable nhanh hơn Externalizable gấp 10 lần",
+      "Externalizable không cho phép sử dụng constructor không tham số"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Serializable là marker interface rỗng, JVM dùng reflection tự động ghi đọc toàn bộ đồ thị đối tượng (chậm hơn và sinh file lớn hơn). Externalizable kế thừa từ Serializable, cung cấp writeExternal và readExternal trao toàn quyền kiểm soát cấu trúc nhị phân cho lập trình viên (nhanh hơn, nhỏ gọn hơn, nhưng đòi hỏi phải có public no-arg constructor).",
+    "difficulty": "medium",
+    "tags": [
+      "Externalizable",
+      "Serializable",
+      "Comparison"
+    ]
+  },
+  {
+    "id": "L5_Q71",
+    "lessonId": 5,
+    "type": "multiple",
+    "title": "Để tùy biến sâu quá trình tuần tự hóa của một lớp implements Serializable mà không cần dùng Externalizable, lớp đó có thể khai báo những phương thức private đặc biệt nào?",
+    "code": null,
+    "options": [
+      "private void writeObject(ObjectOutputStream out) throws IOException",
+      "private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException",
+      "private Object readResolve() throws ObjectStreamException (dùng để bảo toàn tính duy nhất của Singleton)",
+      "public void serializeToDisk(File file)"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "JVM hỗ trợ cơ chế hook đặc biệt: nếu lớp có khai báo private writeObject() và readObject(), JVM sẽ gọi chúng qua reflection để tùy biến ghi/đọc dữ liệu. Phương thức readResolve() cực kỳ quan trọng để ngăn chặn deserialization tạo ra thể hiện mới phá vỡ mẫu thiết kế Singleton.",
+    "difficulty": "hard",
+    "tags": [
+      "CustomSerialization",
+      "ReadResolve",
+      "SingletonSafety"
+    ]
+  },
+  {
+    "id": "L5_Q72",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Lớp ByteArrayInputStream và ByteArrayOutputStream khác biệt căn bản với FileInputStream và FileOutputStream ở điểm nào?",
+    "code": null,
+    "options": [
+      "ByteArrayInputStream đọc và ghi dữ liệu trực tiếp trên mảng byte trong bộ nhớ RAM, không phát sinh thao tác I/O trên đĩa cứng hệ điều hành",
+      "ByteArrayInputStream chỉ đọc được các ký tự tiếng Việt Unicode",
+      "FileInputStream không thể đóng bằng lệnh close()",
+      "ByteArrayOutputStream tự động mã hóa dữ liệu thành chuỗi Base64"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ByteArrayInputStream / ByteArrayOutputStream hoạt động hoàn toàn trên bộ nhớ RAM (bộ đệm byte buffer), tốc độ cực nhanh vì không truy cập thiết bị I/O vật lý của hệ điều hành. Việc gọi close() trên ByteArray stream thực tế không có tác dụng và phương thức của nó vẫn có thể gọi tiếp sau khi close().",
+    "difficulty": "medium",
+    "tags": [
+      "ByteStreams",
+      "MemoryIO",
+      "ByteArrayInputStream"
+    ]
+  },
+  {
+    "id": "L5_Q73",
+    "lessonId": 5,
+    "type": "single",
+    "title": "So sánh giữa Luồng Byte (Byte Streams - InputStream/OutputStream) và Luồng Ký tự (Character Streams - Reader/Writer):",
+    "code": null,
+    "options": [
+      "Byte Stream xử lý dữ liệu thô nhị phân theo từng byte 8-bit (phù hợp cho file ảnh, video, âm thanh); Character Stream xử lý văn bản theo từng ký tự 16-bit Unicode và tự động chuyển đổi bảng mã (charset)",
+      "Byte Stream chỉ đọc được số nguyên, Character Stream chỉ đọc được chuỗi rỗng",
+      "Character Stream không thể đọc dữ liệu từ bàn phím",
+      "Byte Stream tự động nhận diện định dạng UTF-8"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Byte Streams (InputStream, OutputStream) xử lý dữ liệu nhị phân nguyên thủy 8-bit. Character Streams (Reader, Writer) được thiết kế từ Java 1.1 chuyên xử lý văn bản 16-bit Unicode, tự động ánh xạ giữa bảng mã nhị phân của OS và ký tự Java qua các lớp cầu nối như InputStreamReader.",
+    "difficulty": "easy",
+    "tags": [
+      "ByteStreams",
+      "CharacterStreams",
+      "IOStream"
+    ]
+  },
+  {
+    "id": "L5_Q74",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Mục đích của việc bọc BufferedReader xung quanh một FileReader (ví dụ: new BufferedReader(new FileReader(\"data.txt\"))) là gì?",
+    "code": null,
+    "options": [
+      "Tạo một vùng đệm bộ nhớ (Buffer) để giảm bớt số lần truy xuất I/O đĩa cứng vật lý và cung cấp phương thức tiện ích readLine() để đọc từng dòng văn bản",
+      "Để mã hóa file văn bản chống xem trộm",
+      "Để tự động đảo ngược thứ tự các từ trong file",
+      "FileReader không thể hoạt động nếu không có BufferedReader bao quanh"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đọc từng ký tự trực tiếp từ đĩa bằng FileReader rất tốn kém tài nguyên CPU và I/O đĩa. BufferedReader đọc một khối lớn dữ liệu vào bộ đệm RAM (mặc định 8KB), giúp tăng tốc độ đọc lên hàng chục lần và hỗ trợ phương thức readLine() đọc theo dòng.",
+    "difficulty": "easy",
+    "tags": [
+      "BufferedReader",
+      "Decorator",
+      "Performance"
+    ]
+  },
+  {
+    "id": "L5_Q75",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Xác định output của đoạn mã xử lý ngoại lệ phức tạp sau:",
+    "code": "public class ExceptionFlow {\n    static String test() {\n        String res = \"\";\n        try {\n            res += \"T\";\n            int x = 1 / 0;\n            res += \"X\";\n        } catch (ArithmeticException e) {\n            res += \"C\";\n            return res;\n        } finally {\n            res += \"F\";\n        }\n        return res;\n    }\n    public static void main(String[] args) {\n        System.out.println(test());\n    }\n}",
+    "options": [
+      "TC (khối finally chạy nhưng giá trị trả về 'TC' đã được lưu vào bộ nhớ stack trước khi finally thực thi)",
+      "TCF",
+      "TF",
+      "TCXF"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong catch, res đang là \"TC\". Khi gặp lệnh 'return res;', giá trị trả về của hàm (\"TC\") được sao chép và lưu trữ sẵn trong thanh ghi trả về (return register). Tiếp theo, khối 'finally' bắt buộc phải chạy và thực hiện res += \"F\" (biến res cục bộ đổi thành \"TCF\"), nhưng vì finally không có lệnh return ghi đè, giá trị đã được lưu trước đó (\"TC\") sẽ được trả về hàm main. In ra: TC.",
+    "difficulty": "hard",
+    "tags": [
+      "FinallyFlow",
+      "ReturnValueStack",
+      "TrickyOutput"
+    ]
   }
 ]

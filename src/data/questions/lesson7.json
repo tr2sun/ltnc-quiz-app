@@ -616,5 +616,663 @@
       "ExecutorService",
       "shutdownNow"
     ]
+  },
+  {
+    "id": "L7_Q31",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Trong Java, cơ chế Monitor Lock (Intrinsic Lock / Khóa nội tại) được gắn liền với đối tượng nào?",
+    "code": null,
+    "options": [
+      "MỌI đối tượng (Object) trong Java đều sở hữu một Monitor Lock ngầm định do JVM quản lý",
+      "Chỉ các lớp kế thừa từ java.lang.Thread mới có Monitor Lock",
+      "Chỉ các đối tượng được khai báo với từ khóa 'volatile' mới có Monitor Lock",
+      "Monitor Lock chỉ tồn tại ở hệ điều hành và gắn với thanh ghi CPU"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Java, mọi đối tượng (bất kỳ instance nào của java.lang.Object) đều có một header chứa thông tin Mark Word của JVM, trong đó tích hợp sẵn một Monitor Lock ngầm định. Từ khóa 'synchronized' sử dụng chính khóa nội tại này.",
+    "difficulty": "medium",
+    "tags": [
+      "MonitorLock",
+      "IntrinsicLock",
+      "JVMInternals"
+    ]
+  },
+  {
+    "id": "L7_Q32",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Phân biệt đối tượng bị khóa khi sử dụng 'synchronized' trên phương thức instance vs phương thức static:",
+    "code": "class Counter {\n    public synchronized void incInstance() { ... } // (1)\n    public static synchronized void incStatic() { ... } // (2)\n}",
+    "options": [
+      "(1) khóa trên chính thể hiện hiện tại (this); (2) khóa trên đối tượng Class (Counter.class) trong Metaspace",
+      "(1) và (2) cùng khóa chung trên một đối tượng duy nhất",
+      "(1) khóa trên CPU, (2) khóa trên RAM",
+      "(1) khóa trên luồng cha, (2) khóa trên luồng con"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Phương thức instance synchronized lấy khóa trên chính thể hiện 'this' (đối tượng cụ thể gọi hàm). Phương thức static synchronized lấy khóa trên đối tượng Class đại diện cho lớp đó (Counter.class). Do đó một luồng gọi incInstance() và một luồng gọi incStatic() trên cùng một instance sẽ KHÔNG chặn lẫn nhau vì chúng giữ 2 lock khác nhau hoàn toàn.",
+    "difficulty": "hard",
+    "tags": [
+      "Synchronized",
+      "InstanceLockVsClassLock",
+      "Concurrency"
+    ]
+  },
+  {
+    "id": "L7_Q33",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao việc gọi phương thức wait(), notify(), hoặc notifyAll() BẮT BUỘC phải nằm bên trong một khối 'synchronized' đang giữ lock của đối tượng đó?",
+    "code": null,
+    "options": [
+      "Nếu gọi bên ngoài khối synchronized, JVM sẽ ném ngay ngoại lệ java.lang.IllegalMonitorStateException tại thời điểm runtime để ngăn chặn điều kiện tương tranh (Race Condition) trong việc kiểm tra điều kiện chờ",
+      "Để trình biên dịch không báo lỗi cú pháp Compile-time",
+      "Để phương thức wait() có thể chạy nhanh gấp 2 lần",
+      "Để luồng không bao giờ bị rơi vào trạng thái ngủ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Gọi wait()/notify() đòi hỏi luồng phải là chủ sở hữu monitor của đối tượng (đang trong synchronized(obj)). Nếu không nắm giữ monitor, JVM sẽ ném IllegalMonitorStateException ngay lập tức. Điều này nhằm ngăn chặn lỗi Lost Wakeup: luồng A kiểm tra điều kiện, chưa kịp wait() thì luồng B notify(), sau đó luồng A mới wait() và ngủ vĩnh viễn.",
+    "difficulty": "medium",
+    "tags": [
+      "IllegalMonitorStateException",
+      "WaitNotify",
+      "Synchronization"
+    ]
+  },
+  {
+    "id": "L7_Q34",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao theo chuẩn Java, phương thức wait() LUÔN PHẢI được đặt trong vòng lặp 'while' (while (condition)) thay vì câu lệnh 'if' (if (condition))?",
+    "code": "// Chuan Java:\nwhile (!condition) {\n    obj.wait();\n}",
+    "options": [
+      "Để phòng chống hiện tượng 'Thức giấc giả tạo' (Spurious Wakeup) và đảm bảo điều kiện vẫn thực sự thỏa mãn sau khi luồng thức dậy trước khi tiếp tục thực thi",
+      "Vì cú pháp Java cấm sử dụng if với wait()",
+      "Để tăng tốc độ giải phóng khóa cho CPU",
+      "Để tự động chuyển đổi sang Thread Pool"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Hệ điều hành và JVM có thể làm một luồng thức dậy mà không có bất kỳ lời gọi notify() nào (hiện tượng Spurious Wakeup). Ngoài ra, khi notifyAll(), nhiều luồng cùng thức dậy nhưng chỉ 1 luồng xử lý dữ liệu trước, khi luồng sau được cấp lock thì điều kiện có thể đã không còn thỏa mãn nữa. Đặt trong 'while' bảo đảm luồng luôn kiểm tra lại điều kiện sau khi thức dậy.",
+    "difficulty": "hard",
+    "tags": [
+      "SpuriousWakeup",
+      "WhileWaitPattern",
+      "BestPractice"
+    ]
+  },
+  {
+    "id": "L7_Q35",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Sự khác biệt then chốt giữa Thread.sleep(millis) và object.wait(millis) là gì?",
+    "code": null,
+    "options": [
+      "Thread.sleep() tạm dừng luồng nhưng KHÔNG nhả Monitor Lock (vẫn tiếp tục giữ khóa); còn object.wait() tạm dừng luồng và NHẢ Monitor Lock để các luồng khác có cơ hội nhảy vào xử lý",
+      "Thread.sleep() nhả lock, object.wait() giữ lock",
+      "Cả hai đều nhả lock như nhau",
+      "Thread.sleep() chỉ dùng trong static method, object.wait() chỉ dùng trong constructor"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Khác biệt kinh điển: 'sleep() sleeps with its locks; wait() gives up its lock'. Thread.sleep() giữ nguyên tất cả các lock nó đang cầm. Ngược lại, object.wait() nhả monitor lock của object đó ra và đi vào hàng đợi chờ (Wait Set).",
+    "difficulty": "medium",
+    "tags": [
+      "SleepVsWait",
+      "LockHandling",
+      "Concurrency"
+    ]
+  },
+  {
+    "id": "L7_Q36",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao trong đoạn mã đa luồng sau, biến 'count' dù được khai báo là 'volatile' nhưng giá trị cuối cùng vẫn KHÔNG ĐẠT 2000?",
+    "code": "class Counter {\n    volatile int count = 0;\n    void increment() { count++; }\n}\n// 2 luong chay song song, moi luong goi increment() 1000 lan",
+    "options": [
+      "Vì toán tử 'count++' không phải là một thao tác nguyên tử (Atomic); nó gồm 3 bước riêng biệt (Đọc -> Tăng -> Ghi), từ khóa volatile chỉ đảm bảo tính khả kiến (Visibility) chứ không đảm bảo tính nguyên tử (Atomicity)",
+      "Vì volatile làm biến count bị khóa vĩnh viễn",
+      "Vì biến count bị tràn số nguyên",
+      "Do trình biên dịch Java tự động tối ưu bỏ qua từ khóa volatile"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Toán tử count++ bản chất là: 1. Đọc count từ bộ nhớ vào thanh ghi, 2. Cộng 1 vào thanh ghi, 3. Ghi giá trị mới vào bộ nhớ. Nếu 2 luồng cùng đọc giá trị 5 cùng lúc, cả 2 cùng tăng lên 6 và cùng ghi đè 6, dẫn đến mất 1 lần tăng (Lost Update). Từ khóa volatile không có cơ chế khóa (locking) nên không đảm bảo tính nguyên tử.",
+    "difficulty": "hard",
+    "tags": [
+      "VolatileTrap",
+      "Atomicity",
+      "RaceCondition"
+    ]
+  },
+  {
+    "id": "L7_Q37",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Từ khóa 'volatile' trong Java mang lại những đảm bảo kỹ thuật nào sau đây theo Mô hình bộ nhớ Java (JMM)?",
+    "code": null,
+    "options": [
+      "Tính khả kiến trong bộ nhớ (Memory Visibility): Mọi thao tác ghi vào biến volatile được đẩy ngay lập tức về bộ nhớ chính (Main Memory), và mọi thao tác đọc luôn đọc trực tiếp từ bộ nhớ chính (bỏ qua cache riêng của CPU)",
+      "Ngăn chặn việc tái sắp xếp lệnh (Instruction Reordering / Memory Barrier): Trình biên dịch và CPU không được phép đảo thứ tự các lệnh đọc/ghi xung quanh biến volatile",
+      "Đảm bảo tính nguyên tử (Atomicity) cho các biểu thức phức tạp như count = count + 1",
+      "Đảm bảo an toàn tuyệt đối khi nhiều luồng cùng ghi đè dữ liệu mà không cần synchronized"
+    ],
+    "correctAnswer": [
+      0,
+      1
+    ],
+    "explanation": "volatile trong Java Memory Model (JMM) cung cấp đúng 2 sự bảo đảm: 1. Visibility (đọc/ghi thông qua Main Memory), 2. Happens-Before ordering (Memory Barrier chống reordering). Nó KHÔNG đảm bảo Atomicity cho các thao tác phức tạp.",
+    "difficulty": "medium",
+    "tags": [
+      "Volatile",
+      "JMM",
+      "MemoryVisibility"
+    ]
+  },
+  {
+    "id": "L7_Q38",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao phương thức notifyAll() thường được khuyến nghị sử dụng thay vì notify() trong hầu hết các ứng dụng đa luồng thực tế?",
+    "code": null,
+    "options": [
+      "notify() chỉ đánh thức ngẫu nhiên một luồng duy nhất trong hàng đợi chờ; nếu luồng đó thức dậy nhưng không thỏa mãn điều kiện tiếp tục chạy thì cả hệ thống có nguy cơ bị treo vĩnh viễn (Lost Signal)",
+      "notifyAll() chạy nhanh gấp 10 lần notify()",
+      "notify() đã bị đánh dấu @Deprecated từ Java 8",
+      "notifyAll() cho phép các luồng chạy không cần CPU"
+    ],
+    "correctAnswer": 0,
+    "explanation": "notify() chỉ đánh thức 1 luồng ngẫu nhiên. Nếu có nhiều luồng chờ các điều kiện khác nhau, việc đánh thức sai luồng có thể dẫn đến việc luồng đó kiểm tra lại thấy chưa đủ điều kiện và tiếp tục ngủ, trong khi luồng cần thức thực sự lại không được đánh thức, làm toàn bộ chương trình bị tắc nghẽn (Lost Notification). notifyAll() đánh thức tất cả để từng luồng tự kiểm tra điều kiện của mình.",
+    "difficulty": "medium",
+    "tags": [
+      "NotifyAll",
+      "NotifyVsNotifyAll",
+      "LostNotification"
+    ]
+  },
+  {
+    "id": "L7_Q39",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Khái niệm 'Khóa tái nhập' (Reentrant Synchronization) trong Java có nghĩa là gì?",
+    "code": "class Test {\n    public synchronized void m1() {\n        m2(); // Goi method synchronized khac cung class\n    }\n    public synchronized void m2() {}\n}",
+    "options": [
+      "Nếu một luồng đã nắm giữ Monitor Lock của một đối tượng, nó có thể tự do đi vào các khối/phương thức synchronized khác của cùng đối tượng đó mà không bị tự chặn chính mình (khóa có bộ đếm hold count)",
+      "Khóa tự động mở sau 5 giây nếu luồng bị treo",
+      "Khóa có thể được chuyển nhượng cho một tiến trình khác của hệ điều hành",
+      "Khóa chỉ có thể dùng được một lần duy nhất rồi tự hủy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cả synchronized và ReentrantLock trong Java đều là Reentrant (tái nhập): Khi luồng đã có lock, nó được phép đi vào các phương thức synchronized khác cùng lock đó. JVM tăng biến đếm số lần vào (hold count). Khi thoát ra khỏi mỗi khối synchronized, biến đếm giảm 1. Khi đếm về 0, lock mới thực sự được giải phóng.",
+    "difficulty": "medium",
+    "tags": [
+      "ReentrantLock",
+      "HoldCount",
+      "Synchronization"
+    ]
+  },
+  {
+    "id": "L7_Q40",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Những trường hợp nào sau đây khiến một Thread trong Java chuyển từ trạng thái RUNNABLE sang BLOCKED hoặc WAITING?",
+    "code": null,
+    "options": [
+      "Cố gắng bước vào một khối hoặc phương thức 'synchronized' mà khóa monitor đang bị một luồng khác chiếm giữ (chuyển sang BLOCKED)",
+      "Gọi phương thức object.wait() (chuyển sang WAITING hoặc TIMED_WAITING)",
+      "Gọi phương thức otherThread.join() (chuyển sang WAITING hoặc TIMED_WAITING)",
+      "Gọi phương thức Thread.yield()"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1 chuyển sang BLOCKED (chờ monitor lock). 2 và 3 chuyển sang WAITING/TIMED_WAITING. 4 sai: Thread.yield() chỉ gợi ý nhường CPU và luồng vẫn nằm ở trạng thái RUNNABLE.",
+    "difficulty": "hard",
+    "tags": [
+      "ThreadStates",
+      "Blocked",
+      "Waiting"
+    ]
+  },
+  {
+    "id": "L7_Q41",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Phương thức Thread.interrupt() có tác dụng thực tế gì đối với một luồng đang chạy?",
+    "code": null,
+    "options": [
+      "Chỉ thiết lập cờ ngắt (Interrupt Flag = true) của luồng; nếu luồng đang trong trạng thái sleep(), wait() hoặc join(), nó sẽ thức dậy ngay lập tức và ném java.lang.InterruptedException",
+      "Dừng và hủy luồng ngay lập tức tương tự như Thread.stop()",
+      "Khởi động lại luồng từ đầu phương thức run()",
+      "Tự động tăng độ ưu tiên priority của luồng lên tối đa"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thread.interrupt() là cơ chế dừng luồng cộng tác (Cooperative cancellation): nó chỉ đặt cờ interrupt flag. Luồng đang chạy bình thường phải tự chủ động kiểm tra Thread.currentThread().isInterrupted() để thoát gọn gàng. Nếu luồng đang bị chặn ở sleep(), wait(), join(), JVM sẽ đánh thức luồng và ném InterruptedException.",
+    "difficulty": "medium",
+    "tags": [
+      "ThreadInterrupt",
+      "InterruptedException",
+      "ThreadLifecycle"
+    ]
+  },
+  {
+    "id": "L7_Q42",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tại sao các phương thức cổ xưa như Thread.stop(), Thread.suspend(), Thread.resume() đều bị Java đánh dấu @Deprecated và cấm sử dụng?",
+    "code": null,
+    "options": [
+      "Vì chúng dừng/đóng băng luồng một cách thô bạo mà không giải phóng các Monitor Lock đang giữ, dễ dẫn đến việc làm hỏng trạng thái dữ liệu (Inconsistent state) và gây Deadlock toàn hệ thống",
+      "Vì chúng tốn quá nhiều dung lượng RAM",
+      "Vì chúng chỉ chạy được trên hệ điều hành Linux 32-bit",
+      "Vì Java muốn lập trình viên tự tạo luồng bằng tay"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thread.stop() giải phóng mọi lock đột ngột làm đối tượng ở trạng thái dở dang (ví dụ tiền bị trừ ở tài khoản A nhưng chưa kịp cộng vào B). Thread.suspend() đóng băng luồng nhưng KHÔNG nhả lock, bất kỳ luồng nào chờ lock đó sẽ bị Deadlock vĩnh viễn.",
+    "difficulty": "easy",
+    "tags": [
+      "DeprecatedMethods",
+      "ThreadSafety",
+      "DeadlockRisk"
+    ]
+  },
+  {
+    "id": "L7_Q43",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Những khẳng định nào sau đây về Luồng ngầm (Daemon Thread) trong Java là ĐÚNG?",
+    "code": null,
+    "options": [
+      "JVM sẽ tự động thoát và kết thúc toàn bộ chương trình khi tất cả các luồng người dùng (User Threads / Non-daemon threads) đều đã kết thúc thực thi, bất kể vẫn còn các Daemon Thread đang chạy",
+      "Bộ dọn rác Garbage Collector của Java chạy dưới dạng một Daemon Thread trong nền",
+      "Phải gọi phương thức thread.setDaemon(true) TRƯỚC KHI gọi thread.start(), nếu gọi sau khi luồng đã chạy sẽ ném IllegalThreadStateException",
+      "Daemon Thread có mức độ ưu tiên CPU cao hơn User Thread"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 đều chính xác: Daemon thread là luồng phục vụ nền, JVM không đợi nó hoàn thành. Gọi setDaemon(true) sau khi start() ném IllegalThreadStateException. Daemon thread không liên quan đến độ ưu tiên CPU.",
+    "difficulty": "medium",
+    "tags": [
+      "DaemonThread",
+      "ThreadLifecycle",
+      "JVMExit"
+    ]
+  },
+  {
+    "id": "L7_Q44",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Xác định output của đoạn mã sau với biến ThreadLocal:",
+    "code": "public class ThreadLocalTest {\n    static ThreadLocal<Integer> tl = ThreadLocal.withInitial(() -> 100);\n    public static void main(String[] args) throws Exception {\n        Thread t = new Thread(() -> {\n            tl.set(200);\n            System.out.print(\"T:\" + tl.get() + \" \");\n        });\n        t.start();\n        t.join();\n        System.out.println(\"M:\" + tl.get());\n    }\n}",
+    "options": [
+      "T:200 M:100",
+      "T:200 M:200",
+      "T:100 M:100",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ThreadLocal cung cấp bản sao biến riêng biệt độc lập cho MỖI luồng. Luồng phụ 't' ghi giá trị 200 vào bản sao của nó (in ra T:200). Luồng main có bản sao độc lập của riêng nó với giá trị khởi tạo là 100 (in ra M:100), hoàn toàn không bị ảnh hưởng bởi luồng phụ.",
+    "difficulty": "medium",
+    "tags": [
+      "ThreadLocal",
+      "ThreadIsolation",
+      "Output"
+    ]
+  },
+  {
+    "id": "L7_Q45",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Xem xét đoạn mã sau với từ khóa synchronized trên String literal. Rủi ro tiềm ẩn lớn nhất là gì?",
+    "code": "void doWork() {\n    String lock = \"MY_LOCK\";\n    synchronized (lock) {\n        // Xu ly\n    }\n}",
+    "options": [
+      "Vì String literal được lưu trong String Constant Pool dùng chung cho toàn bộ JVM, bất kỳ đoạn mã nào khác ở bất kỳ thư viện nào khóa trên chuỗi \"MY_LOCK\" cũng sẽ vô tình chia sẻ chung một khóa, dễ dẫn đến Deadlock bất ngờ hoặc nghẽn luồng nghiêm trọng",
+      "Mã bị lỗi biên dịch vì synchronized không chấp nhận đối tượng String",
+      "Khối synchronized trên String tự động bị vô hiệu hóa khi chạy",
+      "Ném ngoại lệ NullPointerException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "String literals được tái sử dụng trong String Pool. Khóa trên một chuỗi literal có nghĩa là bạn đang khóa trên một đối tượng toàn cục duy nhất của toàn bộ ứng dụng. Nếu hai module không liên quan cùng tình cờ synchronized(\"MY_LOCK\"), chúng sẽ khóa chặn lẫn nhau. Best practice là luôn dùng 'private final Object lock = new Object();'.",
+    "difficulty": "hard",
+    "tags": [
+      "StringLockTrap",
+      "SynchronizationBestPractice",
+      "Deadlock"
+    ]
+  },
+  {
+    "id": "L7_Q46",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Theo lý thuyết hệ điều hành (Coffman Conditions), Bế tắc (Deadlock) giữa các luồng chỉ có thể xảy ra khi thỏa mãn ĐỒNG THỜI cả 4 điều kiện nào sau đây?",
+    "code": null,
+    "options": [
+      "Loại trừ lẫn nhau (Mutual Exclusion): Tài nguyên/Khóa chỉ có thể được sở hữu bởi duy nhất một luồng tại một thời điểm",
+      "Nắm giữ và chờ đợi (Hold and Wait): Một luồng đang nắm giữ một tài nguyên lại tiếp tục yêu cầu thêm tài nguyên mới đang bị giữ bởi luồng khác",
+      "Không thể chiếm đoạt (No Preemption): Tài nguyên không thể bị tước đoạt cưỡng bức từ luồng đang sở hữu nó",
+      "Chờ đợi vòng tròn (Circular Wait): Tồn tại một chuỗi các luồng T1 -> T2 -> ... -> Tn -> T1 trong đó mỗi luồng đang chờ tài nguyên do luồng kế tiếp nắm giữ"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Đây là 4 điều kiện kinh điển của Coffman. Chỉ cần phá vỡ ĐÚNG MỘT trong bốn điều kiện này (thường là Circular Wait bằng kỹ thuật Lock Ordering) là có thể triệt tiêu hoàn toàn khả năng xảy ra Deadlock.",
+    "difficulty": "medium",
+    "tags": [
+      "Deadlock",
+      "CoffmanConditions",
+      "OSTheory"
+    ]
+  },
+  {
+    "id": "L7_Q47",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Kỹ thuật hiệu quả và phổ biến nhất để phòng chống Deadlock do Chờ đợi vòng tròn (Circular Wait) trong ứng dụng Java là gì?",
+    "code": null,
+    "options": [
+      "Sắp xếp thứ tự lấy khóa cố định (Lock Ordering / Resource Hierarchy): Đảm bảo tất cả các luồng trong toàn bộ hệ thống luôn chiếm dụng các khóa theo cùng một thứ tự toàn cục duy nhất",
+      "Tăng số lượng luồng trong hệ thống lên gấp 10 lần",
+      "Sử dụng từ khóa volatile cho tất cả các biến",
+      "Chỉ chạy chương trình trên máy tính có 1 CPU duy nhất"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kỹ thuật Lock Ordering bảo đảm nếu cần 2 lock A và B, mọi luồng đều BẮT BUỘC phải lấy A trước rồi mới lấy B (ví dụ sắp xếp theo hash code hoặc ID). Không bao giờ có chuyện luồng 1 giữ A chờ B trong khi luồng 2 giữ B chờ A, triệt tiêu hoàn toàn điều kiện Circular Wait.",
+    "difficulty": "easy",
+    "tags": [
+      "LockOrdering",
+      "DeadlockPrevention",
+      "BestPractice"
+    ]
+  },
+  {
+    "id": "L7_Q48",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Khóa ReentrantLock (gói java.util.concurrent.locks) cung cấp những tính năng vượt trội nào so với từ khóa 'synchronized' truyền thống?",
+    "code": null,
+    "options": [
+      "Hỗ trợ phương thức tryLock(timeout, unit): cho phép thử lấy khóa trong một khoảng thời gian nhất định, nếu không lấy được thì từ bỏ thay vì bị chặn vĩnh viễn (giúp tránh Deadlock)",
+      "Hỗ trợ khóa công bằng (Fair Lock): hàng đợi cấp phát khóa theo thứ tự FIFO cho luồng chờ lâu nhất",
+      "Hỗ trợ phương thức lockInterruptibly(): cho phép luồng đang chờ khóa có thể bị đánh thức bởi interrupt()",
+      "Không bao giờ cần phải gọi phương thức unlock() trong khối finally"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 là các ưu điểm lớn của ReentrantLock. Ý 4 sai: Với ReentrantLock, BẮT BUỘC lập trình viên phải tự gọi lock.unlock() bên trong khối finally, nếu quên sẽ dẫn đến lock không bao giờ được giải phóng.",
+    "difficulty": "medium",
+    "tags": [
+      "ReentrantLock",
+      "TryLock",
+      "FairLock"
+    ]
+  },
+  {
+    "id": "L7_Q49",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "So sánh giữa Callable<V> và Runnable trong Java Concurrency, những khẳng định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Phương thức call() của Callable có kiểu trả về generic V; phương thức run() của Runnable có kiểu trả về là void",
+      "Phương thức call() của Callable có thể khai báo ném ra Checked Exception (throws Exception); phương thức run() của Runnable không được ném checked exception",
+      "Cả Callable và Runnable đều là Functional Interface",
+      "Callable có thể được truyền trực tiếp vào constructor của lớp java.lang.Thread(callable).start()"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 đúng: Callable có return type và ném exception. Ý 4 sai: Thread không có constructor nhận trực tiếp Callable (phải bọc qua FutureTask: new Thread(new FutureTask<>(callable)).start() hoặc submit vào ExecutorService).",
+    "difficulty": "medium",
+    "tags": [
+      "CallableVsRunnable",
+      "FunctionalInterface",
+      "FutureTask"
+    ]
+  },
+  {
+    "id": "L7_Q50",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Khi gọi phương thức future.get() trên đối tượng Future<V>, hành vi nào diễn ra?",
+    "code": "ExecutorService pool = Executors.newSingleThreadExecutor();\nFuture<String> f = pool.submit(() -> {\n    Thread.sleep(2000);\n    return \"Done\";\n});\nString res = f.get(); // DONG NAY",
+    "options": [
+      "Phương thức get() là một lời gọi chặn (Blocking Call): luồng gọi get() sẽ bị tạm dừng cho đến khi tác vụ nền hoàn thành và trả về kết quả",
+      "Phương thức get() ngay lập tức trả về null nếu tác vụ chưa chạy xong",
+      "Chương trình ném ngoại lệ TimeoutException ngay lập tức",
+      "Phương thức get() hủy bỏ tác vụ đang chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "future.get() là blocking call. Luồng gọi nó sẽ bị chặn (chuyển sang WAITING) cho đến khi tác vụ nền chạy xong và trả về kết quả (hoặc ném ExecutionException nếu task lỗi). Muốn tránh chờ vĩnh viễn, nên dùng future.get(timeout, unit).",
+    "difficulty": "easy",
+    "tags": [
+      "FutureGet",
+      "BlockingCall",
+      "Concurrency"
+    ]
+  },
+  {
+    "id": "L7_Q51",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Điều gì xảy ra nếu bạn gọi phương thức f.get() HAI LẦN liên tiếp trên cùng một đối tượng Future?",
+    "code": "Future<Integer> f = pool.submit(() -> 42);\nSystem.out.println(f.get());\nSystem.out.println(f.get());",
+    "options": [
+      "Lần gọi thứ hai trả về ngay lập tức giá trị kết quả đã được lưu trong bộ đệm (cached result) mà không chạy lại tác vụ",
+      "Lần gọi thứ hai chạy lại tác vụ từ đầu và tính toán lại",
+      "Ném ngoại lệ IllegalStateException ở lần gọi thứ hai",
+      "Lần gọi thứ hai trả về null"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Future lưu trữ kết quả của tác vụ sau khi hoàn thành. Lần gọi get() đầu tiên có thể phải chờ task chạy, nhưng các lần gọi get() tiếp theo sẽ lấy trực tiếp kết quả đã lưu trong bộ nhớ đệm ngay tức thì mà không cần chờ đợi hay chạy lại task.",
+    "difficulty": "medium",
+    "tags": [
+      "Future",
+      "CachedResult",
+      "SampleExamTopic"
+    ]
+  },
+  {
+    "id": "L7_Q52",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Sự khác biệt giữa shutdown() và shutdownNow() của ExecutorService là gì?",
+    "code": null,
+    "options": [
+      "shutdown() từ chối nhận thêm tác vụ mới nhưng tiếp tục chạy nốt các tác vụ đang chờ trong hàng đợi; shutdownNow() cố gắng ngắt (interrupt) các tác vụ đang chạy và trả về danh sách các tác vụ chưa được thực thi",
+      "shutdown() xóa toàn bộ file trên đĩa cứng",
+      "shutdownNow() khóa toàn bộ CPU của máy tính",
+      "Cả hai phương thức hoàn toàn giống hệt nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "shutdown() thực hiện đóng tuần tự (graceful shutdown): không nhận task mới, chạy hết task cũ. shutdownNow() thực hiện đóng cưỡng bức (hard shutdown): gửi interrupt() tới các worker thread đang chạy và rút danh sách task chưa kịp chạy ra trả về.",
+    "difficulty": "medium",
+    "tags": [
+      "ExecutorService",
+      "ShutdownVsShutdownNow",
+      "ThreadPool"
+    ]
+  },
+  {
+    "id": "L7_Q53",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Điều gì có thể xảy ra nếu chương trình kết thúc hàm main() nhưng quên gọi pool.shutdown() trên ExecutorService?",
+    "code": "public static void main(String[] args) {\n    ExecutorService pool = Executors.newFixedThreadPool(2);\n    pool.submit(() -> System.out.println(\"Hello\"));\n    // Quen goi pool.shutdown()\n}",
+    "options": [
+      "Ứng dụng Java (JVM) sẽ không bao giờ kết thúc và tiếp tục chạy ngầm vô hạn, vì các luồng trong ThreadPool mặc định là Non-daemon threads đang chờ việc",
+      "JVM tự động đóng Thread Pool sau 1 giây",
+      "Chương trình bị lỗi biên dịch",
+      "Hệ điều hành tự động khởi động lại máy tính"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Các luồng worker trong ThreadPool được tạo bởi ThreadFactory mặc định đều là User Threads (Non-daemon). JVM chỉ dừng khi TẤT CẢ User Threads đã kết thúc. Nếu không gọi shutdown(), các luồng worker này tiếp tục nằm chờ task mới trong hàng đợi BlockingQueue, khiến JVM không bao giờ tắt được.",
+    "difficulty": "hard",
+    "tags": [
+      "ThreadPoolShutdown",
+      "NonDaemonThreads",
+      "JVMExitTrap"
+    ]
+  },
+  {
+    "id": "L7_Q54",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Lớp AtomicInteger trong java.util.concurrent.atomic đảm bảo an toàn đa luồng mà KHÔNG cần dùng khóa (Lock-free) nhờ thuật toán phần cứng nào?",
+    "code": null,
+    "options": [
+      "Thuật toán CAS (Compare-And-Swap / So sánh và Hoán đổi) được hỗ trợ trực tiếp ở cấp độ tập lệnh vi xử lý CPU",
+      "Thuật toán mã hóa RSA 2048-bit",
+      "Sử dụng mutex lock của hệ điều hành Linux",
+      "Chuyển đổi luồng thành tiến trình độc lập"
+    ],
+    "correctAnswer": 0,
+    "explanation": "AtomicInteger sử dụng chỉ thị phần cứng nguyên tử CAS (Compare-And-Swap) thông qua Unsafe/VarHandle: nếu giá trị hiện tại ở ô nhớ đúng bằng giá trị kỳ vọng, CPU mới cập nhật giá trị mới, nếu bị tranh chấp thì vòng lặp thử lại (Spinlock/CAS loop). Không cần tạm dừng luồng (no context switch), đem lại hiệu năng cực cao.",
+    "difficulty": "medium",
+    "tags": [
+      "AtomicInteger",
+      "CAS",
+      "LockFree"
+    ]
+  },
+  {
+    "id": "L7_Q55",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tiện ích đồng bộ CountDownLatch trong Java Concurrency hoạt động như thế nào?",
+    "code": null,
+    "options": [
+      "Khởi tạo với một số đếm N; các luồng gọi await() sẽ bị chặn cho đến khi các luồng khác gọi đủ N lần phương thức countDown() để đưa số đếm về 0",
+      "Cho phép đếm số lần ném ngoại lệ trong vòng lặp",
+      "Tự động đặt lại số đếm N về giá trị ban đầu sau mỗi lần đếm về 0 (tương tự CyclicBarrier)",
+      "Chỉ cho phép duy nhất một luồng chạy tại một thời điểm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CountDownLatch khởi tạo với số đếm N. Mỗi khi một tác vụ con hoàn thành, nó gọi latch.countDown(). Luồng chính gọi latch.await() sẽ bị chặn cho đến khi số đếm giảm về 0. Chú ý: CountDownLatch dùng một lần, không thể tái sử dụng (muốn tái sử dụng phải dùng CyclicBarrier).",
+    "difficulty": "medium",
+    "tags": [
+      "CountDownLatch",
+      "ConcurrencyUtilities",
+      "Synchronization"
+    ]
+  },
+  {
+    "id": "L7_Q56",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Sự khác biệt giữa Executors.newFixedThreadPool(n) và Executors.newCachedThreadPool() là gì?",
+    "code": null,
+    "options": [
+      "FixedThreadPool có số lượng luồng cố định và dùng hàng đợi vô hạn (LinkedBlockingQueue); CachedThreadPool tự động tạo luồng mới khi cần (không giới hạn số luồng tối đa) và tái sử dụng các luồng rảnh sau 60 giây",
+      "FixedThreadPool chỉ chạy được 1 task duy nhất",
+      "CachedThreadPool lưu trữ kết quả trên đĩa cứng SSD",
+      "Cả hai đều có số luồng tối đa là 10"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FixedThreadPool duy trì đúng n luồng, task thừa xếp hàng trong LinkedBlockingQueue (nguy cơ OOM nếu task đến quá nhanh). CachedThreadPool dùng SynchronousQueue, không xếp hàng mà tạo luồng mới nếu không có luồng rỗi (nguy cơ OOM do sinh quá nhiều luồng nếu tải tăng đột biến).",
+    "difficulty": "medium",
+    "tags": [
+      "FixedThreadPool",
+      "CachedThreadPool",
+      "ExecutorTypes"
+    ]
+  },
+  {
+    "id": "L7_Q57",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Tiện ích Semaphore trong Java Concurrency dùng để giải quyết bài toán nào?",
+    "code": null,
+    "options": [
+      "Quản lý và giới hạn số lượng luồng tối đa được phép đồng thời truy cập vào một tài nguyên cụ thể (hỗ trợ các giấy phép - permits)",
+      "Chỉ dùng để đếm số lượng luồng đang chạy",
+      "Thay thế hoàn toàn cho Garbage Collector",
+      "Tự động chuyển đổi mã Java sang bytecode"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Semaphore duy trì một tập hợp các giấy phép (permits). Luồng gọi acquire() để lấy giấy phép (nếu hết giấy phép thì phải chờ), sau khi dùng xong gọi release() để trả lại. Rất phổ biến khi giới hạn số lượng kết nối Database Connection Pool hoặc số luồng đồng thời gọi API bên ngoài.",
+    "difficulty": "easy",
+    "tags": [
+      "Semaphore",
+      "Permits",
+      "RateLimiting"
+    ]
+  },
+  {
+    "id": "L7_Q58",
+    "lessonId": 7,
+    "type": "multiple",
+    "title": "Những nguy cơ tiềm ẩn khi sử dụng Thread Pool mà lập trình viên cần lưu ý là gì?",
+    "code": null,
+    "options": [
+      "Thread Pool Starvation (Đói tài nguyên): Các tác vụ trong pool phụ thuộc lẫn nhau, task cha chờ kết quả task con nhưng pool đã hết luồng trống để chạy task con",
+      "Tràn bộ nhớ OutOfMemoryError do hàng đợi tác vụ không giới hạn (Unbounded Queue) bị phình to khi tốc độ nạp task vượt quá tốc độ xử lý",
+      "Rò rỉ dữ liệu qua ThreadLocal nếu không gọi threadLocal.remove() khi luồng được trả về pool để tái sử dụng",
+      "Thread Pool làm CPU luôn luôn hoạt động ở mức 100% dù không có tác vụ nào"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 là các lỗi kinh điển khi vận hành Thread Pool trong production: Starvation Deadlock, Memory Leak do ThreadLocal không clean khi reuse thread, và OOM do LinkedBlockingQueue vô hạn.",
+    "difficulty": "hard",
+    "tags": [
+      "ThreadPoolPitfalls",
+      "Starvation",
+      "MemoryLeak"
+    ]
+  },
+  {
+    "id": "L7_Q59",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Xác định output của chương trình sau sử dụng AtomicInteger:",
+    "code": "AtomicInteger ai = new AtomicInteger(10);\nint v1 = ai.getAndIncrement();\nint v2 = ai.incrementAndGet();\nSystem.out.println(v1 + \" \" + v2 + \" \" + ai.get());",
+    "options": [
+      "10 12 12",
+      "11 12 12",
+      "10 11 12",
+      "11 11 12"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ban đầu ai = 10. ai.getAndIncrement() trả về giá trị cũ (10) sau đó tăng lên 11 (v1 = 10, ai = 11). ai.incrementAndGet() tăng lên 12 sau đó trả về giá trị mới 12 (v2 = 12, ai = 12). ai.get() trả về 12. Kết quả là '10 12 12'.",
+    "difficulty": "easy",
+    "tags": [
+      "AtomicInteger",
+      "GetAndIncrement",
+      "Output"
+    ]
+  },
+  {
+    "id": "L7_Q60",
+    "lessonId": 7,
+    "type": "single",
+    "title": "Trong Java 21, tính năng 'Virtual Threads' (Tiểu trình ảo - Project Loom) mang lại đột phá lớn nhất là gì?",
+    "code": null,
+    "options": [
+      "Tiểu trình ảo siêu nhẹ được quản lý trực tiếp bởi JVM (thay vì ánh xạ 1-1 với Kernel Thread của hệ điều hành), cho phép tạo hàng triệu luồng đồng thời với chi phí bộ nhớ cực thấp",
+      "Cho phép CPU chạy với xung nhịp 10GHz",
+      "Tự động sửa chữa tất cả các lỗi Deadlock trong mã nguồn",
+      "Loại bỏ hoàn toàn sự cần thiết của từ khóa synchronized"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Virtual Threads (Project Loom) là tiểu trình ảo siêu nhẹ do JVM quản lý. Trong khi Platform Thread của OS tốn ~1MB stack và tối đa chỉ tạo được vài nghìn luồng, Virtual Thread chỉ tốn vài trăm byte và có thể chạy hàng triệu luồng đồng thời, tối ưu hóa triệt để mô hình Blocking I/O theo kiểu thread-per-request.",
+    "difficulty": "medium",
+    "tags": [
+      "VirtualThreads",
+      "ProjectLoom",
+      "ModernJava"
+    ]
   }
 ]

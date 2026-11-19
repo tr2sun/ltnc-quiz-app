@@ -615,5 +615,668 @@
       "Decorator-Pattern",
       "Trade-Offs"
     ]
+  },
+  {
+    "id": "L6_Q31",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Tại sao giải pháp 'Bill Pugh Singleton' (sử dụng Static Inner Helper Class) được coi là cách cài đặt Singleton tối ưu nhất trong Java truyền thống?",
+    "code": "public class Singleton {\n    private Singleton() {}\n    private static class Holder {\n        private static final Singleton INSTANCE = new Singleton();\n    }\n    public static Singleton getInstance() {\n        return Holder.INSTANCE;\n    }\n}",
+    "options": [
+      "Đảm bảo Lazy Loading (chỉ khởi tạo khi getInstance() được gọi lần đầu) và đảm bảo Thread-safe tuyệt đối nhờ cơ chế Class Loading của JVM mà không cần dùng từ khóa 'synchronized'",
+      "Tự động chống lại việc phá vỡ Singleton bằng Java Reflection API",
+      "Có thể tạo ra nhiều hơn một thể hiện nếu máy chủ có nhiều nhân CPU",
+      "Tự động giải phóng thể hiện khi bộ nhớ RAM đạt ngưỡng 90%"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lớp nội tĩnh Holder không được nạp vào bộ nhớ khi class Singleton được load, mà chỉ được nạp khi getInstance() được gọi lần đầu (Lazy Loading). Quá trình nạp lớp của JVM được đồng bộ hóa sẵn bởi ClassLoader (JLS 12.4.2), đảm bảo thread-safe 100% mà không phải chịu chi phí chậm chạp của từ khóa synchronized.",
+    "difficulty": "hard",
+    "tags": [
+      "Singleton",
+      "BillPugh",
+      "ClassLoading"
+    ]
+  },
+  {
+    "id": "L6_Q32",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Theo Joshua Bloch (tác giả Effective Java), phương pháp cài đặt Singleton nào an toàn tuyệt đối trước cả tấn công qua Reflection và Serialization?",
+    "code": "public enum EnumSingleton {\n    INSTANCE;\n    public void doSomething() {}\n}",
+    "options": [
+      "Enum Singleton (sử dụng kiểu enum một phần tử)",
+      "Double-Checked Locking Singleton",
+      "Eager Initialization Singleton",
+      "Bill Pugh Static Holder Singleton"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Enum trong Java được JVM bảo vệ đặc biệt: Constructor của enum không thể bị gọi qua Reflection (Constructor.newInstance() kiểm tra và ném IllegalArgumentException: Cannot reflectively create enum objects), và cơ chế Serialization của enum chỉ ghi nhận tên hằng số nên không bao giờ tạo đối tượng mới. Do đó Enum Singleton là cách duy nhất chống phá vỡ 100%.",
+    "difficulty": "medium",
+    "tags": [
+      "EnumSingleton",
+      "EffectiveJava",
+      "ReflectionProof"
+    ]
+  },
+  {
+    "id": "L6_Q33",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Trong mẫu Double-Checked Locking Singleton, tại sao biến thể hiện 'instance' BẮT BUỘC phải được khai báo với từ khóa 'volatile'?",
+    "code": "public class Singleton {\n    private static volatile Singleton instance;\n    public static Singleton getInstance() {\n        if (instance == null) {\n            synchronized (Singleton.class) {\n                if (instance == null) {\n                    instance = new Singleton(); // DONG NAY\n                }\n            }\n        }\n        return instance;\n    }\n}",
+    "options": [
+      "Để ngăn chặn hiện tượng Tái sắp xếp lệnh (Instruction Reordering) của trình biên dịch và CPU, đảm bảo đối tượng được khởi tạo đầy đủ các trường trước khi gán tham chiếu vào biến instance",
+      "Để đảm bảo phương thức getInstance() chạy nhanh gấp 2 lần",
+      "Nếu không có volatile thì lớp Singleton không thể biên dịch được",
+      "Để cho phép các luồng có thể xóa đối tượng instance khi cần"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lệnh 'new Singleton()' gồm 3 bước: 1. Cấp phát bộ nhớ, 2. Khởi tạo đối tượng (chạy constructor), 3. Gán địa chỉ cho biến instance. Nếu không có volatile, CPU/JIT có thể reorder bước 3 lên trước bước 2. Khi đó luồng khác gọi getInstance() thấy instance != null nhưng thực chất đối tượng bên trong chưa chạy xong constructor (Half-initialized object) dẫn đến lỗi chết người.",
+    "difficulty": "hard",
+    "tags": [
+      "DoubleCheckedLocking",
+      "Volatile",
+      "InstructionReordering"
+    ]
+  },
+  {
+    "id": "L6_Q34",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Phân biệt giữa Factory Method Pattern và Abstract Factory Pattern, những nhận định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Factory Method dựa trên cơ chế Kế thừa (Inheritance): một phương thức trừu tượng trong lớp cha được các lớp con ghi đè để quyết định kiểu đối tượng cụ thể được tạo ra",
+      "Abstract Factory dựa trên cơ chế Bao hàm/Ủy quyền (Composition): một interface/abstract class cung cấp một họ các phương thức để tạo ra một họ các sản phẩm liên quan hoặc phụ thuộc nhau (family of related products)",
+      "Factory Method tạo ra một sản phẩm duy nhất, trong khi Abstract Factory thường tạo ra cả một bộ/hệ thống các sản phẩm tương thích với nhau",
+      "Abstract Factory là tên gọi cũ của Factory Method trước khi có cuốn sách Design Patterns của GoF"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 nêu bật bản chất phân biệt: Factory Method dùng kế thừa để sinh 1 loại sản phẩm; Abstract Factory dùng composition và chứa nhiều factory methods để sinh ra cả một họ sản phẩm tương thích (ví dụ GUIFactory tạo Button và Checkbox cho Windows/Mac).",
+    "difficulty": "medium",
+    "tags": [
+      "FactoryMethod",
+      "AbstractFactory",
+      "CreationalPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q35",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Vấn đề 'Telescoping Constructor' (quá nhiều constructor nạp chồng với số lượng tham số tăng dần) được giải quyết thanh lịch nhất bởi mẫu thiết kế nào?",
+    "code": "public class House {\n    public House(int rooms) { ... }\n    public House(int rooms, int doors) { ... }\n    public House(int rooms, int doors, boolean hasPool) { ... }\n    public House(int rooms, int doors, boolean hasPool, boolean hasGarage) { ... }\n}",
+    "options": [
+      "Builder Pattern (sử dụng lớp Builder với các phương thức thiết lập fluent chaining và phương thức build())",
+      "Singleton Pattern",
+      "Adapter Pattern",
+      "Observer Pattern"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Builder Pattern là mẫu thiết kế chuyên biệt giải quyết vấn đề Telescoping Constructor khi một đối tượng có quá nhiều tham số (đặc biệt là các tham số tùy chọn - optional). Nó giúp code dễ đọc, an toàn, hỗ trợ Fluent API (chaining .withPool(true).build()) và đảm bảo đối tượng tạo ra có thể là Immutable.",
+    "difficulty": "easy",
+    "tags": [
+      "BuilderPattern",
+      "TelescopingConstructor",
+      "Creational"
+    ]
+  },
+  {
+    "id": "L6_Q36",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Prototype Pattern giải quyết bài toán nào sau đây?",
+    "code": null,
+    "options": [
+      "Tạo ra các đối tượng mới bằng cách sao chép (clone) từ một đối tượng mẫu có sẵn thay vì khởi tạo mới tốn kém qua toán tử 'new'",
+      "Đảm bảo chỉ có một đối tượng duy nhất tồn tại trong bộ nhớ",
+      "Chuyển đổi giao diện của một lớp thành giao diện khác mà client mong đợi",
+      "Đóng gói thuật toán vào các lớp riêng biệt để tráo đổi tại runtime"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Prototype Pattern cho phép tạo đối tượng mới bằng cách clone một instance hiện có (prototype). Điều này cực kỳ hữu ích khi việc khởi tạo một đối tượng từ đầu đòi hỏi các thao tác tốn kém (truy vấn DB, đọc file, tính toán nặng) hoặc cấu trúc đối tượng quá phức tạp.",
+    "difficulty": "medium",
+    "tags": [
+      "PrototypePattern",
+      "Clone",
+      "Creational"
+    ]
+  },
+  {
+    "id": "L6_Q37",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Về phương thức clone() và interface Cloneable trong Java, những khẳng định nào sau đây phản ánh ĐÚNG các vấn đề thiết kế?",
+    "code": null,
+    "options": [
+      "Phương thức Object.clone() mặc định chỉ thực hiện sao chép nông (Shallow Copy): sao chép giá trị các trường nguyên thủy và sao chép tham chiếu của đối tượng, không nhân bản đối tượng bên trong",
+      "Để thực hiện sao chép sâu (Deep Copy), lập trình viên bắt buộc phải tự ghi đè clone() và sao chép đệ quy từng đối tượng tham chiếu bên trong",
+      "Interface Cloneable là một Marker Interface kỳ lạ vì nó không chứa phương thức clone() nào (phương thức clone() vốn nằm ở Object và mang quyền protected)",
+      "Sử dụng Copy Constructor (hoặc Factory) được các chuyên gia Java khuyến khích thay thế cho clone() và Cloneable"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Cả 4 phát biểu đều chính xác. Cơ chế Cloneable của Java bị chỉ trích nặng nề trong sách Effective Java: Cloneable không có method clone, Object.clone chỉ shallow copy, ném CloneNotSupportedException phiền phức. Copy Constructor (như new ArrayList(existingList)) được khuyến nghị thay thế.",
+    "difficulty": "hard",
+    "tags": [
+      "Cloneable",
+      "DeepCopy",
+      "ShallowCopy"
+    ]
+  },
+  {
+    "id": "L6_Q38",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Adapter Pattern có mục đích cốt lõi là gì?",
+    "code": null,
+    "options": [
+      "Chuyển đổi giao diện (interface) của một lớp hiện có thành một giao diện khác mà client mong muốn, giúp các lớp không tương thích về giao diện có thể làm việc được với nhau",
+      "Bổ sung các hành vi mới cho đối tượng một cách linh hoạt tại runtime",
+      "Ẩn giấu sự phức tạp của toàn bộ hệ thống đằng sau một giao diện đơn giản duy nhất",
+      "Tạo một thể hiện duy nhất của một lớp trong toàn bộ ứng dụng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Adapter Pattern (như củ sạc chuyển đổi chân cắm) đóng vai trò làm cầu nối chuyển đổi giữa hai interface không tương thích mà không cần phải chỉnh sửa mã nguồn gốc của lớp Adaptee (tuân thủ Open/Closed Principle).",
+    "difficulty": "easy",
+    "tags": [
+      "AdapterPattern",
+      "StructuralPatterns",
+      "Compatibility"
+    ]
+  },
+  {
+    "id": "L6_Q39",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Trong Java, ví dụ nào sau đây thể hiện việc áp dụng mẫu thiết kế Adapter Pattern trong thư viện chuẩn JDK?",
+    "code": null,
+    "options": [
+      "Arrays.asList(T... a) (chuyển đổi mảng Java array thành giao diện List)",
+      "System.out.println()",
+      "Math.sqrt()",
+      "Thread.sleep()"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Arrays.asList() chuyển đổi một mảng thô (Array) thành giao diện chuẩn List của Java Collections Framework mà không cần tạo mới toàn bộ dữ liệu. Tương tự, InputStreamReader là một adapter chuyển đổi Byte Stream thành Character Stream.",
+    "difficulty": "medium",
+    "tags": [
+      "AdapterPattern",
+      "ArraysAsList",
+      "JDKExamples"
+    ]
+  },
+  {
+    "id": "L6_Q40",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Phân biệt giữa Object Adapter và Class Adapter trong mẫu thiết kế Adapter:",
+    "code": null,
+    "options": [
+      "Object Adapter sử dụng quan hệ Bao hàm (Composition): Adapter chứa một tham chiếu tới đối tượng Adaptee",
+      "Class Adapter sử dụng quan hệ Kế thừa (Inheritance): Adapter kế thừa trực tiếp từ lớp Adaptee",
+      "Trong Java, Object Adapter được sử dụng phổ biến hơn vì Java không hỗ trợ đa kế thừa lớp (Multiple class inheritance)",
+      "Class Adapter và Object Adapter hoàn toàn giống nhau về mặt mã nguồn trong Java"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Class Adapter đòi hỏi kế thừa cả Client Interface và Adaptee Class (cần đa kế thừa). Vì Java không cho đa kế thừa lớp nên Object Adapter (dùng Composition bao bọc instance của Adaptee) là giải pháp tiêu chuẩn trong lập trình Java.",
+    "difficulty": "medium",
+    "tags": [
+      "ObjectAdapter",
+      "ClassAdapter",
+      "DesignPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q41",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Facade Pattern khác với Adapter Pattern ở điểm cơ bản nào?",
+    "code": null,
+    "options": [
+      "Facade tạo ra một giao diện đơn giản hóa mới để dễ sử dụng một hệ thống con phức tạp (Subsystem), còn Adapter làm cho hai giao diện sẵn có không tương thích có thể làm việc được với nhau",
+      "Facade luôn dùng kế thừa, còn Adapter luôn dùng con trỏ hàm",
+      "Facade chỉ dùng cho cơ sở dữ liệu, Adapter chỉ dùng cho mạng",
+      "Facade làm tăng độ phức tạp của hệ thống"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mục đích của Facade là cung cấp một cổng giao tiếp bậc cao, đơn giản hóa (Simplified Interface) che giấu cả một mớ bòng bong các lớp con bên trong. Còn Adapter giữ nguyên chức năng nhưng biến đổi giao diện từ chuẩn A sang chuẩn B để tương thích.",
+    "difficulty": "easy",
+    "tags": [
+      "FacadePattern",
+      "AdapterPattern",
+      "Comparison"
+    ]
+  },
+  {
+    "id": "L6_Q42",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Bridge Pattern nhằm mục đích tách biệt cái gì khỏi cái gì?",
+    "code": null,
+    "options": [
+      "Tách biệt phần Trừu tượng (Abstraction) khỏi phần Cài đặt (Implementation) để cả hai có thể thay đổi và phát triển độc lập với nhau",
+      "Tách biệt giao diện người dùng khỏi cơ sở dữ liệu",
+      "Tách biệt các luồng đọc khỏi các luồng ghi",
+      "Tách biệt việc biên dịch mã khỏi việc chạy máy ảo"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Bridge Pattern (Cầu nối) phân tách Abstraction (ví dụ RemoteControl) và Implementation (ví dụ Device: TV, Radio) thành hai cây phân cấp độc lập, kết nối với nhau bằng composition, tránh việc bùng nổ số lượng lớp con (Cartesian product of subclasses).",
+    "difficulty": "medium",
+    "tags": [
+      "BridgePattern",
+      "StructuralPatterns",
+      "Abstraction"
+    ]
+  },
+  {
+    "id": "L6_Q43",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Proxy Pattern được sử dụng trong các tình huống nào sau đây?",
+    "code": null,
+    "options": [
+      "Cung cấp một đối tượng đại diện (Placeholder / Surrogate) để kiểm soát quyền truy cập tới đối tượng thực tế (ví dụ: Virtual Proxy tải ảnh lười, Protection Proxy kiểm tra quyền, Remote Proxy gọi RMI)",
+      "Chuyển đổi giao diện không tương thích thành tương thích",
+      "Nhân bản đối tượng mẫu nhanh chóng",
+      "Đảm bảo duy nhất một đối tượng trong bộ nhớ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Proxy Pattern cung cấp một đối tượng trung gian đứng trước đối tượng gốc. Client tương tác với Proxy, Proxy kiểm tra quyền (Protection), lazy load khởi tạo đối tượng nặng (Virtual Proxy), ghi log hoặc điều hướng mạng (Remote Proxy) trước khi ủy quyền cho RealSubject.",
+    "difficulty": "medium",
+    "tags": [
+      "ProxyPattern",
+      "StructuralPatterns",
+      "VirtualProxy"
+    ]
+  },
+  {
+    "id": "L6_Q44",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "So sánh giữa Decorator Pattern và Proxy Pattern, những nhận định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Decorator và Proxy có cấu trúc sơ đồ lớp rất giống nhau (đều bọc đối tượng mục tiêu và cùng thực thi một interface chung)",
+      "Decorator tập trung vào việc bổ sung các tính năng/trách nhiệm mới cho đối tượng một cách động",
+      "Proxy tập trung vào việc kiểm soát quyền truy cập, quản lý vòng đời hoặc hoãn việc khởi tạo đối tượng mục tiêu",
+      "Decorator chỉ có thể bọc đối tượng một lần duy nhất, không thể lồng nhau nhiều lớp"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Sự khác biệt giữa Decorator và Proxy nằm ở Ý ĐỊNH (Intent): Decorator mở rộng hành vi (chuỗi bọc decorator có thể lồng nhau vô hạn); Proxy kiểm soát việc truy cập tới đối tượng (thường tự quản lý hoặc gán cố định RealSubject bên trong).",
+    "difficulty": "hard",
+    "tags": [
+      "DecoratorVsProxy",
+      "DesignIntent",
+      "Comparison"
+    ]
+  },
+  {
+    "id": "L6_Q45",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Xác định output của đoạn mã minh họa Builder Pattern sau:",
+    "code": "class Query {\n    private String table;\n    private String where;\n    public static class Builder {\n        private Query q = new Query();\n        public Builder from(String t) { q.table = t; return this; }\n        public Builder where(String w) { q.where = w; return this; }\n        public Query build() { return q; }\n    }\n    public String toString() { return \"SELECT * FROM \" + table + \" WHERE \" + where; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Query q = new Query.Builder().from(\"Users\").where(\"age > 18\").build();\n        System.out.println(q);\n    }\n}",
+    "options": [
+      "SELECT * FROM Users WHERE age > 18",
+      "SELECT * FROM null WHERE null",
+      "Lỗi biên dịch do phương thức build() không thể truy cập thuộc tính private",
+      "Ném ngoại lệ NullPointerException khi chạy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đoạn mã triển khai chuẩn Builder Pattern với phương thức trả về 'this' cho phép gọi hàm liên hoàn (Method Chaining / Fluent API). Khi gọi build(), đối tượng Query hoàn chỉnh được trả về và in ra đúng chuỗi truy vấn.",
+    "difficulty": "easy",
+    "tags": [
+      "BuilderPattern",
+      "FluentAPI",
+      "Output"
+    ]
+  },
+  {
+    "id": "L6_Q46",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Observer Pattern định nghĩa mối quan hệ phụ thuộc nào giữa các đối tượng?",
+    "code": null,
+    "options": [
+      "Mối quan hệ Một - Nhiều (One-to-Many): Khi một đối tượng (Subject) thay đổi trạng thái, tất cả các đối tượng phụ thuộc (Observers) của nó đều được thông báo và tự động cập nhật",
+      "Mối quan hệ Một - Một (One-to-One) chặt chẽ giữa hai class",
+      "Mối quan hệ kế thừa cha - con trong cây phả hệ",
+      "Mối quan hệ độc lập hoàn toàn không liên quan đến nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Observer Pattern định nghĩa mối phụ thuộc 1-Nhiều giữa Subject (chủ thể) và các Observer (người quan sát). Khi trạng thái của Subject đổi, nó gọi phương thức notifyObservers() để tự động kích hoạt hàm update() của mọi observer đã đăng ký mà không cần biết chi tiết về từng observer (Loose Coupling).",
+    "difficulty": "easy",
+    "tags": [
+      "ObserverPattern",
+      "OneToMany",
+      "BehavioralPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q47",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Trong Observer Pattern, phân biệt giữa mô hình Đẩy (Push Model) và mô hình Kéo (Pull Model):",
+    "code": null,
+    "options": [
+      "Mô hình Đẩy (Push): Subject gửi chi tiết tất cả dữ liệu thay đổi qua các tham số của phương thức update(data) cho Observer, bất kể Observer đó có cần dữ liệu đó hay không",
+      "Mô hình Kéo (Pull): Subject chỉ gửi một thông báo tối thiểu (hoặc truyền chính tham chiếu của Subject: update(this)), sau đó Observer tự chủ động gọi getter để lấy đúng phần dữ liệu nó quan tâm",
+      "Mô hình Kéo linh hoạt hơn khi các Observer có nhu cầu sử dụng các phần dữ liệu khác nhau",
+      "Mô hình Đẩy cấm sử dụng trong các hệ thống phân tán"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 mô tả đúng hai biến thể của Observer: Push gửi thừa dữ liệu nhưng observer không phải query lại; Pull gửi ít dữ liệu hơn và tăng tính độc lập vì observer tự kéo dữ liệu nó cần thông qua getter của Subject.",
+    "difficulty": "medium",
+    "tags": [
+      "ObserverPattern",
+      "PushVsPull",
+      "DesignDetails"
+    ]
+  },
+  {
+    "id": "L6_Q48",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Sự khác biệt căn bản về mục đích thiết kế giữa Strategy Pattern và State Pattern là gì?",
+    "code": null,
+    "options": [
+      "Strategy cho phép Client chủ động lựa chọn và hoán đổi thuật toán từ bên ngoài; State cho phép đối tượng Context tự động thay đổi hành vi khi trạng thái nội bộ của nó thay đổi theo thời gian",
+      "Strategy chỉ dùng cho vòng lặp, State chỉ dùng cho switch-case",
+      "Strategy dùng đa kế thừa, State dùng đơn kế thừa",
+      "Cả hai hoàn toàn đồng nhất không có sự khác biệt nào"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mặc dù Strategy và State có biểu đồ lớp UML gần như giống hệt nhau (Context chứa tham chiếu tới Strategy/State interface), ý định thiết kế hoàn toàn khác nhau: Trong Strategy, người dùng chủ động cấu hình thuật toán mong muốn (ví dụ thuật toán sắp xếp, thuật toán tính thuế). Trong State, các trạng thái cụ thể tự động chuyển đổi lẫn nhau bên trong Context dựa trên các sự kiện (ví dụ đơn hàng: Mới tạo -> Đã thanh toán -> Đang giao).",
+    "difficulty": "hard",
+    "tags": [
+      "StrategyVsState",
+      "BehavioralPatterns",
+      "UMLComparison"
+    ]
+  },
+  {
+    "id": "L6_Q49",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Decorator Pattern tuân thủ hoàn hảo nguyên lý thiết kế SOLID nào nhất?",
+    "code": null,
+    "options": [
+      "Open/Closed Principle (Mở rộng cho việc mở rộng tính năng mới, nhưng đóng cho việc sửa đổi mã nguồn đã ổn định)",
+      "Single Responsibility Principle duy nhất",
+      "Liskov Substitution Principle",
+      "Interface Segregation Principle"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Decorator Pattern cho phép bổ sung thêm trách nhiệm mới cho đối tượng tại thời điểm runtime bằng cách bọc nó trong các lớp Decorator mới mà không cần chạm vào hay sửa đổi mã nguồn của lớp đối tượng gốc ban đầu, hiện thực hóa hoàn hảo nguyên lý Mở/Đóng (Open/Closed Principle).",
+    "difficulty": "medium",
+    "tags": [
+      "DecoratorPattern",
+      "OpenClosedPrinciple",
+      "SOLID"
+    ]
+  },
+  {
+    "id": "L6_Q50",
+    "lessonId": 5,
+    "type": "single",
+    "title": "Mẫu thiết kế Composite Pattern giải quyết tốt nhất bài toán có cấu trúc dữ liệu dạng nào?",
+    "code": null,
+    "options": [
+      "Cấu trúc dạng Cây (Tree structure) phân cấp Một phần - Toàn thể (Part-Whole), giúp client tương tác với đối tượng đơn lẻ (Leaf) và đối tượng chứa (Composite) một cách đồng nhất",
+      "Cấu trúc bảng băm một chiều",
+      "Cấu trúc hàng đợi tuyến tính FIFO",
+      "Cấu trúc ma trận đồ thị 3 chiều"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Composite Pattern chuyên dùng để biểu diễn các cấu trúc cây (ví dụ cây thư mục File/Directory, cây giao diện UI Component/Container, cây tổ chức công ty Employee/Manager). Cả lá (Leaf) và cành (Composite) đều thực thi chung một Component interface.",
+    "difficulty": "easy",
+    "tags": [
+      "CompositePattern",
+      "TreeHierarchy",
+      "PartWhole"
+    ]
+  },
+  {
+    "id": "L6_Q51",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Trong kiến trúc MVC (Model - View - Controller), trách nhiệm của từng thành phần được phân định như thế nào?",
+    "code": null,
+    "options": [
+      "Model: Quản lý toàn bộ dữ liệu, trạng thái và các logic nghiệp vụ (business rules) của ứng dụng; độc lập hoàn toàn với giao diện",
+      "View: Chịu trách nhiệm hiển thị giao diện người dùng và trực quan hóa dữ liệu từ Model",
+      "Controller: Tiếp nhận tương tác từ người dùng (sự kiện click, gõ phím), xử lý và điều phối cập nhật trạng thái của Model hoặc chọn View thích hợp để hiển thị",
+      "View được phép truy cập trực tiếp và thực hiện các câu lệnh SQL vào cơ sở dữ liệu mà không qua Model"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "MVC phân chia rõ ràng: Model quản lý dữ liệu/logic; View chỉ lo hiển thị giao diện; Controller điều phối tiếp nhận input. View tuyệt đối không được truy cập trực tiếp DB (vi phạm tách biệt trách nhiệm).",
+    "difficulty": "easy",
+    "tags": [
+      "MVC",
+      "Architecture",
+      "SeparationOfConcerns"
+    ]
+  },
+  {
+    "id": "L6_Q52",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Nguyên lý Đảo ngược phụ thuộc (Dependency Inversion Principle - chữ D trong SOLID) quy định điều gì?",
+    "code": null,
+    "options": [
+      "Các module cấp cao không nên phụ thuộc vào các module cấp thấp; cả hai nên phụ thuộc vào sự trừu tượng (Abstraction / Interface)",
+      "Lớp con bắt buộc phải kế thừa toàn bộ thuộc tính của lớp cha",
+      "Mỗi class chỉ nên có duy nhất một lý do để thay đổi",
+      "Chỉ được phép sử dụng các interface có dưới 3 phương thức"
+    ],
+    "correctAnswer": 0,
+    "explanation": "DIP (Dependency Inversion Principle) khẳng định: Module cấp cao (logic nghiệp vụ) không được phụ thuộc trực tiếp vào module cấp thấp (như DB cụ thể, thiết bị cụ thể), mà cả hai phải phụ thuộc vào abstraction (interface). Điều này giúp code linh hoạt và dễ kiểm thử với mock.",
+    "difficulty": "medium",
+    "tags": [
+      "DIP",
+      "SOLID",
+      "Abstraction"
+    ]
+  },
+  {
+    "id": "L6_Q53",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Nguyên lý Thay thế Liskov (Liskov Substitution Principle - chữ L trong SOLID) bị vi phạm trong trường hợp kinh điển nào sau đây?",
+    "code": null,
+    "options": [
+      "Lớp Hình vuông (Square) kế thừa từ lớp Hình chữ nhật (Rectangle) và phương thức setWidth(w) của Square tự động sửa cả height làm sai lệch hành vi kỳ vọng của Rectangle",
+      "Lớp Chó kế thừa từ lớp Động vật",
+      "Lớp ArrayList kế thừa từ AbstractList",
+      "Lớp String kế thừa từ Object"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Ví dụ kinh điển về vi phạm LSP: Trong hình học, hình vuông là hình chữ nhật. Nhưng trong OOP, nếu Square kế thừa Rectangle, khi người dùng gọi rect.setWidth(5); rect.setHeight(4); với Square thì diện tích bị biến thành 16 thay vì 20, phá vỡ hợp đồng hành vi của Rectangle.",
+    "difficulty": "medium",
+    "tags": [
+      "LSP",
+      "SOLID",
+      "SquareRectangleProblem"
+    ]
+  },
+  {
+    "id": "L6_Q54",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Những mẫu thiết kế nào sau đây thuộc nhóm Mẫu hành vi (Behavioral Patterns) theo phân loại của GoF (Gang of Four)?",
+    "code": null,
+    "options": [
+      "Observer",
+      "Strategy",
+      "Command",
+      "Singleton"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Observer, Strategy và Command đều là Behavioral Patterns (quản lý thuật toán và sự phân công trách nhiệm giữa các đối tượng). Singleton là Creational Pattern (khởi tạo).",
+    "difficulty": "easy",
+    "tags": [
+      "BehavioralPatterns",
+      "GoF",
+      "Classification"
+    ]
+  },
+  {
+    "id": "L6_Q55",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Command Pattern đóng gói cái gì thành một đối tượng độc lập?",
+    "code": null,
+    "options": [
+      "Đóng gói toàn bộ một yêu cầu hành động (Request / Action) thành một đối tượng độc lập chứa đầy đủ thông tin để thực thi, cho phép hỗ trợ tính năng Undo/Redo, hàng đợi lệnh và ghi nhật ký (logging)",
+      "Đóng gói toàn bộ cơ sở dữ liệu thành một file duy nhất",
+      "Đóng gói giao diện người dùng thành mã nhị phân",
+      "Đóng gói thuật toán mã hóa mật khẩu"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Command Pattern đóng gói một request thành một object độc lập (với phương thức execute() và undo()). Điều này cho phép tham số hóa các client với các request khác nhau, xếp hàng đợi thực thi, hỗ trợ hoàn tác (Undo/Redo) trong các phần mềm soạn thảo.",
+    "difficulty": "medium",
+    "tags": [
+      "CommandPattern",
+      "UndoRedo",
+      "BehavioralPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q56",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Mẫu thiết kế Template Method Pattern sử dụng cơ chế nào để định nghĩa khung sườn (skeleton) của một thuật toán?",
+    "code": null,
+    "options": [
+      "Định nghĩa cấu trúc các bước của thuật toán trong một phương thức 'final' ở lớp cha, và trì hoãn việc cài đặt cụ thể một số bước cho các lớp con thông qua các phương thức trừu tượng (abstract methods)",
+      "Dùng con trỏ hàm trong ngôn ngữ C",
+      "Tự động sinh mã nguồn bằng trình thông dịch",
+      "Sử dụng biến static để lưu trữ kết quả"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Template Method nằm ở lớp cha (thường là abstract class), chứa phương thức khung (thường là final để cấm con sửa thứ tự các bước). Các bước con được khai báo abstract hoặc hook method để các lớp con tự do cài đặt chi tiết mà không làm thay đổi cấu trúc thuật toán chung.",
+    "difficulty": "medium",
+    "tags": [
+      "TemplateMethod",
+      "Inheritance",
+      "BehavioralPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q57",
+    "lessonId": 6,
+    "type": "multiple",
+    "title": "Nguyên lý Phân tách Giao diện (Interface Segregation Principle - chữ I trong SOLID) khuyên lập trình viên điều gì?",
+    "code": null,
+    "options": [
+      "Không nên ép buộc một client phải phụ thuộc vào các phương thức trong interface mà nó không sử dụng",
+      "Nên chia nhỏ một interface 'béo' (Fat interface) có quá nhiều phương thức thành nhiều interface nhỏ hơn, tập trung vào các vai trò cụ thể (Role-based interfaces)",
+      "Mỗi interface chỉ nên phục vụ một mục đích chuyên biệt cho một nhóm client cụ thể",
+      "Bắt buộc tất cả các phương thức trong interface phải được viết code cài đặt sẵn"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "ISP khuyên: thà có nhiều interface nhỏ chuyên biệt còn hơn một interface khổng lồ chứa hàng chục phương thức buộc các lớp implement phải viết thân hàm rỗng cho những phương thức nó không cần dùng.",
+    "difficulty": "medium",
+    "tags": [
+      "ISP",
+      "SOLID",
+      "InterfaceDesign"
+    ]
+  },
+  {
+    "id": "L6_Q58",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Đoạn mã sau áp dụng mẫu thiết kế nào?",
+    "code": "interface PaymentStrategy {\n    void pay(int amount);\n}\nclass CreditCardPayment implements PaymentStrategy {\n    public void pay(int amount) { System.out.println(\"Card: \" + amount); }\n}\nclass PaypalPayment implements PaymentStrategy {\n    public void pay(int amount) { System.out.println(\"Paypal: \" + amount); }\n}\nclass ShoppingCart {\n    private PaymentStrategy strategy;\n    public void setPaymentStrategy(PaymentStrategy s) { this.strategy = s; }\n    public void checkout(int amount) { strategy.pay(amount); }\n}",
+    "options": [
+      "Strategy Pattern",
+      "State Pattern",
+      "Decorator Pattern",
+      "Singleton Pattern"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Đây là ví dụ kinh điển về Strategy Pattern: định nghĩa một họ các thuật toán thanh toán (CreditCard, Paypal), đóng gói từng thuật toán và cho phép hoán đổi linh hoạt bên trong ShoppingCart tại thời điểm chạy.",
+    "difficulty": "easy",
+    "tags": [
+      "StrategyPattern",
+      "PaymentExample",
+      "BehavioralPatterns"
+    ]
+  },
+  {
+    "id": "L6_Q59",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Xem xét đoạn mã bọc luồng Decorator sau. Kết quả in ra là gì?",
+    "code": "interface Text {\n    String getContent();\n}\nclass SimpleText implements Text {\n    public String getContent() { return \"Hello\"; }\n}\nclass BoldDecorator implements Text {\n    private Text text;\n    BoldDecorator(Text t) { this.text = t; }\n    public String getContent() { return \"<b>\" + text.getContent() + \"</b>\"; }\n}\npublic class Main {\n    public static void main(String[] args) {\n        Text t = new BoldDecorator(new SimpleText());\n        System.out.println(t.getContent());\n    }\n}",
+    "options": [
+      "<b>Hello</b>",
+      "Hello",
+      "<b></b>",
+      "Lỗi biên dịch"
+    ],
+    "correctAnswer": 0,
+    "explanation": "BoldDecorator bọc lấy SimpleText. Khi gọi t.getContent(), BoldDecorator lấy nội dung từ SimpleText (\"Hello\") và bổ sung thêm thẻ <b>...</b> xung quanh, in ra kết quả '<b>Hello</b>'.",
+    "difficulty": "easy",
+    "tags": [
+      "DecoratorPattern",
+      "CodeSnippet",
+      "Output"
+    ]
+  },
+  {
+    "id": "L6_Q60",
+    "lessonId": 6,
+    "type": "single",
+    "title": "Nguyên lý Đơn trách nhiệm (Single Responsibility Principle - chữ S trong SOLID) định nghĩa tiêu chuẩn gì cho một lớp?",
+    "code": null,
+    "options": [
+      "Một lớp chỉ nên có một và chỉ một lý do duy nhất để thay đổi (A class should have only one reason to change)",
+      "Một lớp chỉ được phép có duy nhất một phương thức public",
+      "Một lớp chỉ được phép có duy nhất một thuộc tính",
+      "Mỗi project chỉ được phép có một lập trình viên duy nhất chịu trách nhiệm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SRP định nghĩa rằng một lớp chỉ nên đảm nhận một trách nhiệm duy nhất trong hệ thống và chỉ có một tác nhân (actor) hoặc một lý do duy nhất khiến nó phải thay đổi. Tách riêng logic tính toán, logic hiển thị và logic lưu trữ DB vào các lớp khác nhau là ví dụ chuẩn của SRP.",
+    "difficulty": "easy",
+    "tags": [
+      "SRP",
+      "SOLID",
+      "ClassDesign"
+    ]
   }
 ]

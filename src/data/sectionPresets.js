@@ -396,6 +396,50 @@ export const SECTION_PRESETS = [
           "L5_Q44",
           "L5_Q45"
         ]
+      },
+      {
+        "id": "sec-5D",
+        "code": "Đề 5D",
+        "title": "Bài 5 - Đề 5D (Hợp đồng equals & hashCode, Phân loại Map/Set & Fail-Fast)",
+        "questionIds": [
+          "L5_Q46",
+          "L5_Q47",
+          "L5_Q48",
+          "L5_Q49",
+          "L5_Q50",
+          "L5_Q51",
+          "L5_Q52",
+          "L5_Q53",
+          "L5_Q54",
+          "L5_Q55",
+          "L5_Q56",
+          "L5_Q57",
+          "L5_Q58",
+          "L5_Q59",
+          "L5_Q60"
+        ]
+      },
+      {
+        "id": "sec-5E",
+        "code": "Đề 5E",
+        "title": "Bài 5 - Đề 5E (Ngoại lệ chuyên sâu, Exception Masking & Serialization)",
+        "questionIds": [
+          "L5_Q61",
+          "L5_Q62",
+          "L5_Q63",
+          "L5_Q64",
+          "L5_Q65",
+          "L5_Q66",
+          "L5_Q67",
+          "L5_Q68",
+          "L5_Q69",
+          "L5_Q70",
+          "L5_Q71",
+          "L5_Q72",
+          "L5_Q73",
+          "L5_Q74",
+          "L5_Q75"
+        ]
       }
     ]
   },
@@ -446,6 +490,50 @@ export const SECTION_PRESETS = [
           "L6_Q29",
           "L6_Q30"
         ]
+      },
+      {
+        "id": "sec-6C",
+        "code": "Đề 6C",
+        "title": "Bài 6 - Đề 6C (Creational & Structural Patterns Nâng Cao: Singleton, Factory, Builder)",
+        "questionIds": [
+          "L6_Q31",
+          "L6_Q32",
+          "L6_Q33",
+          "L6_Q34",
+          "L6_Q35",
+          "L6_Q36",
+          "L6_Q37",
+          "L6_Q38",
+          "L6_Q39",
+          "L6_Q40",
+          "L6_Q41",
+          "L6_Q42",
+          "L6_Q43",
+          "L6_Q44",
+          "L6_Q45"
+        ]
+      },
+      {
+        "id": "sec-6D",
+        "code": "Đề 6D",
+        "title": "Bài 6 - Đề 6D (Behavioral Patterns, Kiến Trúc MVC & Nguyên Lý SOLID)",
+        "questionIds": [
+          "L6_Q46",
+          "L6_Q47",
+          "L6_Q48",
+          "L6_Q49",
+          "L6_Q50",
+          "L6_Q51",
+          "L6_Q52",
+          "L6_Q53",
+          "L6_Q54",
+          "L6_Q55",
+          "L6_Q56",
+          "L6_Q57",
+          "L6_Q58",
+          "L6_Q59",
+          "L6_Q60"
+        ]
       }
     ]
   },
@@ -495,6 +583,50 @@ export const SECTION_PRESETS = [
           "L7_Q28",
           "L7_Q29",
           "L7_Q30"
+        ]
+      },
+      {
+        "id": "sec-7C",
+        "code": "Đề 7C",
+        "title": "Bài 7 - Đề 7C (Đồng Bộ Hóa, Monitor Lock, Giao Tiếp Luồng & volatile)",
+        "questionIds": [
+          "L7_Q31",
+          "L7_Q32",
+          "L7_Q33",
+          "L7_Q34",
+          "L7_Q35",
+          "L7_Q36",
+          "L7_Q37",
+          "L7_Q38",
+          "L7_Q39",
+          "L7_Q40",
+          "L7_Q41",
+          "L7_Q42",
+          "L7_Q43",
+          "L7_Q44",
+          "L7_Q45"
+        ]
+      },
+      {
+        "id": "sec-7D",
+        "code": "Đề 7D",
+        "title": "Bài 7 - Đề 7D (Deadlock, ReentrantLock, ExecutorService & Concurrency)",
+        "questionIds": [
+          "L7_Q46",
+          "L7_Q47",
+          "L7_Q48",
+          "L7_Q49",
+          "L7_Q50",
+          "L7_Q51",
+          "L7_Q52",
+          "L7_Q53",
+          "L7_Q54",
+          "L7_Q55",
+          "L7_Q56",
+          "L7_Q57",
+          "L7_Q58",
+          "L7_Q59",
+          "L7_Q60"
         ]
       }
     ]

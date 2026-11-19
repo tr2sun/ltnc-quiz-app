@@ -612,5 +612,668 @@
       "TDD",
       "Red-Green-Refactor"
     ]
+  },
+  {
+    "id": "L8_Q31",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Trong JUnit 5, chế độ vòng đời mặc định của một Test Class (@TestInstance(Lifecycle.PER_METHOD)) có cơ chế hoạt động như thế nào?",
+    "code": null,
+    "options": [
+      "Mỗi phương thức kiểm thử (@Test) sẽ được thực thi trên một thể hiện (instance) hoàn toàn mới của lớp test; do đó các phương thức @BeforeAll và @AfterAll bắt buộc phải được khai báo là 'static'",
+      "Tất cả các phương thức @Test dùng chung duy nhất một instance trong suốt vòng đời",
+      "Mỗi @Test method sẽ được chạy trong một tiến trình (process) hệ điều hành riêng biệt",
+      "JUnit 5 không hỗ trợ phương thức @BeforeAll và @AfterAll"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Mặc định trong JUnit (từ JUnit 4 đến JUnit 5), để đảm bảo tính độc lập tuyệt đối giữa các bài test (Test Isolation), mỗi test method được chạy trên một đối tượng test class mới. Vì chưa có instance nào được tạo khi chuẩn bị test class, phương thức @BeforeAll và @AfterAll bắt buộc phải là static (trừ khi cấu hình @TestInstance(Lifecycle.PER_CLASS)).",
+    "difficulty": "medium",
+    "tags": [
+      "JUnit5",
+      "TestInstance",
+      "Lifecycle"
+    ]
+  },
+  {
+    "id": "L8_Q32",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Ưu điểm vượt trội lớn nhất của phương thức 'assertAll()' trong JUnit 5 so với việc viết nhiều lệnh 'assertEquals()' liên tiếp truyền thống là gì?",
+    "code": "assertAll(\"Kiem tra sinh vien\",\n    () -> assertEquals(\"Nam\", student.getName()),\n    () -> assertEquals(20, student.getAge()),\n    () -> assertEquals(\"IT\", student.getMajor())\n);",
+    "options": [
+      "Tất cả các assertions bên trong đều được thực thi và báo cáo lỗi đầy đủ, kể cả khi có một assertion ở giữa bị thất bại (không bị dừng chương trình đột ngột)",
+      "Chạy các assertions song song trên 3 luồng CPU khác nhau",
+      "Tự động sửa chữa dữ liệu của đối tượng nếu assertion bị sai",
+      "Chỉ dùng được cho các kiểu dữ liệu số nguyên"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong kiểm thử truyền thống, nếu assertion thứ nhất thất bại (ném AssertionError), phương thức test sẽ dừng ngay lập tức và bạn không thể biết các assertion 2 và 3 phía sau pass hay fail. assertAll() thực hiện gom nhóm (Grouped Assertions): nó chạy hết toàn bộ các assertions bên trong và báo cáo tổng hợp tất cả các lỗi xảy ra.",
+    "difficulty": "medium",
+    "tags": [
+      "assertAll",
+      "JUnit5",
+      "Assertions"
+    ]
+  },
+  {
+    "id": "L8_Q33",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Để kiểm tra một đoạn mã có ném đúng loại ngoại lệ mong muốn hay không trong JUnit 5, phương thức nào sau đây là chuẩn mực và hiện đại nhất?",
+    "code": "Exception ex = assertThrows(IllegalArgumentException.class, () -> {\n    calculator.divide(10, 0);\n});\nassertEquals(\"Khong the chia cho 0\", ex.getMessage());",
+    "options": [
+      "assertThrows(ExpectedException.class, Executable) - trả về chính đối tượng ngoại lệ để tiếp tục kiểm tra thông điệp lỗi (message)",
+      "Sử dụng thuộc tính @Test(expected = IllegalArgumentException.class) giống JUnit 4",
+      "Bọc trong khối try-catch thủ công và gọi fail() ở cuối khối try",
+      "assertEquals(IllegalArgumentException.class, calculator.divide(10, 0))"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JUnit 5 loại bỏ thuộc tính 'expected' của @Test và thay thế bằng phương thức hàm (Functional Assertion) 'assertThrows()'. Nó nhận một biểu thức Lambda (Executable), kiểm tra chính xác ngoại lệ được ném ra, và trả về đối tượng exception đó để lập trình viên có thể kiểm tra sâu hơn (như ex.getMessage(), ex.getCause()).",
+    "difficulty": "medium",
+    "tags": [
+      "assertThrows",
+      "ExceptionTesting",
+      "JUnit5"
+    ]
+  },
+  {
+    "id": "L8_Q34",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Về tính năng Kiểm thử tham số hóa (@ParameterizedTest) trong JUnit 5, những nguồn cung cấp dữ liệu nào sau đây được hỗ trợ chính thức?",
+    "code": null,
+    "options": [
+      "@ValueSource: cung cấp một mảng các giá trị nguyên thủy hoặc chuỗi (ví dụ: ints = {1, 2, 3}, strings = {\"a\", \"b\"})",
+      "@CsvSource: cung cấp danh sách các dòng dữ liệu dạng CSV (ví dụ: {\"apple, 1\", \"banana, 2\"})",
+      "@MethodSource: chỉ định một phương thức static trả về Stream/Collection các đối số phức tạp",
+      "@EnumSource: tự động duyệt qua các hằng số của một kiểu enum cụ thể"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "JUnit 5 hỗ trợ đầy đủ và đa dạng các nguồn cấp dữ liệu cho @ParameterizedTest: @ValueSource (mảng đơn giản), @EnumSource (duyệt enum), @CsvSource (nhiều tham số trên dòng), @CsvFileSource (đọc từ file .csv bên ngoài), và @MethodSource (dùng Stream/List tùy biến linh hoạt).",
+    "difficulty": "easy",
+    "tags": [
+      "ParameterizedTest",
+      "ValueSource",
+      "CsvSource",
+      "MethodSource"
+    ]
+  },
+  {
+    "id": "L8_Q35",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Cho biến nguyên 'age' có miền giá trị hợp lệ là [18, 60]. Theo kỹ thuật Phân tích giá trị biên 2-giá trị (2-value Boundary Value Analysis chuẩn), bộ giá trị kiểm thử tối thiểu là gì?",
+    "code": null,
+    "options": [
+      "{17, 18, 60, 61}",
+      "{18, 60}",
+      "{17, 18, 19, 59, 60, 61}",
+      "{0, 18, 60, 100}"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong kỹ thuật phân tích giá trị biên 2-value tiêu chuẩn (Standard 2-value BVA): tại mỗi biên (Min và Max), ta kiểm tra đúng giá trị tại biên và giá trị ngay sát ngoài biên không hợp lệ. Với đoạn [18, 60]: Biên dưới có 18 (hợp lệ) và 17 (ngay ngoài biên dưới); Biên trên có 60 (hợp lệ) và 61 (ngay ngoài biên trên). Bộ giá trị biên là {17, 18, 60, 61}.",
+    "difficulty": "medium",
+    "tags": [
+      "BVA",
+      "BoundaryValueAnalysis",
+      "BlackBoxTesting"
+    ]
+  },
+  {
+    "id": "L8_Q36",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Cho một trường nhập điểm thi có miền giá trị hợp lệ là các số nguyên từ 0 đến 10. Kỹ thuật Phân hoạch tương đương (Equivalence Partitioning) chia miền đầu vào thành các lớp nào?",
+    "code": null,
+    "options": [
+      "1 lớp hợp lệ: [0, 10] và 2 lớp không hợp lệ: (< 0) và (> 10)",
+      "Chỉ có 1 lớp duy nhất là [0, 10]",
+      "11 lớp riêng biệt từ 0 đến 10",
+      "2 lớp: số chẵn và số lẻ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Theo lý thuyết phân hoạch tương đương (Equivalence Partitioning), ta chia miền giá trị thành: 1 Phân lớp tương đương hợp lệ (Valid equivalence class: 0 <= score <= 10) và các Phân lớp không hợp lệ (Invalid equivalence classes: score < 0 và score > 10). Mỗi lớp chỉ cần chọn 1 giá trị đại diện để kiểm thử.",
+    "difficulty": "easy",
+    "tags": [
+      "EquivalencePartitioning",
+      "BlackBoxTesting",
+      "TestDesign"
+    ]
+  },
+  {
+    "id": "L8_Q37",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Phân biệt các cấp độ bao phủ kiểm thử (Test Coverage) trong kiểm thử hộp trắng (White-box Testing):",
+    "code": null,
+    "options": [
+      "Statement Coverage (Bao phủ dòng lệnh): Đo lường tỷ lệ phần trăm các câu lệnh mã nguồn được thực thi ít nhất một lần",
+      "Branch Coverage (Bao phủ nhánh / Decision Coverage): Đo lường tỷ lệ phần trăm các nhánh rẽ điều kiện (True/False) của các khối if/switch được duyệt qua",
+      "Branch Coverage luôn đảm bảo độ tin cậy và khắt khe hơn Statement Coverage (100% Branch Coverage đảm bảo 100% Statement Coverage, nhưng chiều ngược lại không đúng)",
+      "Statement Coverage là tiêu chuẩn kiểm thử duy nhất cần đạt để đảm bảo phần mềm không còn lỗi"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 đều chính xác: Branch coverage yêu cầu cả nhánh True và False của câu lệnh rẽ nhánh đều phải được test, do đó nó bao hàm Statement coverage. Statement coverage không thể phát hiện lỗi khi thiếu nhánh else rỗng.",
+    "difficulty": "medium",
+    "tags": [
+      "TestCoverage",
+      "BranchCoverage",
+      "StatementCoverage"
+    ]
+  },
+  {
+    "id": "L8_Q38",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Trong JUnit 5, sự khác biệt giữa 'assertTimeout()' và 'assertTimeoutPreemptively()' là gì?",
+    "code": null,
+    "options": [
+      "assertTimeoutPreemptively() sẽ thực thi tác vụ trong một luồng riêng biệt và ngắt cưỡng bức (preemptively abort) tác vụ đó ngay khi hết thời gian quy định; còn assertTimeout() để tác vụ chạy hết rồi mới so sánh tổng thời gian thực thi",
+      "assertTimeout() dùng đơn vị micro giây, còn assertTimeoutPreemptively() dùng đơn vị giây",
+      "assertTimeout() chỉ chạy được trên hệ điều hành Linux",
+      "Không có sự khác biệt nào giữa hai phương thức"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nếu tác vụ bị rơi vào vòng lặp vô hạn (Infinite Loop), assertTimeout() sẽ bị treo mãi mãi không dừng cho đến khi toàn bộ quá trình test bị kill. Ngược lại, assertTimeoutPreemptively() chạy tác vụ trên một Thread khác và lập tức ngắt luồng đó khi chạm ngưỡng timeout, giúp bộ test không bị treo cứng.",
+    "difficulty": "hard",
+    "tags": [
+      "assertTimeout",
+      "TimeoutPreemptively",
+      "JUnit5"
+    ]
+  },
+  {
+    "id": "L8_Q39",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Xem xét đoạn mã test JUnit 5 sau. Kết quả chạy bài test là gì?",
+    "code": "@Test\nvoid testMath() {\n    assertEquals(10, 5 + 5);\n    assertEquals(20, 10 * 3, \"Nhan sai!\");\n    assertEquals(4, 8 / 2);\n}",
+    "options": [
+      "Bài test bị THẤT BẠI (Failed) tại câu lệnh thứ 2 với thông điệp 'Nhan sai!', và câu lệnh thứ 3 (8 / 2) KHÔNG BAO GIỜ được chạy",
+      "Cả 3 câu lệnh đều được thực thi và in ra thông báo lỗi ở cuối",
+      "Bài test vẫn được đánh dấu là Passed vì câu lệnh 1 và 3 đúng",
+      "Ném ngoại lệ ArithmeticException"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong JUnit, một câu lệnh assert thất bại sẽ ném ra lỗi java.lang.AssertionError. Khi câu lệnh thứ 2 (10 * 3 == 30 != 20) thất bại, phương thức test bị ngắt luồng ngay tại đó, câu lệnh thứ 3 hoàn toàn không được thực thi. Để chạy được cả 3 câu lệnh, phải dùng assertAll().",
+    "difficulty": "easy",
+    "tags": [
+      "AssertionError",
+      "JUnitExecutionFlow",
+      "Output"
+    ]
+  },
+  {
+    "id": "L8_Q40",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Những khẳng định nào sau đây về thư viện Mockito (Mocking framework trong Java) là ĐÚNG?",
+    "code": null,
+    "options": [
+      "Mockito cho phép tạo ra các đối tượng giả lập (Mock objects) để cô lập đơn vị cần kiểm thử (Unit under test) khỏi các thành phần phụ thuộc bên ngoài như Database, Network, API",
+      "Phương thức when(mock.method()).thenReturn(value) dùng để định nghĩa trước hành vi (Stubbing) cho phương thức của đối tượng mock",
+      "Phương thức verify(mock, times(1)).someMethod() dùng để kiểm tra xem phương thức của mock object có thực sự được gọi đúng số lần kỳ vọng hay không",
+      "Mockito chỉ có thể chạy được khi máy tính được kết nối Internet"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Mockito là framework mock hàng đầu cho Java, hỗ trợ tạo mock object, stubbing (when-thenReturn) và xác minh tương tác (verify). Nó hoạt động cục bộ trong bộ nhớ JVM, không cần internet.",
+    "difficulty": "medium",
+    "tags": [
+      "Mockito",
+      "Mocking",
+      "Stubbing",
+      "Verify"
+    ]
+  },
+  {
+    "id": "L8_Q41",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Annotation nào trong JUnit 5 được sử dụng để tạm thời vô hiệu hóa (bỏ qua không chạy) một phương thức test hoặc toàn bộ một test class?",
+    "code": null,
+    "options": [
+      "@Disabled (có thể truyền kèm lý do: @Disabled(\"Chờ fix bug #102\"))",
+      "@Ignore",
+      "@Skip",
+      "@Deprecated"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong JUnit 4 người ta dùng @Ignore. Sang JUnit 5 (JUnit Jupiter), annotation này được đổi tên thành @Disabled. Khi chạy test, JUnit 5 sẽ bỏ qua và đánh dấu test case là Skipped/Disabled.",
+    "difficulty": "easy",
+    "tags": [
+      "DisabledAnnotation",
+      "JUnit5VsJUnit4",
+      "Annotations"
+    ]
+  },
+  {
+    "id": "L8_Q42",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Cho phương thức tính tiền giảm giá: nếu số lượng mua >= 100 thì giảm 10%, nếu < 100 thì không giảm. Dữ liệu kiểm thử theo Phân tích giá trị biên (BVA) để kiểm tra điểm biên này là:",
+    "code": null,
+    "options": [
+      "99 và 100",
+      "50 và 150",
+      "0 và 1000",
+      "100 và 101"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biên quyết định thay đổi hành vi logic ở đây là giá trị 100. Điểm 99 (< 100: không giảm) và điểm 100 (>= 100: được giảm 10%) là hai giá trị biên sát nhau quyết định tính đúng đắn của phép so sánh (>= vs >).",
+    "difficulty": "easy",
+    "tags": [
+      "BVA",
+      "DiscountTesting",
+      "BoundaryPoints"
+    ]
+  },
+  {
+    "id": "L8_Q43",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Nguyên tắc F.I.R.S.T trong kiểm thử đơn vị (Unit Testing) chuẩn mực bao gồm những yếu tố nào?",
+    "code": null,
+    "options": [
+      "Fast (Nhanh): Các bài unit test phải chạy cực nhanh (vài mili-giây) để lập trình viên có thể chạy thường xuyên",
+      "Independent / Isolated (Độc lập): Các bài test không được phụ thuộc lẫn nhau, thứ tự chạy các test case không làm thay đổi kết quả",
+      "Repeatable (Lặp lại được): Bài test phải cho kết quả giống hệt nhau trong mọi môi trường (máy dev, máy CI, máy test)",
+      "Self-validating (Tự kiểm chứng): Bài test phải tự động xác định Pass hoặc Fail qua assertion mà không cần con người đọc log kiểm tra bằng mắt"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Nguyên tắc FIRST gồm: Fast (nhanh), Independent (độc lập), Repeatable (lặp lại được ở mọi môi trường), Self-validating (tự động báo kết quả), Timely/Thorough (kịp thời, viết song hành hoặc trước code - TDD). Cả 4 ý đều đúng.",
+    "difficulty": "medium",
+    "tags": [
+      "FIRSTPrinciples",
+      "BestPractices",
+      "UnitTesting"
+    ]
+  },
+  {
+    "id": "L8_Q44",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Trong JUnit 5, nếu muốn hiển thị một tên mô tả bài kiểm thử bằng tiếng Việt rõ ràng trên giao diện báo cáo (thay vì tên hàm tiếng Anh camelCase), ta sử dụng annotation nào?",
+    "code": "@Test\n@DisplayName(\"Kiem tra dang nhap voi mat khau rong\")\nvoid testEmptyPassword() { ... }",
+    "options": [
+      "@DisplayName",
+      "@TestName",
+      "@Description",
+      "@Label"
+    ],
+    "correctAnswer": 0,
+    "explanation": "JUnit 5 cung cấp annotation @DisplayName cho phép lập trình viên đặt tiêu đề tùy chỉnh cho test class hoặc test method, hỗ trợ cả ký tự đặc biệt, khoảng trắng và emoji, giúp báo cáo kiểm thử cực kỳ trực quan và dễ hiểu.",
+    "difficulty": "easy",
+    "tags": [
+      "DisplayName",
+      "JUnit5",
+      "Annotations"
+    ]
+  },
+  {
+    "id": "L8_Q45",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Khái niệm 'Regression Testing' (Kiểm thử hồi quy) có mục tiêu chính là gì?",
+    "code": null,
+    "options": [
+      "Chạy lại bộ kiểm thử tự động sau khi mã nguồn được sửa đổi hoặc thêm tính năng mới nhằm đảm bảo các chức năng cũ đã hoạt động ổn định trước đây không bị hỏng hóc",
+      "Kiểm thử khả năng chịu tải của hệ thống khi có 10.000 người dùng truy cập",
+      "Chỉ kiểm tra giao diện người dùng trên điện thoại di động",
+      "Kiểm tra tính tương thích của máy in"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Kiểm thử hồi quy (Regression Testing) là việc thực thi lại các ca kiểm thử sẵn có để kiểm chứng rằng việc sửa lỗi (bug fix), tái cấu trúc (refactoring) hoặc bổ sung tính năng mới không vô tình gây ra các lỗi mới trên các tính năng đang hoạt động bình thường.",
+    "difficulty": "easy",
+    "tags": [
+      "RegressionTesting",
+      "SoftwareTesting",
+      "QualityAssurance"
+    ]
+  },
+  {
+    "id": "L8_Q46",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Theo định nghĩa của Martin Fowler, 'Tái cấu trúc mã nguồn' (Refactoring) là quá trình gì?",
+    "code": null,
+    "options": [
+      "Thay đổi cấu trúc nội bộ của phần mềm để làm cho mã nguồn dễ hiểu hơn, sạch hơn và chi phí sửa đổi rẻ hơn mà KHÔNG LÀM THAY ĐỔI hành vi bên ngoài (observable behavior) của phần mềm",
+      "Viết lại toàn bộ phần mềm từ đầu bằng một ngôn ngữ lập trình khác",
+      "Bổ sung thêm thật nhiều tính năng mới cho người dùng",
+      "Sửa chữa các lỗi chức năng và thay đổi giao diện phần mềm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy tắc cốt lõi của Refactoring: Cải thiện thiết kế nội bộ (clean code, giảm nợ kỹ thuật) nhưng hành vi bên ngoài nhìn từ phía người dùng/client phải được giữ nguyên vẹn 100% (mọi bài unit test đang pass phải tiếp tục pass sau khi refactor).",
+    "difficulty": "easy",
+    "tags": [
+      "RefactoringDefinition",
+      "MartinFowler",
+      "CleanCode"
+    ]
+  },
+  {
+    "id": "L8_Q47",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Code Smell 'Feature Envy' (Ghen tị tính năng) được định nghĩa như thế nào?",
+    "code": "class Order {\n    double calculateDiscount(Customer c) {\n        // Phuong thuc nay lien tuc goi cac getter cua Customer:\n        if (c.getMembership().equals(\"VIP\") && c.getPoints() > 100 && c.getCity().equals(\"HN\")) {\n            return c.getBaseDiscount() * 1.5;\n        }\n        return 0;\n    }\n}",
+    "options": [
+      "Một phương thức trong lớp A truy cập dữ liệu và gọi các phương thức của lớp B nhiều hơn hẳn so với việc tương tác với dữ liệu của chính lớp A",
+      "Một lớp có quá nhiều thuộc tính nguyên thủy",
+      "Hai lớp kế thừa lẫn nhau tạo thành chu trình",
+      "Một phương thức có quá nhiều lệnh if-else"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Feature Envy xảy ra khi một method dường như 'thích' sống trong lớp khác hơn là lớp hiện tại của nó vì nó thao tác trên dữ liệu của lớp kia nhiều hơn. Giải pháp tái cấu trúc tiêu chuẩn cho Feature Envy là dùng kỹ thuật 'Move Method' để chuyển phương thức đó sang lớp sở hữu dữ liệu.",
+    "difficulty": "medium",
+    "tags": [
+      "FeatureEnvy",
+      "CodeSmells",
+      "MoveMethod"
+    ]
+  },
+  {
+    "id": "L8_Q48",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc nào là giải pháp phù hợp nhất để khắc phục Code Smell 'Long Method' (Phương thức quá dài)?",
+    "code": null,
+    "options": [
+      "Extract Method (Trích xuất các đoạn mã con có cùng một mục đích logic thành các phương thức nhỏ, độc lập và đặt tên rõ nghĩa)",
+      "Inline Method (Gộp tất cả các phương thức nhỏ lại thành một phương thức duy nhất)",
+      "Thêm thật nhiều dòng ghi chú (comments) vào giữa phương thức",
+      "Chuyển phương thức đó thành phương thức static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Extract Method là kỹ thuật refactoring phổ biến và hiệu quả nhất cho Long Method. Ta tìm những đoạn mã thực hiện một nhiệm vụ cụ thể, trích xuất nó thành một phương thức riêng và đặt tên theo đúng ý định (Intention-revealing name), biến code trở thành tài liệu tự giải thích.",
+    "difficulty": "easy",
+    "tags": [
+      "ExtractMethod",
+      "LongMethod",
+      "Refactoring"
+    ]
+  },
+  {
+    "id": "L8_Q49",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Đoạn mã sau vi phạm Code Smell 'Switch Statements / Complex Conditionals' (giống Bài 4 trong Đề thi mẫu UET). Kỹ thuật tái cấu trúc hướng đối tượng chuẩn mực nhất là gì?",
+    "code": "class Logger {\n    void log(String level, String message) {\n        if (level.equals(\"INFO\")) {\n            System.out.println(\"INFO: \" + message);\n        } else if (level.equals(\"ERROR\")) {\n            System.out.println(\"ERROR: \" + message);\n        } else if (level.equals(\"DEBUG\")) {\n            System.out.println(\"DEBUG: \" + message);\n        }\n    }\n}",
+    "options": [
+      "Replace Conditional with Polymorphism: Tạo interface/abstract class LogFormatter hoặc LogStrategy và triển khai các lớp con InfoLogger, ErrorLogger, DebugLogger độc lập tuân thủ Open/Closed Principle",
+      "Chuyển đổi chuỗi if-else thành câu lệnh switch-case để chạy nhanh hơn",
+      "Gộp tất cả các loại log thành một dòng duy nhất",
+      "Khai báo các biến level thành các số nguyên int 1, 2, 3"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Chuỗi if-else hoặc switch kiểm tra loại đối tượng (Type checking) vi phạm nguyên lý Open/Closed (mỗi khi thêm log level mới như WARN, TRACE bắt buộc phải sửa mã nguồn cũ). Kỹ thuật chuẩn là 'Replace Conditional with Polymorphism' hoặc áp dụng Strategy Pattern.",
+    "difficulty": "medium",
+    "tags": [
+      "ReplaceConditionalWithPolymorphism",
+      "SampleExamTopic",
+      "CodeSmell"
+    ]
+  },
+  {
+    "id": "L8_Q50",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Code Smell 'God Class' (hoặc Large Class / Blob) là gì và gây ra tác hại gì lớn nhất cho dự án?",
+    "code": null,
+    "options": [
+      "Một lớp phình to nắm giữ quá nhiều thuộc tính, hàng trăm phương thức và ôm đồm quá nhiều trách nhiệm khác nhau; làm phá vỡ nguyên lý Đơn trách nhiệm (SRP), cực kỳ khó bảo trì và dễ gây lỗi dây chuyền",
+      "Một lớp có quá nhiều lớp con kế thừa",
+      "Một lớp không có bất kỳ phương thức nào",
+      "Một lớp được viết bằng ngôn ngữ C++"
+    ],
+    "correctAnswer": 0,
+    "explanation": "God Class là một phản mẫu (anti-pattern) nơi mà một lớp duy nhất biết quá nhiều và làm quá nhiều (từ tính toán logic, kết nối DB đến vẽ giao diện). Giải pháp là dùng kỹ thuật 'Extract Class' để phân tách các trách nhiệm độc lập ra các lớp chuyên biệt.",
+    "difficulty": "easy",
+    "tags": [
+      "GodClass",
+      "LargeClass",
+      "SRP"
+    ]
+  },
+  {
+    "id": "L8_Q51",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Code Smell 'Primitive Obsession' (Ám ảnh kiểu nguyên thủy) thể hiện qua những dấu hiệu nào sau đây?",
+    "code": null,
+    "options": [
+      "Lạm dụng kiểu dữ liệu nguyên thủy (như int, String, double) để đại diện cho các khái niệm nghiệp vụ có ràng buộc (như Số điện thoại, Email, Địa chỉ, Số tiền tệ) thay vì tạo các lớp Value Object nhỏ riêng biệt",
+      "Sử dụng các hằng số chuỗi hoặc số nguyên (Magic Strings/Numbers) làm mã định danh loại thay vì dùng Enum",
+      "Dùng mảng hoặc List các số nguyên để mô phỏng một cấu trúc bản ghi phức tạp",
+      "Sử dụng kiểu boolean cho các biến cờ hiệu logic đúng/sai"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Primitive Obsession là thói quen ngại tạo class mới, dùng String biểu diễn ZipCode/Email/Phone dẫn đến việc phải lặp lại logic validation ở khắp nơi. Giải pháp là 'Replace Data Value with Object' hoặc tạo Enum.",
+    "difficulty": "medium",
+    "tags": [
+      "PrimitiveObsession",
+      "ValueObject",
+      "CodeSmells"
+    ]
+  },
+  {
+    "id": "L8_Q52",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Khi một phương thức nhận quá nhiều tham số (Long Parameter List, ví dụ: 7-8 tham số), kỹ thuật tái cấu trúc nào được khuyến nghị áp dụng?",
+    "code": "void drawWindow(int x, int y, int width, int height, String title, boolean resizable, boolean modal, Color bg);",
+    "options": [
+      "Introduce Parameter Object: Đóng gói các tham số có liên quan chặt chẽ thành một đối tượng độc lập (ví dụ WindowConfig hoặc WindowBounds)",
+      "Chuyển tất cả các tham số thành biến toàn cục (global variables)",
+      "Chuyển tất cả các tham số thành một mảng Object[]",
+      "Nối tất cả các tham số thành một chuỗi String duy nhất cách nhau bởi dấu phẩy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Introduce Parameter Object gom các nhóm dữ liệu thường xuyên đi cùng nhau (Data Clumps) thành một lớp độc lập. Điều này giúp chữ ký phương thức ngắn gọn, dễ mở rộng và dễ đọc hiểu hơn.",
+    "difficulty": "easy",
+    "tags": [
+      "IntroduceParameterObject",
+      "LongParameterList",
+      "Refactoring"
+    ]
+  },
+  {
+    "id": "L8_Q53",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Code Smell 'Refused Bequest' (Từ chối thừa kế) xảy ra trong tình huống nào?",
+    "code": "class Bird {\n    void fly() { System.out.println(\"Flying\"); }\n}\nclass Penguin extends Bird {\n    @Override\n    void fly() {\n        throw new UnsupportedOperationException(\"Chim cánh cụt không biết bay!\");\n    }\n}",
+    "options": [
+      "Lớp con kế thừa từ lớp cha nhưng không sử dụng hoặc từ chối hỗ trợ hành vi của lớp cha (bằng cách override thân hàm rỗng hoặc ném ngoại lệ UnsupportedOperationException), vi phạm nguyên lý LSP",
+      "Lớp cha từ chối cho lớp con kế thừa bằng từ khóa private",
+      "Lớp con không có hàm khởi tạo constructor",
+      "Hai lớp có tên giống nhau"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Refused Bequest chỉ ra rằng quan hệ kế thừa ('is-a') đã bị áp dụng sai lầm trong mô hình hóa. Nếu chim cánh cụt không biết bay, việc cho Penguin kế thừa Bird có hàm fly() vi phạm nguyên lý Liskov (LSP). Giải pháp: Tách nhỏ interface (Flyable) hoặc chuyển từ Kế thừa sang Composition.",
+    "difficulty": "hard",
+    "tags": [
+      "RefusedBequest",
+      "LSP",
+      "InheritanceAbuse"
+    ]
+  },
+  {
+    "id": "L8_Q54",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Phân biệt giữa hai Code Smells đối lập: 'Divergent Change' và 'Shotgun Surgery':",
+    "code": null,
+    "options": [
+      "Divergent Change: Xảy ra khi MỘT lớp duy nhất liên tục bị sửa đổi vì NHIỀU lý do khác nhau (vi phạm nguyên lý Single Responsibility - SRP)",
+      "Shotgun Surgery: Xảy ra khi MỖI LẦN có một thay đổi nhỏ lại buộc bạn phải đi sửa đổi rải rác ở NHIỀU lớp khác nhau trong hệ thống",
+      "Giải pháp cho Divergent Change thường là 'Extract Class' để tách các trách nhiệm ra các lớp riêng",
+      "Giải pháp cho Shotgun Surgery thường là 'Move Method' và 'Move Field' để gom các phần liên quan về cùng một lớp"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Cả 4 phát biểu đều chính xác. Đây là hai mùi mã kinh điển về sự phân tán trách nhiệm: Divergent Change là '1 class bị sửa bởi nhiều lý do'; Shotgun Surgery là '1 lý do sửa bắt buộc phải bắn đạn hoa cải vào hàng loạt class'.",
+    "difficulty": "hard",
+    "tags": [
+      "DivergentChange",
+      "ShotgunSurgery",
+      "Comparison"
+    ]
+  },
+  {
+    "id": "L8_Q55",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật tái cấu trúc 'Replace Temp with Query' nhằm mục đích gì?",
+    "code": "// Truoc:\ndouble basePrice = quantity * itemPrice;\nif (basePrice > 1000) return basePrice * 0.95;\n// Sau:\nif (getBasePrice() > 1000) return getBasePrice() * 0.95;",
+    "options": [
+      "Thay thế một biến tạm thời (local temp variable) bằng việc gọi một phương thức tính toán riêng (Query method), giúp dễ dàng tái sử dụng logic tính toán đó ở các phương thức khác",
+      "Chuyển biến tạm thành câu lệnh truy vấn SQL",
+      "Xóa bỏ hoàn toàn phương thức",
+      "Làm cho biến tạm trở thành biến static"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Biến tạm cục bộ chỉ có phạm vi bên trong một hàm và kích thích hàm đó dài thêm. Trích xuất biến tạm thành một query method (như getBasePrice()) giúp loại bỏ biến thừa và cho phép các hàm khác trong class tái sử dụng logic tính giá cơ sở.",
+    "difficulty": "medium",
+    "tags": [
+      "ReplaceTempWithQuery",
+      "Refactoring",
+      "CleanCode"
+    ]
+  },
+  {
+    "id": "L8_Q56",
+    "lessonId": 8,
+    "type": "multiple",
+    "title": "Thời điểm nào sau đây là thích hợp nhất để tiến hành Tái cấu trúc (Refactoring)?",
+    "code": null,
+    "options": [
+      "Quy tắc 3 lần (Rule of Three): Lần đầu viết code cứ viết; lần 2 thấy tương tự thì lưu ý; lần thứ 3 thấy lặp lại y hệt thì bắt buộc phải refactor (Don't Repeat Yourself - DRY)",
+      "Khi chuẩn bị thêm một tính năng mới: tái cấu trúc trước để việc thêm tính năng mới trở nên dễ dàng và tự nhiên hơn",
+      "Khi sửa một con bug: tái cấu trúc để làm cho luồng logic rõ ràng, giúp tìm ra nguyên nhân gốc của bug",
+      "Chờ đến cuối dự án (sau 2 năm) mới dành 1 tháng duy nhất để refactor toàn bộ hệ thống"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Martin Fowler nhấn mạnh: Refactoring là hoạt động diễn ra thường xuyên, liên tục trong quá trình phát triển phần mềm (theo quy tắc 3 lần, khi thêm feature, khi fix bug). Trì hoãn refactor đến cuối dự án là công thức dẫn tới thất bại.",
+    "difficulty": "easy",
+    "tags": [
+      "WhenToRefactor",
+      "RuleOfThree",
+      "BestPractices"
+    ]
+  },
+  {
+    "id": "L8_Q57",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Điều kiện tiên quyết quan trọng nhất để có thể tự tin tiến hành Refactoring mã nguồn một cách an toàn là gì?",
+    "code": null,
+    "options": [
+      "Hệ thống phải có sẵn một bộ Kiểm thử tự động (Automated Unit Tests) đáng tin cậy với độ bao phủ tốt để chạy lại sau mỗi bước thay đổi nhỏ",
+      "Phải xin phép giám đốc dự án trước mỗi lần đổi tên biến",
+      "Phải tắt máy tính và khởi động lại",
+      "Phải cài đặt phần mềm chống virus"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nền tảng của Refactoring an toàn là 'Solid Suite of Tests'. Không có bộ unit test tự động bảo vệ, lập trình viên sẽ luôn lo sợ việc dọn dẹp code làm hỏng các chức năng đang chạy, dẫn đến việc không ai dám chạm vào mã nguồn cũ (mã nguồn bị thối rữa theo thời gian).",
+    "difficulty": "easy",
+    "tags": [
+      "RefactoringPrerequisite",
+      "UnitTesting",
+      "Safety"
+    ]
+  },
+  {
+    "id": "L8_Q58",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Code Smell 'Speculative Generality' (Tổng quát hóa suy đoán) là gì?",
+    "code": null,
+    "options": [
+      "Tạo ra các class trừu tượng, interface phức tạp và các tham số không dùng đến chỉ vì suy đoán rằng 'trong tương lai có thể ta sẽ cần tới nó' (vi phạm nguyên lý YAGNI - You Aren't Gonna Need It)",
+      "Viết code mà không có chú thích",
+      "Chỉ viết code chạy được trên một hệ điều hành",
+      "Đặt tên biến quá ngắn"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Speculative Generality xảy ra khi lập trình viên cố gắng thiết kế thừa thãi các móc nối, các tham số trừu tượng để đón đầu tương lai. Hậu quả là code trở nên cồng kềnh, khó hiểu mà các tính năng đón đầu đó hầu như không bao giờ được sử dụng thực tế. Nguyên lý YAGNI khuyên chỉ viết những gì hiện tại thực sự cần.",
+    "difficulty": "medium",
+    "tags": [
+      "SpeculativeGenerality",
+      "YAGNI",
+      "CodeSmell"
+    ]
+  },
+  {
+    "id": "L8_Q59",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật 'Extract Interface' thường được áp dụng trong tình huống nào sau đây?",
+    "code": null,
+    "options": [
+      "Khi có nhiều client sử dụng cùng một tập con các phương thức của một class, hoặc khi cần tạo đối tượng Mock phục vụ kiểm thử đơn vị",
+      "Khi muốn gộp hai class thành một",
+      "Khi class có quá ít phương thức",
+      "Khi muốn tăng tốc độ thực thi của CPU"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Extract Interface tách một tập hợp các phương thức thành một giao diện riêng biệt. Điều này giúp áp dụng nguyên lý Phân tách giao diện (ISP) và cho phép các framework như Mockito dễ dàng tạo Mock Object phục vụ unit testing.",
+    "difficulty": "medium",
+    "tags": [
+      "ExtractInterface",
+      "ISP",
+      "RefactoringTechniques"
+    ]
+  },
+  {
+    "id": "L8_Q60",
+    "lessonId": 8,
+    "type": "single",
+    "title": "Kỹ thuật 'Inline Method' là thao tác ngược lại của 'Extract Method'. Khi nào ta nên sử dụng 'Inline Method'?",
+    "code": null,
+    "options": [
+      "Khi phần thân của phương thức cũng rõ nghĩa và ngắn gọn ngang ngửa với tên của chính phương thức đó, làm cho việc gọi gián tiếp qua phương thức trở nên thừa thãi",
+      "Khi phương thức dài hơn 500 dòng code",
+      "Khi phương thức chứa quá nhiều vòng lặp lồng nhau",
+      "Khi muốn biến phương thức thành private"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Nếu bạn có một hàm chỉ đơn giản là: 'boolean isMoreThanFive() { return numberOfItems > 5; }' và hàm này chỉ được gọi ở 1 nơi, việc giữ một hàm riêng biệt như vậy làm rối mắt và tăng số tầng gọi hàm không cần thiết. Ta nên 'Inline Method' đặt trực tiếp biểu thức vào nơi gọi.",
+    "difficulty": "medium",
+    "tags": [
+      "InlineMethod",
+      "Refactoring",
+      "CleanCode"
+    ]
   }
 ]

@@ -678,6 +678,50 @@ export const SECTION_PRESETS = [
           "L8_Q29",
           "L8_Q30"
         ]
+      },
+      {
+        "id": "sec-8C",
+        "code": "Đề 8C",
+        "title": "Bài 8 - Đề 8C (Kiểm Thử JUnit 5 Chuyên Sâu, Vòng Đời Test & BVA)",
+        "questionIds": [
+          "L8_Q31",
+          "L8_Q32",
+          "L8_Q33",
+          "L8_Q34",
+          "L8_Q35",
+          "L8_Q36",
+          "L8_Q37",
+          "L8_Q38",
+          "L8_Q39",
+          "L8_Q40",
+          "L8_Q41",
+          "L8_Q42",
+          "L8_Q43",
+          "L8_Q44",
+          "L8_Q45"
+        ]
+      },
+      {
+        "id": "sec-8D",
+        "code": "Đề 8D",
+        "title": "Bài 8 - Đề 8D (Nhận Diện Code Smells & Kỹ Thuật Tái Cấu Trúc Chuẩn Fowler)",
+        "questionIds": [
+          "L8_Q46",
+          "L8_Q47",
+          "L8_Q48",
+          "L8_Q49",
+          "L8_Q50",
+          "L8_Q51",
+          "L8_Q52",
+          "L8_Q53",
+          "L8_Q54",
+          "L8_Q55",
+          "L8_Q56",
+          "L8_Q57",
+          "L8_Q58",
+          "L8_Q59",
+          "L8_Q60"
+        ]
       }
     ]
   },
@@ -727,6 +771,50 @@ export const SECTION_PRESETS = [
           "L9_Q28",
           "L9_Q29",
           "L9_Q30"
+        ]
+      },
+      {
+        "id": "sec-9C",
+        "code": "Đề 9C",
+        "title": "Bài 9 - Đề 9C (Vòng Đời Xây Dựng Maven/Gradle & Quản Lý Dependencies)",
+        "questionIds": [
+          "L9_Q31",
+          "L9_Q32",
+          "L9_Q33",
+          "L9_Q34",
+          "L9_Q35",
+          "L9_Q36",
+          "L9_Q37",
+          "L9_Q38",
+          "L9_Q39",
+          "L9_Q40",
+          "L9_Q41",
+          "L9_Q42",
+          "L9_Q43",
+          "L9_Q44",
+          "L9_Q45"
+        ]
+      },
+      {
+        "id": "sec-9D",
+        "code": "Đề 9D",
+        "title": "Bài 9 - Đề 9D (Git Workflows, Checkstyle & Tự Động Hóa CI/CD Pipeline)",
+        "questionIds": [
+          "L9_Q46",
+          "L9_Q47",
+          "L9_Q48",
+          "L9_Q49",
+          "L9_Q50",
+          "L9_Q51",
+          "L9_Q52",
+          "L9_Q53",
+          "L9_Q54",
+          "L9_Q55",
+          "L9_Q56",
+          "L9_Q57",
+          "L9_Q58",
+          "L9_Q59",
+          "L9_Q60"
         ]
       }
     ]

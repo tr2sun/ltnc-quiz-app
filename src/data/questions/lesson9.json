@@ -620,5 +620,670 @@
       "Maven",
       "CI-CD"
     ]
+  },
+  {
+    "id": "L9_Q31",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Trong Apache Maven, toạ độ nhận diện duy nhất một thư viện/artifact (GAV Coordinates) bao gồm 3 thành phần cốt lõi nào?",
+    "code": "<dependency>\n    <groupId>org.junit.jupiter</groupId>\n    <artifactId>junit-jupiter</artifactId>\n    <version>5.10.0</version>\n</dependency>",
+    "options": [
+      "groupId (định danh tổ chức/công ty), artifactId (tên sản phẩm/module), version (phiên bản cụ thể)",
+      "fileName, filePath, fileSize",
+      "url, username, password",
+      "package, class, method"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Toạ độ GAV (GroupId - ArtifactId - Version) là chuẩn mực định danh toàn cầu của Maven để phân biệt và định vị chính xác bất kỳ thư viện nhị phân nào trên Maven Central Repository hoặc kho cục bộ ~/.m2/repository.",
+    "difficulty": "easy",
+    "tags": [
+      "Maven",
+      "GAV",
+      "Coordinates",
+      "pom.xml"
+    ]
+  },
+  {
+    "id": "L9_Q32",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Apache Maven tích hợp sẵn 3 Vòng đời xây dựng (Build Lifecycles) độc lập nào sau đây?",
+    "code": null,
+    "options": [
+      "default (xử lý toàn bộ quá trình biên dịch, kiểm thử, đóng gói và triển khai ứng dụng)",
+      "clean (chịu trách nhiệm dọn dẹp thư mục đầu ra target/ để chuẩn bị cho lần build mới)",
+      "site (chịu trách nhiệm tạo tài liệu báo cáo web của dự án)",
+      "compile (là vòng đời riêng biệt chạy song song với clean)"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Maven chỉ có đúng 3 vòng đời tích hợp sẵn: 1. default (core build lifecycle), 2. clean (dọn dẹp), 3. site (tạo báo cáo site). 'compile' là một phase nằm bên trong vòng đời default chứ không phải một lifecycle độc lập.",
+    "difficulty": "medium",
+    "tags": [
+      "MavenLifecycles",
+      "CleanDefaultSite",
+      "BuildAutomation"
+    ]
+  },
+  {
+    "id": "L9_Q33",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Thứ tự sắp xếp đúng của các pha (Phases) cốt lõi trong Vòng đời mặc định (Default Lifecycle) của Maven là gì?",
+    "code": null,
+    "options": [
+      "validate -> compile -> test -> package -> verify -> install -> deploy",
+      "compile -> validate -> test -> install -> package -> deploy",
+      "clean -> compile -> package -> test -> deploy",
+      "test -> compile -> validate -> package -> install"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trình tự chuẩn của Default Lifecycle trong Maven là: 1. validate (kiểm tra dự án hợp lệ) -> 2. compile (biên dịch mã nguồn src/main) -> 3. test (chạy unit test src/test) -> 4. package (đóng gói ra .jar/.war) -> 5. verify (chạy integration test kiểm tra gói) -> 6. install (cài gói vào local repo ~/.m2) -> 7. deploy (đẩy lên remote repo).",
+    "difficulty": "medium",
+    "tags": [
+      "MavenPhases",
+      "DefaultLifecycle",
+      "Order"
+    ]
+  },
+  {
+    "id": "L9_Q34",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Khi bạn chạy lệnh 'mvn install' trong terminal, Maven sẽ thực thi như thế nào?",
+    "code": null,
+    "options": [
+      "Tự động thực thi tuần tự TẤT CẢ các pha đứng trước pha install trong default lifecycle (validate, compile, test, package, verify) rồi mới thực hiện pha install",
+      "Chỉ thực hiện duy nhất pha install mà không biên dịch hay kiểm thử mã nguồn",
+      "Chỉ chạy các bài unit test rồi dừng lại",
+      "Lỗi vì bắt buộc phải gõ đầy đủ tên của tất cả các pha"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Tính chất tuần tự (Sequential nature) của Maven: Khi gọi một phase bất kỳ, Maven sẽ tự động chạy toàn bộ các phase đứng trước nó trong lifecycle đó theo đúng thứ tự. Do đó 'mvn install' sẽ tự động compile, test, package trước khi đưa file jar vào local repository.",
+    "difficulty": "easy",
+    "tags": [
+      "SequentialExecution",
+      "MvnInstall",
+      "MavenPhases"
+    ]
+  },
+  {
+    "id": "L9_Q35",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Phạm vi phụ thuộc 'provided' (<scope>provided</scope>) trong file pom.xml của Maven có đặc điểm gì?",
+    "code": "<dependency>\n    <groupId>javax.servlet</groupId>\n    <artifactId>javax.servlet-api</artifactId>\n    <version>4.0.1</version>\n    <scope>provided</scope>\n</dependency>",
+    "options": [
+      "Thư viện chỉ có mặt trong classpath tại thời điểm Biên dịch (Compile) và Kiểm thử (Test), nhưng KHÔNG ĐƯỢC đóng gói vào file .jar/.war cuối cùng vì môi trường thực thi (như Tomcat, WildFly, JDK) đã cung cấp sẵn thư viện này",
+      "Thư viện chỉ dùng khi chạy unit test",
+      "Thư viện chỉ có mặt khi ứng dụng chạy trên production",
+      "Bắt buộc người dùng phải tự tải file jar thủ công từ Google Drive"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Scope 'provided' thông báo cho Maven rằng: Tôi cần thư viện này để code biên dịch không lỗi (compile-time), nhưng khi đóng gói ra file WAR, đừng nhét file jar này vào WEB-INF/lib vì máy chủ ứng dụng (như Tomcat đã có sẵn servlet-api.jar), giúp tránh xung đột phiên bản tại runtime.",
+    "difficulty": "medium",
+    "tags": [
+      "ProvidedScope",
+      "DependencyScopes",
+      "Maven"
+    ]
+  },
+  {
+    "id": "L9_Q36",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Phân biệt các Dependency Scope trong Maven, những khẳng định nào sau đây là ĐÚNG?",
+    "code": null,
+    "options": [
+      "compile (mặc định): Thư viện có mặt ở cả 3 classpath (compile, test, runtime) và được đóng gói vào sản phẩm cuối cùng",
+      "test: Thư viện chỉ có mặt khi biên dịch và chạy test trong thư mục src/test (như JUnit, Mockito) và không bao giờ bị đóng gói vào sản phẩm phân phối",
+      "runtime: Thư viện không cần thiết khi biên dịch mã nguồn nhưng bắt buộc phải có khi chạy chương trình (ví dụ JDBC Driver của MySQL)",
+      "system: Hoàn toàn giống hệt scope compile"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 là định nghĩa chuẩn xác của 3 scope quan trọng nhất: compile (default, mọi nơi), test (chỉ khi test), runtime (chỉ khi chạy). 4 sai: scope system đòi hỏi phải cấu hình thẻ <systemPath> trỏ vào đường dẫn vật lý cố định trên máy.",
+    "difficulty": "medium",
+    "tags": [
+      "DependencyScopes",
+      "CompileScope",
+      "TestScope",
+      "RuntimeScope"
+    ]
+  },
+  {
+    "id": "L9_Q37",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Khi xảy ra hiện tượng Xung đột phụ thuộc bắc cầu (Transitive Dependency Conflict) giữa hai phiên bản của cùng một thư viện, Maven áp dụng quy tắc nào để quyết định phiên bản chiến thắng?",
+    "code": "Project -> LibA -> LibC v1.0 (Độ sâu 2)\nProject -> LibB -> SubB -> LibC v2.0 (Độ sâu 3)",
+    "options": [
+      "Quy tắc 'Định nghĩa gần nhất' (Nearest-definition wins): Phiên bản nào nằm ở độ sâu nông hơn (gần với project gốc hơn trong cây phụ thuộc) sẽ được chọn (trong ví dụ trên là LibC v1.0)",
+      "Quy tắc phiên bản cao nhất: Luôn chọn LibC v2.0 vì số phiên bản lớn hơn",
+      "Maven sẽ báo lỗi biên dịch và bắt người dùng xóa bớt 1 thư viện",
+      "Chọn ngẫu nhiên 1 trong 2 phiên bản"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Maven giải quyết xung đột dependency theo quy tắc 'Nearest-definition' (Gần nhất thắng). Ở đây LibC v1.0 có độ sâu 2, còn LibC v2.0 có độ sâu 3, do đó v1.0 chiến thắng. Nếu hai phiên bản ở cùng độ sâu, Maven áp dụng quy tắc phụ 'First-declared wins' (khai báo trước thắng).",
+    "difficulty": "hard",
+    "tags": [
+      "TransitiveDependency",
+      "ConflictResolution",
+      "NearestDefinition"
+    ]
+  },
+  {
+    "id": "L9_Q38",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Thư mục nào sau đây là kho lưu trữ Maven cục bộ mặc định (Local Repository) trên máy của lập trình viên?",
+    "code": null,
+    "options": [
+      "~/.m2/repository (trên Linux/macOS) hoặc C:\\Users\\<Username>\\.m2\\repository (trên Windows)",
+      "C:\\Program Files\\Maven\\repo",
+      "Thư mục target/ bên trong mỗi project",
+      "C:\\Windows\\System32\\maven"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Maven tải các thư viện từ Central Repository về lưu trữ tại Local Repository ở thư mục ẩn '.m2/repository' trong user home. Các project khác trên cùng máy tính có thể tái sử dụng các file .jar này mà không cần tải lại từ internet.",
+    "difficulty": "easy",
+    "tags": [
+      "LocalRepository",
+      "M2Folder",
+      "MavenArchitecture"
+    ]
+  },
+  {
+    "id": "L9_Q39",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Trong công cụ xây dựng hiện đại Gradle (build.gradle), cấu trúc đồ thị thực thi các tác vụ (Tasks) được xây dựng dựa trên mô hình toán học nào?",
+    "code": null,
+    "options": [
+      "Đồ thị có hướng không chu trình (DAG - Directed Acyclic Graph)",
+      "Cây nhị phân tìm kiếm cân bằng",
+      "Danh sách liên kết vòng tròn",
+      "Ma trận kề vô hướng"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Gradle sử dụng mô hình DAG (Directed Acyclic Graph) để mô hình hóa sự phụ thuộc giữa các Task (Task Dependency Graph). Nhờ đó Gradle có thể thực thi song song các task độc lập và bỏ qua các task không có sự thay đổi đầu vào/đầu ra (Incremental Build / Up-to-date checks).",
+    "difficulty": "medium",
+    "tags": [
+      "Gradle",
+      "DAG",
+      "TaskGraph",
+      "BuildTools"
+    ]
+  },
+  {
+    "id": "L9_Q40",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Trong Gradle (từ phiên bản 3.4+), phân biệt giữa hai cấu hình khai báo phụ thuộc 'implementation' và 'api':",
+    "code": null,
+    "options": [
+      "'implementation' ngăn chặn rò rỉ phụ thuộc bắc cầu (Transitive dependency leakage) sang các module khác, giúp giảm thời gian biên dịch lại khi module nội bộ thay đổi",
+      "'api' xuất bản công khai thư viện đó sang cho các module phụ thuộc phía sau cùng sử dụng",
+      "'implementation' được khuyến khích sử dụng mặc định thay thế cho cấu hình 'compile' cũ",
+      "'api' làm cho file build chạy nhanh gấp 10 lần 'implementation'"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "1, 2 và 3 là lý do Gradle thay thế 'compile' bằng 'implementation' và 'api'. Dùng 'implementation' che giấu dependency nội bộ, khi library nội bộ update thì các module khác không bị buộc phải recompile lại.",
+    "difficulty": "hard",
+    "tags": [
+      "Gradle",
+      "ImplementationVsApi",
+      "BuildOptimization"
+    ]
+  },
+  {
+    "id": "L9_Q41",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Lệnh Maven nào sau đây biên dịch mã nguồn, chạy toàn bộ unit tests và đóng gói sản phẩm ra file .jar trong thư mục target/ mà KHÔNG cài đặt vào local repo?",
+    "code": null,
+    "options": [
+      "mvn package",
+      "mvn compile",
+      "mvn install",
+      "mvn validate"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Lệnh 'mvn package' thực hiện validate -> compile -> test -> package và tạo ra file artifact (.jar hoặc .war) nằm trong thư mục target/. Nó dừng lại ở phase package và không chạy tiếp sang phase install.",
+    "difficulty": "easy",
+    "tags": [
+      "MvnPackage",
+      "MavenPhases",
+      "Packaging"
+    ]
+  },
+  {
+    "id": "L9_Q42",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Nếu bạn muốn bỏ qua việc chạy các bài kiểm thử unit tests khi build dự án Maven (ví dụ để build nhanh thử nghiệm), tham số dòng lệnh nào sau đây là CHÍNH XÁC?",
+    "code": null,
+    "options": [
+      "mvn package -DskipTests (hoặc -Dmaven.test.skip=true)",
+      "mvn package --no-tests",
+      "mvn package -without-test",
+      "mvn package --ignore-errors"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Cờ '-DskipTests' bỏ qua việc chạy các test case nhưng vẫn biên dịch mã nguồn test. Cờ '-Dmaven.test.skip=true' bỏ qua cả việc biên dịch mã nguồn test lẫn chạy test.",
+    "difficulty": "easy",
+    "tags": [
+      "SkipTests",
+      "MavenFlags",
+      "CLI"
+    ]
+  },
+  {
+    "id": "L9_Q43",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Khối thẻ '<dependencyManagement>' trong file pom.xml của dự án Maven đa module (Multi-module project) có vai trò gì?",
+    "code": "<dependencyManagement>\n    <dependencies>\n        <dependency>\n            <groupId>org.springframework.boot</groupId>\n            <artifactId>spring-boot-dependencies</artifactId>\n            <version>3.2.0</version>\n            <type>pom</type>\n            <scope>import</scope>\n        </dependency>\n    </dependencies>\n</dependencyManagement>",
+    "options": [
+      "Tập trung quản lý phiên bản (Version) và cấu hình của các thư viện ở một nơi duy nhất tại pom cha mà không thực sự tải hoặc thêm thư viện đó vào các module con",
+      "Cho phép các module con chỉ cần khai báo groupId và artifactId mà không cần ghi rõ thẻ <version>",
+      "Đảm bảo sự đồng nhất tuyệt đối về phiên bản thư viện giữa tất cả các module con trong toàn bộ hệ thống",
+      "Tự động tải về tất cả các file jar trên internet ngay khi mở dự án"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Thẻ <dependencyManagement> đóng vai trò là bảng tra cứu phiên bản tập trung (BOM - Bill of Materials). Nó không tự động kéo dependency vào module nếu module đó không khai báo trong thẻ <dependencies> bình thường.",
+    "difficulty": "hard",
+    "tags": [
+      "DependencyManagement",
+      "BOM",
+      "MultiModule"
+    ]
+  },
+  {
+    "id": "L9_Q44",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Plugin nào của Maven chịu trách nhiệm thực thi các bài kiểm tra đơn vị (Unit Tests) trong pha 'test'?",
+    "code": null,
+    "options": [
+      "maven-surefire-plugin",
+      "maven-failsafe-plugin (chuyên dùng cho integration tests)",
+      "maven-compiler-plugin",
+      "maven-jar-plugin"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Trong Maven: 'maven-surefire-plugin' được gắn mặc định vào phase 'test' để chạy các unit test (các file kết thúc bằng *Test.java). Ngược lại, 'maven-failsafe-plugin' được gắn vào phase 'integration-test' và 'verify' để chạy integration tests (*IT.java).",
+    "difficulty": "medium",
+    "tags": [
+      "SurefirePlugin",
+      "FailsafePlugin",
+      "MavenPlugins"
+    ]
+  },
+  {
+    "id": "L9_Q45",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Trong Maven, file cấu hình 'settings.xml' (thường nằm ở ~/.m2/settings.xml) khác với file 'pom.xml' ở điểm cơ bản nào?",
+    "code": null,
+    "options": [
+      "pom.xml cấu hình riêng cho từng dự án cụ thể (Project-level); còn settings.xml cấu hình mang tính toàn cục cho môi trường máy của lập trình viên (User/Machine-level, như cấu hình proxy, thông tin xác thực mirrors, server credentials)",
+      "settings.xml chỉ dùng cho ngôn ngữ Python",
+      "pom.xml chỉ có thể đọc được trên hệ điều hành Windows",
+      "settings.xml bắt buộc phải được commit lên kho Git cùng mã nguồn dự án"
+    ],
+    "correctAnswer": 0,
+    "explanation": "pom.xml chứa cấu hình nghiệp vụ của dự án và được commit lên Git chia sẻ cho cả team. settings.xml chứa thông tin nhạy cảm của cá nhân hoặc máy nội bộ (như tài khoản nexus, proxy công ty, master password) và KHÔNG ĐƯỢC commit lên Git.",
+    "difficulty": "medium",
+    "tags": [
+      "SettingsXml",
+      "PomXml",
+      "MavenConfig"
+    ]
+  },
+  {
+    "id": "L9_Q46",
+    "lessonId": 9,
+    "type": "single",
+    "title": "So sánh giữa chiến lược 'Git Flow' và 'Trunk-Based Development' trong quản lý phiên bản mã nguồn:",
+    "code": null,
+    "options": [
+      "Git Flow sử dụng nhiều nhánh dài hạn (develop, master, release, hotfix) với quy trình phát hành theo chu kỳ lớn; Trunk-Based Development khuyến khích các lập trình viên tích hợp thường xuyên trực tiếp vào một nhánh chính duy nhất (trunk/main) thông qua các nhánh tính năng rất ngắn ngày",
+      "Git Flow không hỗ trợ merge code",
+      "Trunk-Based Development bắt buộc chỉ có một người duy nhất được commit",
+      "Git Flow chỉ dùng được cho dự án mã nguồn mở"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Git Flow là mô hình nhánh phức tạp với nhiều nhánh tồn tại lâu (develop, feature dài ngày), dễ dẫn tới 'Merge Hell' khi gộp nhánh. Trunk-Based Development là xu hướng hiện đại của DevOps/CI-CD: mọi người commit hàng ngày vào main/trunk, kết hợp Feature Toggles để ẩn tính năng chưa xong, giúp tích hợp liên tục thực sự.",
+    "difficulty": "medium",
+    "tags": [
+      "GitFlow",
+      "TrunkBasedDevelopment",
+      "BranchingStrategies"
+    ]
+  },
+  {
+    "id": "L9_Q47",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Sự khác biệt cốt lõi giữa lệnh 'git merge' và 'git rebase' khi tích hợp nhánh tính năng vào nhánh chính là gì?",
+    "code": null,
+    "options": [
+      "'git merge' tạo ra một commit gộp mới (Merge Commit) và bảo toàn chính xác lịch sử phân nhánh theo thời gian; 'git rebase' viết lại lịch sử commit bằng cách đặt các commit của nhánh lên trên đỉnh của nhánh đích, tạo ra một lịch sử tuyến tính phẳng đẹp",
+      "'git rebase' xóa bỏ toàn bộ mã nguồn của nhánh tính năng",
+      "'git merge' chỉ chạy được khi không có xung đột (conflict)",
+      "Hai lệnh hoàn toàn giống nhau 100%"
+    ],
+    "correctAnswer": 0,
+    "explanation": "git merge giữ nguyên lịch sử rẽ nhánh thực tế (kèm merge commit). git rebase viết lại lịch sử (rewriting commit history) làm nhánh thẳng tắp. NGUYÊN TẮC VÀNG: Không bao giờ rebase trên các nhánh công khai/dùng chung (như main, develop) vì sẽ làm sai lệch lịch sử của các thành viên khác.",
+    "difficulty": "medium",
+    "tags": [
+      "GitMerge",
+      "GitRebase",
+      "GitInternals"
+    ]
+  },
+  {
+    "id": "L9_Q48",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Hiện tượng 'Fast-Forward Merge' trong Git xảy ra trong điều kiện nào?",
+    "code": null,
+    "options": [
+      "Khi nhánh đích (target branch) chưa có bất kỳ commit mới nào kể từ thời điểm nhánh tính năng (feature branch) được tách ra; Git chỉ việc di chuyển con trỏ của nhánh đích trỏ thẳng tới commit cuối của nhánh tính năng mà không cần tạo commit gộp",
+      "Khi mạng Internet có tốc độ cáp quang trên 1Gbps",
+      "Khi có xung đột mã nguồn xảy ra",
+      "Khi sử dụng lệnh git push --force"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fast-forward merge xảy ra khi lịch sử của nhánh nguồn chứa toàn bộ lịch sử của nhánh đích mà nhánh đích không có commit nào mới xen giữa. Git chỉ đơn thuần dịch chuyển con trỏ HEAD của nhánh đích về phía trước.",
+    "difficulty": "easy",
+    "tags": [
+      "FastForward",
+      "GitMerge",
+      "BranchPointer"
+    ]
+  },
+  {
+    "id": "L9_Q49",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Công cụ phân tích mã tĩnh Checkstyle (như maven-checkstyle-plugin) trong các dự án Java thường kiểm tra và bắt lỗi những vi phạm nào?",
+    "code": null,
+    "options": [
+      "Quy ước đặt tên (Naming Conventions: tên biến camelCase, tên class PascalCase, hằng số ALL_CAPS)",
+      "Độ dài tối đa của phương thức (Method Length), số lượng tham số tối đa của hàm",
+      "Định dạng mã nguồn: Thụt lề (Indentation), khoảng trắng, dấu ngoặc nhọn, vị trí import",
+      "Hiệu năng chạy thực tế của thuật toán khi xử lý 1 triệu bản ghi"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Checkstyle là công cụ phân tích tĩnh (Static Analysis) kiểm tra cú pháp và phong cách viết mã (Code Style/Conventions) dựa trên file cấu hình XML (như Sun Checks hoặc Google Java Style). Nó không chạy mã nên không đo lường hiệu năng runtime.",
+    "difficulty": "easy",
+    "tags": [
+      "Checkstyle",
+      "StaticAnalysis",
+      "CodingStandards"
+    ]
+  },
+  {
+    "id": "L9_Q50",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Mục tiêu cốt lõi của Tích hợp liên tục (Continuous Integration - CI) là gì?",
+    "code": null,
+    "options": [
+      "Tự động hóa quá trình biên dịch (build) và kiểm thử (test) mã nguồn ngay khi có thành viên đẩy commit mới hoặc tạo Pull Request, giúp phát hiện lỗi tích hợp càng sớm càng tốt",
+      "Tự động gửi email đòi nợ khách hàng",
+      "Tự động tạo ra các bài kiểm tra trắc nghiệm",
+      "Loại bỏ hoàn toàn vai trò của lập trình viên"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CI (Continuous Integration) là thực hành văn hóa và kỹ thuật nơi các nhà phát triển gộp mã thường xuyên vào nhánh chính. Mỗi lần gộp được tự động kiểm chứng bằng build và automated test để phát hiện lỗi tích hợp ngay trong vòng vài phút.",
+    "difficulty": "easy",
+    "tags": [
+      "ContinuousIntegration",
+      "DevOps",
+      "Automation"
+    ]
+  },
+  {
+    "id": "L9_Q51",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Sự khác biệt căn bản giữa 'Continuous Delivery' và 'Continuous Deployment' là gì?",
+    "code": null,
+    "options": [
+      "Continuous Delivery tự động hóa toàn bộ các bước cho đến khi bản dựng sẵn sàng triển khai, nhưng bước release lên Production cần sự phê duyệt thủ công của con người (Manual Approval); còn Continuous Deployment tự động triển khai thẳng lên Production mà không cần bất kỳ sự can thiệp thủ công nào",
+      "Continuous Delivery chỉ dùng cho ứng dụng di động",
+      "Continuous Deployment không cần chạy unit tests",
+      "Cả hai khái niệm hoàn toàn đồng nghĩa 100%"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Sự khác biệt nằm ở bước cuối cùng lên Production: Trong Continuous Delivery, phần mềm luôn ở trạng thái sẵn sàng release, nhưng quyết định bấm nút deploy do con người/doanh nghiệp quyết định. Trong Continuous Deployment, nếu vượt qua mọi bài test tự động của pipeline, code sẽ tự động bay thẳng lên Production.",
+    "difficulty": "medium",
+    "tags": [
+      "ContinuousDelivery",
+      "ContinuousDeployment",
+      "Comparison"
+    ]
+  },
+  {
+    "id": "L9_Q52",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Cấu trúc một file kịch bản tự động hóa GitHub Actions (.github/workflows/*.yml) bao gồm những thành phần cơ bản nào?",
+    "code": null,
+    "options": [
+      "Triggers (on: push, pull_request): Sự kiện kích hoạt quy trình tự động",
+      "Jobs: Một hoặc nhiều nhóm tác vụ độc lập chạy trên máy ảo runner (ví dụ: runs-on: ubuntu-latest)",
+      "Steps: Chuỗi các bước tuần tự bên trong một job (gồm action có sẵn qua uses: hoặc câu lệnh bash qua run:)",
+      "Bắt buộc phải cài đặt máy chủ vật lý riêng tại nhà mới chạy được"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "GitHub Actions workflow định nghĩa bằng YAML gồm: Triggers (khi nào chạy), Jobs (chạy trên runner nào: ubuntu, windows, macos), và Steps (các bước chi tiết). GitHub cung cấp sẵn runner trên đám mây miễn phí.",
+    "difficulty": "medium",
+    "tags": [
+      "GitHubActions",
+      "WorkflowYAML",
+      "DevOps"
+    ]
+  },
+  {
+    "id": "L9_Q53",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Xem xét đoạn kịch bản GitHub Actions sau. Bước 'actions/setup-java@v4' có vai trò gì trong pipeline?",
+    "code": "- name: Set up JDK 17\n  uses: actions/setup-java@v4\n  with:\n    java-version: '17'\n    distribution: 'temurin'\n    cache: maven",
+    "options": [
+      "Cài đặt môi trường máy ảo Java JDK 17 (bản phân phối Eclipse Temurin) lên máy ảo runner và kích hoạt cơ chế bộ nhớ đệm (cache) cho các thư viện Maven",
+      "Biên dịch mã nguồn Java thành file .exe",
+      "Tự động viết thêm các bài unit test còn thiếu",
+      "Tải toàn bộ cơ sở dữ liệu MySQL lên đám mây"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'setup-java' là official action của GitHub giúp thiết lập nhanh môi trường JDK chỉ định trên runner và tích hợp sẵn tính năng cache các dependency Maven để tăng tốc độ cho các lần build tiếp theo.",
+    "difficulty": "easy",
+    "tags": [
+      "SetupJava",
+      "GitHubActions",
+      "MavenCache"
+    ]
+  },
+  {
+    "id": "L9_Q54",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Trong quy trình làm việc nhóm với Git, thao tác 'Pull Request' (PR) hoặc 'Merge Request' (MR) đóng vai trò chính là gì?",
+    "code": null,
+    "options": [
+      "Là cơ chế để một lập trình viên yêu cầu sáp nhập nhánh tính năng của mình vào nhánh chính, tạo không gian để các thành viên khác xem xét mã nguồn (Code Review), chạy kiểm thử CI tự động trước khi phê duyệt",
+      "Để xóa toàn bộ tài khoản Git của thành viên vi phạm",
+      "Để sao chép toàn bộ dự án về máy tính cá nhân",
+      "Chỉ dùng khi dự án bị lỗi hỏng máy chủ"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Pull Request là trụ cột của quy trình phát triển hiện đại: cho phép đồng nghiệp review code, thảo luận, phát hiện lỗi thiết kế và cho phép hệ thống CI tự động chạy kiểm thử trước khi code được phép hòa vào nhánh chính.",
+    "difficulty": "easy",
+    "tags": [
+      "PullRequest",
+      "CodeReview",
+      "GitCollaboration"
+    ]
+  },
+  {
+    "id": "L9_Q55",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Những lợi ích quan trọng nhất của việc duy trì một hệ thống CI/CD tự động trong dự án phần mềm là gì?",
+    "code": null,
+    "options": [
+      "Giảm thiểu rủi ro khi phát hành sản phẩm nhờ việc kiểm thử liên tục mọi thay đổi nhỏ",
+      "Rút ngắn thời gian đưa sản phẩm ra thị trường (Time-to-Market)",
+      "Loại bỏ các thao tác đóng gói và triển khai thủ công dễ gây nhầm lẫn sai sót của con người",
+      "Đảm bảo mã nguồn không bao giờ cần phải viết thêm tài liệu"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "CI/CD giúp phát hiện lỗi sớm (Fail Fast), tự động hóa quy trình deploy tẻ nhạt, giảm lỗi con người và tăng tốc độ release phần mềm. Nó không thể thay thế cho việc viết tài liệu kỹ thuật.",
+    "difficulty": "easy",
+    "tags": [
+      "BenefitsOfCICD",
+      "Automation",
+      "SoftwareEngineering"
+    ]
+  },
+  {
+    "id": "L9_Q56",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Trong file cấu hình '.gitignore' của dự án Java sử dụng Maven, những thư mục/tập tin nào sau đây BẮT BUỘC nên được thêm vào để tránh đẩy rác lên Git?",
+    "code": null,
+    "options": [
+      "target/, *.class, .idea/, *.iml, .project, .settings/",
+      "src/main/java/",
+      "pom.xml",
+      "README.md"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Thư mục target/ chứa các file biên dịch nhị phân .class, các file cấu hình IDE (.idea, .project) là các file sinh tự động theo môi trường cục bộ và tuyệt đối không bao giờ được commit lên Git. Các file mã nguồn src/ và pom.xml bắt buộc phải được theo dõi bởi Git.",
+    "difficulty": "easy",
+    "tags": [
+      "GitIgnore",
+      "TargetFolder",
+      "CleanRepository"
+    ]
+  },
+  {
+    "id": "L9_Q57",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Nguyên tắc 'Fail Fast' trong đường ống CI/CD (Pipeline) khuyến nghị điều gì?",
+    "code": null,
+    "options": [
+      "Nên chạy các bước kiểm tra nhanh và rẻ nhất trước (như Checkstyle, Compile, Unit Test); nếu phát hiện lỗi thì dừng ngay pipeline và thông báo cho lập trình viên lập tức trước khi chạy các bước nặng nề tốn kém (như Integration Test, Security Scan, Deploy)",
+      "Cố tình làm cho hệ thống bị sập càng nhanh càng tốt",
+      "Bỏ qua tất cả các bài kiểm tra nếu có lỗi xảy ra",
+      "Chỉ kiểm tra mã nguồn vào ban đêm"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Fail Fast tiết kiệm thời gian và tài nguyên máy tính: nếu mã nguồn sai convention hoặc fail 1 bài unit test nhỏ, pipeline dừng ngay trong 30 giây thay vì phải đợi 30 phút chạy hết integration test hay build docker image rồi mới báo lỗi.",
+    "difficulty": "medium",
+    "tags": [
+      "FailFast",
+      "PipelineOptimization",
+      "DevOps"
+    ]
+  },
+  {
+    "id": "L9_Q58",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Khi thực hiện lệnh 'git merge feature' và xuất hiện xung đột (Merge Conflict), lập trình viên cần làm gì để hoàn tất việc gộp nhánh?",
+    "code": null,
+    "options": [
+      "Mở các file bị xung đột, chỉnh sửa bằng tay để thống nhất phần mã chính xác, xóa các ký tự đánh dấu (<<<<<<<, =======, >>>>>>>), sau đó dùng lệnh 'git add' và 'git commit' để hoàn tất",
+      "Xóa toàn bộ thư mục .git và khởi tạo lại",
+      "Tắt máy tính và tạo lại nhánh mới",
+      "Chỉ cần gõ lệnh git push --force là xung đột tự động biến mất"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Quy trình giải quyết conflict chuẩn: Git chèn các conflict markers (<<<<<<< HEAD ... ======= ... >>>>>>>). Lập trình viên mở file, trao đổi với đồng nghiệp để quyết định giữ đoạn mã nào, lưu file, git add và commit merge commit.",
+    "difficulty": "easy",
+    "tags": [
+      "MergeConflict",
+      "GitResolution",
+      "VersionControl"
+    ]
+  },
+  {
+    "id": "L9_Q59",
+    "lessonId": 9,
+    "type": "multiple",
+    "title": "Trong một kịch bản CI/CD, các bài kiểm thử kiểm thử hồi quy và tích hợp (Integration Tests) thường được phân tách với Unit Tests vì những lý do nào?",
+    "code": null,
+    "options": [
+      "Unit Tests kiểm tra các hàm/lớp cô lập và chạy cực nhanh (mili-giây), cần chạy liên tục mỗi khi code thay đổi",
+      "Integration Tests kiểm tra sự phối hợp giữa nhiều thành phần (kết nối DB thật, mạng, hệ thống file), chạy chậm hơn nhiều (vài phút đến hàng giờ)",
+      "Tách riêng giúp lập trình viên nhận được phản hồi nhanh (Fast Feedback) từ Unit Tests trước khi chạy Integration Tests nặng",
+      "Integration Tests chỉ có thể viết bằng ngôn ngữ Python chứ không thể viết bằng Java"
+    ],
+    "correctAnswer": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "Mô hình Kim tự tháp kiểm thử (Test Pyramid) khuyến cáo: đáy kim tự tháp là nhiều Unit Tests chạy siêu nhanh; tầng giữa là Integration Tests chạy chậm hơn; tầng trên cùng là E2E Tests. Tách riêng giúp tối ưu hóa thời gian phản hồi của CI pipeline.",
+    "difficulty": "medium",
+    "tags": [
+      "TestPyramid",
+      "UnitVsIntegration",
+      "PipelineDesign"
+    ]
+  },
+  {
+    "id": "L9_Q60",
+    "lessonId": 9,
+    "type": "single",
+    "title": "Lệnh Git nào sau đây cho phép hủy bỏ (undo) các thay đổi chưa được commit trong thư mục làm việc (Working Directory) để khôi phục lại trạng thái commit gần nhất?",
+    "code": null,
+    "options": [
+      "git restore <file> (hoặc git checkout -- <file> trong phiên bản cũ)",
+      "git push",
+      "git commit --amend",
+      "git remote -v"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Từ Git 2.23, lệnh 'git restore <file>' được giới thiệu để khôi phục nội dung file trong working directory về trạng thái của commit gần nhất (hoặc 'git restore --staged <file>' để bỏ stage). Lệnh cũ tương đương là 'git checkout -- <file>'.",
+    "difficulty": "easy",
+    "tags": [
+      "GitRestore",
+      "WorkingTree",
+      "GitCommands"
+    ]
   }
 ]
